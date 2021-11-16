@@ -142,7 +142,6 @@ def cli():
         args = parser.parse_args()
     except:
         parser.print_help()
-        _generate_barnsley_fern()
         exit(0)
 
     # Configure Logging
