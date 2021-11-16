@@ -1,5 +1,5 @@
-# Farn model verification framework
-Farn is multi-dimensional case generator​ and is suitable for nearly everything (where the aim is to distribute and execute simulations and to collect the results).
+# Farn: n-dimensional Case Generator 
+Farn is an n-dimensional case generator. Although its primary design goal is to parameterize and execute simulation cases, farn is at its core largely use-case agnostic and hence supports a wide spectrum of applications.
 The name ‘farn’ is inspired by the well-known Barnsley fractal: https://en.wikipedia.org/wiki/Barnsley_fern​.
 Farn consists of Python packages that can be invoked by own Python code and command line scripts for core functions.​
 Farn can
@@ -7,7 +7,7 @@ Farn can
 * generate a deep case folder structure with each including parameter files (Dictionaries)
 * execute user-defined command sets in case folders​
 * run simulation cases as batch​ processes, also in parallel.
-* build parameterized simulator case files (e.g. OSP, cosim)​
+* build parameterized simulation case files (e.g. OSP, cosim)​
 
 Farn makes widely use of
 ## Dictionaries
