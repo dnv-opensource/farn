@@ -117,7 +117,6 @@ def cli():
     configure_logging(log_level_console, log_file, log_level_file)
 
     case_list_file: Path = Path(args.caseList)
-    print (args.execute)
     command: str = args.execute
     timeout: int = args.timeout
     max_number_of_cpus: int = args.cpu
