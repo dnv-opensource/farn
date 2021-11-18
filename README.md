@@ -1,5 +1,5 @@
-# Farn: n-dimensional Case Generator 
-Farn is an n-dimensional case generator. Although its primary design goal is to parameterize and execute simulation cases, farn is at its core largely use-case agnostic and hence supports a wide spectrum of applications.
+# README
+farn is an n-dimensional case generator. Although its primary design goal is to parameterize and execute simulation cases, farn is at its core largely use-case agnostic and hence supports a wide spectrum of applications.
 The name ‘farn’ is inspired by the well-known Barnsley fractal: https://en.wikipedia.org/wiki/Barnsley_fern​.
 Farn consists of Python packages that can be invoked by own Python code and command line scripts for core functions.​
 Farn can
@@ -24,4 +24,3 @@ Some syntactic addions are made to improve the usability and versatility of Dict
 ## Example
 
 ## Documentation
-
