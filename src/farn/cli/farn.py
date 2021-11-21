@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__      = "DNV"
-__copyright__   = "Copyright THIS_YEAR, github.com/dnv-opensource"
-__credits__     = ["Claas Rostock", "Seunghyeon Yoo", "Frank Lumpitzsch"]
+__author__ = "DNV"
+__copyright__ = "Copyright THIS_YEAR, github.com/dnv-opensource"
+__credits__ = ["Claas Rostock", "Seunghyeon Yoo", "Frank Lumpitzsch"]
 __description__ = """generate and manipulate deeply nested case structures, apply arbitrary sampling and hierarchical or non-hierarchical filtering"""
-__email__       = "n.n.@dnv.com"
-__license__     = "MIT"
-__maintainer__  = "n.n."
-__prog__        = "farn"
-__status__      = "Development"
-__version__     = "MAJOR_VERSION.MINOR_VERSION.PATCH_VERSION"
+__email__ = "n.n.@dnv.com"
+__license__ = "MIT"
+__maintainer__ = "n.n."
+__prog__ = "farn"
+__status__ = "Development"
+__version__ = "MAJOR_VERSION.MINOR_VERSION.PATCH_VERSION"
 
-
+import argparse
 import logging
 import sys
 from argparse import ArgumentParser
@@ -34,12 +34,12 @@ from farn.utils.logging import configure_logging    # noqa E402
 logger = logging.getLogger(__name__)
 
 
-def cli():
+def _argparser() -> argparse.ArgumentParser:
 
     parser = ArgumentParser(
         prog=__prog__,
         usage=f'{__prog__} [options [args]] FARNDICT',
-        epilog='_'*17+__prog__+'_'*17,
+        epilog='_' * 17 + __prog__ + '_' * 17,
         prefix_chars='-',
         add_help=True,
         description=(__description__)
@@ -138,9 +138,15 @@ def cli():
         required=False,
     )
 
+    return parser
+
+
+def cli():
+
+    parser = _argparser()
     try:
         args = parser.parse_args()
-    except:
+    except Exception:
         parser.print_help()
         exit(0)
 
@@ -165,9 +171,11 @@ def cli():
     # catch missing arguments {sample, generate, command}
     # and drop an error
     # as one of them IS required
-    if (run_sampling==False and generate==False and command==None):
+    if (run_sampling == False and generate == False and command == None):
         parser.print_help()
-        logger.error(f"farn: none of the required options given: '--sample' or '--generate' or '--execute'")
+        logger.error(
+            "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
+        )
 
     main(
         farn_dict_file=farn_dict_file,

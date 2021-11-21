@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import argparse
 import logging
 from argparse import ArgumentParser
 from pathlib import Path
@@ -13,7 +14,7 @@ from farn.utils.logging import configure_logging
 logger = logging.getLogger(__name__)
 
 
-def cli():
+def _argparser() -> argparse.ArgumentParser:
 
     parser = ArgumentParser(
         prog='batchProcess',
@@ -103,6 +104,12 @@ def cli():
         required=False,
     )
 
+    return parser
+
+
+def cli():
+
+    parser = _argparser()
     args = parser.parse_args()
 
     # Configure Logging
