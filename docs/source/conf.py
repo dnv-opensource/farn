@@ -50,9 +50,16 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 html_theme = 'furo'
-html_logo = '_static/DNV_logo_200.png'
+html_logo = '_static/farn_logo_200.png'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+autodoc_default_options = {
+    'member-order': 'bysource',
+    'undoc-members': True,
+    'exclude-members': '__weakref__',
+}
+autodoc_preserve_defaults = True
