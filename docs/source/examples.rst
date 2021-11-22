@@ -5,4 +5,3 @@ Examples
    :maxdepth: 2
 
    example.farnDict
-   example.watchDict
