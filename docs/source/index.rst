@@ -14,6 +14,7 @@ Welcome to farn's documentation!
    license_link
    api
    cli
+   examples
 
 
 
