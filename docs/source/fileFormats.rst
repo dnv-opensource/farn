@@ -1,7 +1,7 @@
-Examples
+File Formats
 =================
 
 .. toctree::
    :maxdepth: 2
 
-   example.farnDict
+   fileFormat.farnDict
