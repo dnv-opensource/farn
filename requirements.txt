@@ -14,3 +14,4 @@ psutil>=5.8.0
 SALib>=1.4.5
 
 ../dictIO
+../ospx
