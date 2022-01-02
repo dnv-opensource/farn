@@ -15,3 +15,5 @@ SALib>=1.4.5
 
 # ../dictIO
 # ../ospx
+git+https://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@github.com/dnv-opensource/dictIO.git
+git+https://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@github.com/dnv-opensource/ospx.git
