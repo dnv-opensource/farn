@@ -29,14 +29,14 @@ However, both get installed automatically with farn (just pip install farn and y
 
 farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
 
-Reading a farnDict file and creating the corresponding case folder structure is accomplished in one line of code:
+Reading a farnDict file and creating the corresponding case folder structure:
 ~~~py
 from farn.farn import run_farn
 
 run_farn('farnDict', sample=True, generate=True)
 ~~~
 
-The same can be accomplished on the command line as follows:
+The above task can also be invoked from the command line, using the 'farn' command line script installed with farn:
 ~~~sh
 farn farnDict --sample --generate
 ~~~
