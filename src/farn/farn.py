@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 def run_farn(
     farn_dict_file: Path,
-    run_sampling: bool = False,
+    sample: bool = False,
     generate: bool = False,
     command: str = None,
     ignore_errors: bool = False,
@@ -45,7 +45,7 @@ def run_farn(
     logger.info(
         f"Start farn with following arguments:\n"
         f"\t farn_dict_file: \t{farn_dict_file}\n"
-        f"\t run_sampling: \t\t{run_sampling}\n"
+        f"\t sample: \t\t{sample}\n"
         f"\t generate: \t\t\t{generate}\n"
         f"\t command: \t\t\t{command}\n"
         f"\t ignore_errors: \t{ignore_errors}\n"
@@ -56,7 +56,7 @@ def run_farn(
     farn_dict = DictReader.read(farn_dict_file, comments=False)
 
     # Run sampling and create the samples for all layers in farn dict
-    if run_sampling:
+    if sample:
         sampled_farn_dict = generate_samples(farn_dict)
 
         if sampled_farn_dict:
@@ -70,7 +70,7 @@ def run_farn(
     # Document CLI arguments of current farn call in the farn dict
     farn_opts = {
         'farnDict': farn_dict.name,
-        'runSampling': run_sampling,
+        'runSampling': sample,
         'generate': generate,
         'execute': command,
         'ignore-errors': ignore_errors,

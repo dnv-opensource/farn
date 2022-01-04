@@ -2,11 +2,9 @@
 farn is an n-dimensional case generator.
 
 Its primary design goal is to parameterize and execute simulation cases.
-However, at its core farn is use-case agnostic and can hence support a wide spectrum of applications.
+However, at its core, farn is use-case agnostic and can support a wide spectrum of applications.
 
 The name ‘farn’ is inspired by the [Barnsley fractal](https://en.wikipedia.org/wiki/Barnsley_fern)
-
-farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
 
 farn enables you to:
 * generate an arbitrary discrete sampling of the design space (e.g. fixed, linSpace, uniformLHS)
@@ -27,29 +25,36 @@ farn requires the following two (sub-)packages:
 
 However, both get installed automatically with farn (just pip install farn and you're done).
 
-## Usage example
+## Usage Example
 
-farn provides a simple, high level API that allows to e.g. read a farnDict file and create the resulting case folder structure in essentially one line of code:
+farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
+
+Reading a farnDict file and creating the resulting case folder structure is accomplished in one line of code:
 ~~~py
 from farn.farn import run_farn
 
-run_farn('farnDict', run_sampling=True, generate=True)
+run_farn('farnDict', sample=True, generate=True)
 ~~~
-_For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
 
+The same can be accomplished on the command line as follows:
+~~~sh
+farn farnDict --sample --generate
+~~~
+
+_For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
 
 ## File Format
 A farnDict is a file in C++ dictionary format used with farn.
 
-_For a detailed documentation of the farnDict file format, see [File Format](fileFormat.md) in [farn's documentation][farn_docs] on GitHub Pages._
+_For a documentation of the farnDict file format, see [File Format](fileFormat.md) in [farn's documentation][farn_docs] on GitHub Pages._
 
-_For a detailed documentation of the general C++ dictionary file format used by farn, see File Format in [dictIO's documentation][dictIO_docs] on GitHub Pages._
+_For a detailed documentation of the C++ dictionary format used by farn, see [dictIO's documentation][dictIO_docs] on GitHub Pages._
 
-## Development setup
+## Development Setup
 
 1. Install [Python 3.9](https://www.python.org/downloads/release/python-399/)
 
-2. git clone the dictIO repository into your local development directory
+2. git clone the farn repository into your local development directory:
 
 ~~~sh
 git clone git://github.com/dnv-opensource/farn.git path/to/your/dev/farn

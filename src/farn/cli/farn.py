@@ -162,7 +162,7 @@ def cli():
     configure_logging(log_level_console, log_file, log_level_file)
 
     farn_dict_file: Path = Path(args.farnDict)
-    run_sampling: bool = args.sample
+    sample: bool = args.sample
     generate: bool = args.generate
     command: str = args.execute
     ignore_errors: bool = args.ignore_errors
@@ -171,7 +171,7 @@ def cli():
     # catch missing arguments {sample, generate, command}
     # and drop an error
     # as one of them IS required
-    if (run_sampling == False and generate == False and command == None):
+    if (sample == False and generate == False and command == None):
         parser.print_help()
         logger.error(
             "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
@@ -179,7 +179,7 @@ def cli():
 
     main(
         farn_dict_file=farn_dict_file,
-        run_sampling=run_sampling,
+        sample=sample,
         generate=generate,
         command=command,
         ignore_errors=ignore_errors,
@@ -189,7 +189,7 @@ def cli():
 
 def main(
     farn_dict_file: Path,
-    run_sampling: bool = False,
+    sample: bool = False,
     generate: bool = False,
     command: str = None,
     ignore_errors: bool = False,
@@ -204,7 +204,7 @@ def main(
 
     run_farn(
         farn_dict_file=farn_dict_file,
-        run_sampling=run_sampling,
+        sample=sample,
         generate=generate,
         command=command,
         ignore_errors=ignore_errors,

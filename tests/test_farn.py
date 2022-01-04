@@ -40,7 +40,7 @@ def test_default_options():
     }
     run_farn(
         Path('test_farnDict'),
-        run_sampling=False,
+        sample=False,
         generate=True,
         command=None,
         ignore_errors=False,
