@@ -6,14 +6,14 @@ However, at its core, farn is use-case agnostic and can support a wide spectrum 
 
 The name ‘farn’ is inspired by the [Barnsley fractal](https://en.wikipedia.org/wiki/Barnsley_fern)
 
-farn enables you to:
-* generate an arbitrary discrete sampling of the design space (e.g. fixed, linSpace, uniformLHS)
-* generate the corresponding case folder structure
-* copy arbitrary files from a template folder into case folders
-* create a case specific parameter file in each case folder
-* execute user-defined shell commands in case folders
-* build case specific OSP (co-)simulation files
-* run simulation cases as batch process
+farn
+* generates an arbitrary discrete sampling of the design space (e.g. fixed, linSpace, uniformLHS)
+* generates the corresponding case folder structure
+* copies arbitrary files from a template folder to case folders
+* creates case specific parameter files in case folders
+* executes user-defined shell commands in case folders
+* builds case specific OSP (co-)simulation files
+* runs simulation cases as batch process
 
 ## Installation
 ```sh
@@ -29,7 +29,7 @@ However, both get installed automatically with farn (just pip install farn and y
 
 farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
 
-Reading a farnDict file and creating the resulting case folder structure is accomplished in one line of code:
+Reading a farnDict file and creating the corresponding case folder structure is accomplished in one line of code:
 ~~~py
 from farn.farn import run_farn
 
