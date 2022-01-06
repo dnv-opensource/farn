@@ -39,7 +39,7 @@ In the example, a 6-dimensional design space is spawned, organised in 4 layers:
 2.  'lhsvar'    level 1     (nested layer)  no. of parameters: 3    sampling: uniformLhs (Example  3 dimensional sub design space, LHS sampled)
 3.  'cp'        level 2     (nested layer)  no. of parameters: 1    sampling: linSpace   (Example 'cp' indicating e.g. a hypothetical compute parameter (solver setting, version whatever))
 4.  'mp'        level 3     (leaf layer)    no. of parameters: 1    sampling: fixed      (Example 'mp' indicating e.g. a hypothetical multiplier for an internal variable)
-~~~cpp
+~~~js
 /*---------------------------------*- C++ -*----------------------------------*\
 filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
