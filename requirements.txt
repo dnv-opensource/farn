@@ -6,6 +6,7 @@ Sphinx>=4.3.0
 myst-parser>=0.15.2
 sphinx-argparse-cli>=1.8.2
 furo
+twine
 
 lxml>=4.6.4
 numpy>=1.21.4
@@ -14,6 +15,6 @@ psutil>=5.8.0
 SALib>=1.4.5
 
 # ../dictIO
-# ../ospx
 git+https://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@github.com/dnv-opensource/dictIO.git
+# ../ospx
 git+https://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@github.com/dnv-opensource/ospx.git
