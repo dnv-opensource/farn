@@ -141,7 +141,11 @@ def _argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def cli():
+def main():
+    """Entry point for console script as configured in setup.cfg
+
+    Runs the command line interface and parses arguments and options entered on the console.
+    """
 
     parser = _argparser()
     try:
@@ -177,7 +181,8 @@ def cli():
             "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
         )
 
-    main(
+    # Dispatch to _main(), which takes care of processing the arguments and invoking the API.
+    _main(
         farn_dict_file=farn_dict_file,
         sample=sample,
         generate=generate,
@@ -187,7 +192,7 @@ def cli():
     )
 
 
-def main(
+def _main(
     farn_dict_file: Path,
     sample: bool = False,
     generate: bool = False,
@@ -195,6 +200,11 @@ def main(
     ignore_errors: bool = False,
     test: bool = False,
 ):
+    """Entry point for unit tests.
+
+    Processes the arguments parsed by main() on the console and invokes the API.
+    """
+
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
         logger.error(f"farn: File {farn_dict_file} not found.")
@@ -324,4 +334,4 @@ def _generate_barnsley_fern():
 
 
 if __name__ == '__main__':
-    cli()
+    main()

@@ -107,7 +107,11 @@ def _argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def cli():
+def main():
+    """Entry point for console script as configured in setup.cfg
+
+    Runs the command line interface and parses arguments and options entered on the console.
+    """
 
     parser = _argparser()
     args = parser.parse_args()
@@ -128,7 +132,8 @@ def cli():
     timeout: int = args.timeout
     max_number_of_cpus: int = args.cpu
 
-    main(
+    # Dispatch to _main(), which takes care of processing the arguments and invoking the API.
+    _main(
         case_list_file=case_list_file,
         command=command,
         timeout=timeout,
@@ -136,12 +141,16 @@ def cli():
     )
 
 
-def main(
+def _main(
     case_list_file: Path,
     command: str,
     timeout: int = 0,
     max_number_of_cpus: int = 0,
 ):
+    """Entry point for unit tests.
+
+    Processes the arguments parsed by main() on the console and invokes the API.
+    """
 
     # Check whether caselist file exists
     if not case_list_file.is_file():
@@ -160,4 +169,4 @@ def main(
 
 
 if __name__ == '__main__':
-    cli()
+    main()
