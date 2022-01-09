@@ -17,12 +17,22 @@ jobs:
 
       # PREPARE
 
-      # Create temporary subfolders to hold the three checked out packages
+      # Checkout active branch (the branch that triggered the workflow)
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout active branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          lfs: true
+      - name: prepare farn
+        run: |
+          cp -v -f README.md docs/source/README_farn.md
+
+      # Create temporary subfolders to hold the checked out sub-packages
       - name: Create subfolders
         run: |
           mkdir dictIO
           mkdir ospx
-          mkdir farn
 
       # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
@@ -56,28 +66,11 @@ jobs:
           rm -rf ospx/.git/
           cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
 
-      # Checkout farn (same branch as the one that triggered the workflow here in farn)
-      # https://github.com/marketplace/actions/checkout
-      - name: Checkout farn
-        uses: actions/checkout@v2
-        with:
-          repository: 'dnv-opensource/farn'
-          ref: ${{github.ref}}
-          path: farn
-          token: ${{ secrets.PAT_for_sphinx_combined }}
-          fetch-depth: 1
-          lfs: true
-      - name: Prepare farn
+      # merge sub-packages into root
+      - name: merge sub-packages
         run: |
-          rm -rf farn/.git/
-          cp -v -f farn/README.md farn/docs/source/README_farn.md
-
-      # merge all packages
-      - name: merge packages
-        run: |
-         cp -v -f -r dictIO/* .
-         cp -v -f -r ospx/* .
-         cp -v -f -r farn/* .
+         cp -v -u -r dictIO/* .
+         cp -v -u -r ospx/* .
 
 
       # replace TOC files by its combined versions
