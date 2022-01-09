@@ -77,7 +77,7 @@ jobs:
       - name: replace TOC files
         run: |
           cp -v -f docs/source/combined/* docs/source
-          rm -v -d docs/source/combined
+          rm -v -r docs/source/combined
 
 
       # Install Python
