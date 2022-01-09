@@ -69,8 +69,8 @@ jobs:
       # merge sub-packages into root
       - name: merge sub-packages
         run: |
-         cp -v -u -r dictIO/* .
-         cp -v -u -r ospx/* .
+         cp -v -n -r dictIO/* .
+         cp -v -n -r ospx/* .
 
 
       # replace TOC files by its combined versions
