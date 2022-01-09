@@ -75,9 +75,9 @@ jobs:
       # merge all packages
       - name: merge packages
         run: |
-         cp -v -f dictIO .
-         cp -v -f ospx .
-         cp -v -f farn .
+         cp -v -f -r dictIO .
+         cp -v -f -r ospx .
+         cp -v -f -r farn .
 
 
       # replace TOC files by its combined versions
