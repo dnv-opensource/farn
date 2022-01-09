@@ -1,4 +1,4 @@
-# README
+# farn
 farn is an n-dimensional case generator.
 
 Its primary design goal is to parameterize and execute simulation cases.
