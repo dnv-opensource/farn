@@ -17,52 +17,73 @@ jobs:
 
       # PREPARE
 
+      # Create temporary subfolders to hold the three checked out packages
+      - name: Create subfolders
+        run: |
+          mkdir dictIO
+          mkdir ospx
+          mkdir farn
+
       # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
-      - name: Checkout active branch
+      - name: Checkout dictIO
         uses: actions/checkout@v2
         with:
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
+          path: dictIO
           token: ${{ secrets.PAT_for_sphinx_combined }}
           fetch-depth: 1
           lfs: true
-      - name: Copy and rename README.md
+      - name: Prepare dictIO
         run: |
-          cp README.md /docs/source/README_dictIO.md
+          rm -rf dictIO/.git/
+          cp -v -f dictIO/README.md dictIO/docs/source/README_dictIO.md
 
       # Checkout ospx (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
-      - name: Checkout active branch
+      - name: Checkout ospx
         uses: actions/checkout@v2
         with:
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
+          path: ospx
           token: ${{ secrets.PAT_for_sphinx_combined }}
           fetch-depth: 1
           lfs: true
-      - name: Copy and rename README.md
+      - name: Prepare ospx
         run: |
-          cp README.md /docs/source/README_ospx.md
+          rm -rf ospx/.git/
+          cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
 
       # Checkout farn (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
-      - name: Checkout active branch
+      - name: Checkout farn
         uses: actions/checkout@v2
         with:
           repository: 'dnv-opensource/farn'
           ref: ${{github.ref}}
+          path: farn
           token: ${{ secrets.PAT_for_sphinx_combined }}
           fetch-depth: 1
           lfs: true
-      - name: Copy and rename README.md
+      - name: Prepare farn
         run: |
-          cp README.md /docs/source/README_farn.md
+          rm -rf farn/.git/
+          cp -v -f farn/README.md farn/docs/source/README_farn.md
+
+      # merge all packages
+      - name: merge packages
+        run: |
+         cp -v -f dictIO .
+         cp -v -f ospx .
+         cp -v -f farn .
+
 
       # replace TOC files by its combined versions
       - name: replace TOC files
         run: |
-          cp /docs/source/combined/* /docs/source
+          cp -v -f docs/source/combined/* docs/source
 
 
       # Install Python
