@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# coding utf-8
 
 __author__ = "DNV"
 __copyright__ = "Copyright THIS_YEAR, github.com/dnv-opensource"
@@ -37,17 +37,21 @@ logger = logging.getLogger(__name__)
 def _argparser() -> argparse.ArgumentParser:
 
     parser = ArgumentParser(
-        prog=__prog__,
-        usage=f'{__prog__} [options [args]] FARNDICT',
-        epilog='_' * 17 + __prog__ + '_' * 17,
+        prog='farn',
+        usage='%(prog)s farnDict [options [args]]',
+        epilog='_________________farn___________________',
         prefix_chars='-',
         add_help=True,
-        description=(__description__)
+        description=(
+            'Run the sampling for all layers as configured in farnDict,'
+            'generate the corresponding case folder structure and'
+            'execute user-defined shell command sets in all case folders.'
+        )
     )
 
     parser.add_argument(
         'farnDict',
-        metavar='FARNDICT',
+        metavar='farnDict',
         type=str,
         help='name of the dict file containing the farn configuration.',
     )
@@ -57,7 +61,7 @@ def _argparser() -> argparse.ArgumentParser:
         '--sample',
         action='store_true',
         help=
-        'read farn dict file, run the sampling defined for each layer and save the sampled farn dict file with prefix sampled.',
+        'read farn dict file, run the sampling defined for each layer and save the sampled farnDict file with prefix sampled.',
         default=False,
         required=False,
     )
@@ -78,8 +82,8 @@ def _argparser() -> argparse.ArgumentParser:
         action='store',
         type=str,
         help=(
-            'execute the given command in all case folders.\n'
-            'The command must be defined in the commands section of the applicable layer in farnDict.'
+            'execute the given command set in all case folders.\n'
+            'The command set must be defined in the commands section of the applicable layer in farnDict.'
         ),
         default=None,
         required=False,
@@ -96,7 +100,7 @@ def _argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--test',
         action='store_true',
-        help='run only first case and then exit',
+        help='run only first case and exit',
         default=False,
         required=False,
     )
@@ -175,7 +179,7 @@ def main():
     # catch missing arguments {sample, generate, command}
     # and drop an error
     # as one of them IS required
-    if (sample == False and generate == False and command == None):
+    if not sample and not generate and command is None:
         parser.print_help()
         logger.error(
             "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
@@ -241,7 +245,7 @@ def _generate_barnsley_fern():
     ƒ4	−0.15	0.28	0.26	0.24	0	0.44	0.07	Largest right-hand leaflet
 
     '''
-    import os
+    import tempfile
     import tkinter as tk
 
     from numpy import random
@@ -313,22 +317,26 @@ def _generate_barnsley_fern():
 
     del draw
 
-    im.save(Path(os.getenv('HOME')) / 'splash.png')
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # im.save(Path(os.getenv('HOME')) / 'splash.png')
+        temp_file = Path(temp_dir) / 'splash.png'
+        im.save(temp_file)
 
-    root = tk.Tk()
-    root.overrideredirect(True)
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    root.geometry(
-        '%dx%d+%d+%d' %
-        (x_size, y_size, screen_width / 2 - x_size / 2, screen_height / 2 - y_size / 2)
-    )
-    image = tk.PhotoImage(file=Path(os.getenv('HOME')) / 'splash.png')
-    canvas = tk.Canvas(root, height=y_size, width=x_size, bg="dark slate gray")
-    canvas.create_image(x_size / 2, y_size / 2, image=image)
-    canvas.pack()
-    root.after(3000, root.destroy)
-    root.mainloop()
+        root = tk.Tk()
+        root.overrideredirect(True)
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        root.geometry(
+            '%dx%d+%d+%d' %
+            (x_size, y_size, screen_width / 2 - x_size / 2, screen_height / 2 - y_size / 2)
+        )
+        # image = tk.PhotoImage(file=Path(os.getenv('HOME')) / 'splash.png')
+        image = tk.PhotoImage(file=temp_file)
+        canvas = tk.Canvas(root, height=y_size, width=x_size, bg="dark slate gray")
+        canvas.create_image(x_size / 2, y_size / 2, image=image)
+        canvas.pack()
+        root.after(3000, root.destroy)
+        root.mainloop()
 
     return
 

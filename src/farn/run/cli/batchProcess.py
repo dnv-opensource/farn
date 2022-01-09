@@ -18,17 +18,18 @@ def _argparser() -> argparse.ArgumentParser:
 
     parser = ArgumentParser(
         prog='batchProcess',
-        usage='%(prog)s [options [args]]',
+        usage='%(prog)s caseList [options [args]]',
         epilog='_________________batchProcess___________________',
         prefix_chars='-',
         add_help=True,
-        description=
-        'Batch processes a list of cases, executing the specified shell command in all case folders.'
+        description=(
+            'Batch processes a list of cases, executing the specified shell command in all case folders.'
+        )
     )
 
     parser.add_argument(
         'caseList',
-        metavar='CASELIST',
+        metavar='caseList',
         type=str,
         help='name of the text file containing all paths of the cases to be processed.',
     )

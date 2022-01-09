@@ -1,7 +1,3 @@
-# @TODO: Discuss and align how we handle the disclaimer part
-# farn.py
-# TODO: pretty header
-
 import logging
 import os
 import platform
@@ -15,9 +11,9 @@ from typing import MutableMapping, MutableSequence, Sequence, Union
 from dictIO.cppDict import CppDict
 from dictIO.dictReader import DictReader
 from dictIO.dictWriter import DictWriter, create_target_file_name
+from dictIO.utils.strings import remove_quotes
 
 from farn.utils.os import append_system_variable
-from dictIO.utils.strings import remove_quotes
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +27,26 @@ def run_farn(
     ignore_errors: bool = False,
     test: bool = False,
 ):
-    """farn.py main
+    """Runs farn.
+
+    Runs the sampling for all layers as configured in farnDict,
+    generates the corresponding case folder structure and
+    executes user-defined shell command sets in all case folders.
+
+    Parameters
+    ----------
+    farn_dict_file : Path
+        farnDict file. Contains the farn configuration.
+    sample : bool, optional
+        if True, runs the sampling defined for each layer and saves the sampled farnDict file with prefix sampled., by default False
+    generate : bool, optional
+        if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
+    command : str, optional
+        executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
+    ignore_errors : bool, optional
+        if True, does not halt on errors, by default False
+    test : bool, optional
+        if True, runs only first case and returns, by default False
     """
 
     # Check whether farn dict file exists
@@ -57,7 +72,7 @@ def run_farn(
 
     # Run sampling and create the samples for all layers in farn dict
     if sample:
-        sampled_farn_dict = generate_samples(farn_dict)
+        sampled_farn_dict = run_sampling(farn_dict)
 
         if sampled_farn_dict:
             logger.info(f'Save sampled farn dict {sampled_farn_dict.name}..')               # 1
@@ -93,23 +108,23 @@ def run_farn(
     logger.info(f'Saved backup copy in {farn_dict_backup_copy}.')   # 1
 
     # Collect and register all cases that can be derived from the samples defined in farn dict
-    cases = register_cases(farn_dict, farn_dirs['CASEDIR'])
+    cases = list_cases(farn_dict, farn_dirs['CASEDIR'])
 
     # Generate case folder structure
     # and create a case-specific paramDict file in each case folder
     if generate:
-        generate_case_folders(cases)
+        generate_case_folder_structure(cases)
         generate_case_lists(
             cases=cases,
             target_dir=farn_dirs['ROOTDIR'],
         )
-        drop_param_dict_in_case_folders(cases)
+        _create_param_dict_file_in_case_folders(cases)
 
     # Execute a given command in all case folders
     if command:
-        execute_command_in_case_folders(
+        _execute_command_set_in_case_folders(
             cases=cases,
-            command=command,
+            command_set=command,
             ignore_errors=ignore_errors,
             test=test,
         )
@@ -119,6 +134,14 @@ def run_farn(
 
 @dataclass
 class Case:
+    """Dataclass holding case attributes
+
+    The dataclass 'Case' holds all relevant case attributes needed by farn to process cases, e.g.
+        - condition
+        - parameter names and associated values
+        - commands
+        - ..
+    """
     layer: Union[str, None] = None
     level: int = 0
     no_of_samples: int = 0
@@ -129,10 +152,19 @@ class Case:
     condition: Union[MutableMapping, None] = None
     names: Union[MutableSequence[str], None] = None
     values: Union[MutableSequence[float], None] = None
-    commands: Union[MutableMapping, None] = None
+    command_sets: Union[MutableMapping, None] = None
 
     @property
     def is_valid(self) -> bool:
+        """Checks whether the case fulfills the configured filter criteria.
+
+        A case is considered valid if it fulfills the filter criteria configured for the respective layer.
+
+        Returns
+        -------
+        bool
+            result of validity check. True indicates the case is valid, False not valid.
+        """
 
         # Check whether the '_condition' element is defined.  Without it, case is in any case considered valid.
         if not self.condition or not isinstance(self.condition, MutableMapping):
@@ -231,25 +263,41 @@ class Case:
         return True
 
     def to_dict(self) -> dict:
-        d: dict = {}
-        d.update({'_layer': self.layer})
-        d.update({'_level': self.level})
-        d.update({'_no_of_samples': self.no_of_samples})
-        d.update({'_index': self.index})
-        d.update({'_path': self.path})
-        d.update({'_key': self.key})
-        d.update({'_is_leaf': self.is_leaf})
-        d.update({'_condition': self.condition})
-        d.update({'_names': self.names})
-        d.update({'_values': self.values})
-        d.update({'_commands': self.commands})
-        return d
+        """Returns a dict with all case attributes
+
+        Returns
+        -------
+        dict
+            dict with all case attributes
+        """
+        return {
+            '_layer': self.layer,
+            '_level': self.level,
+            '_no_of_samples': self.no_of_samples,
+            '_index': self.index,
+            '_path': self.path,
+            '_key': self.key,
+            '_is_leaf': self.is_leaf,
+            '_condition': self.condition,
+            '_names': self.names,
+            '_values': self.values,
+            '_commands': self.command_sets,
+        }
 
 
-def generate_samples(farn_dict: CppDict) -> Union[CppDict, None]:
-    '''
-    run sampling in farn dict, generate samples for all layers and return the sampled farn dict
-    '''
+def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
+    """Runs the sampling for all layers and returns the sampled farnDict
+
+    Parameters
+    ----------
+    farn_dict : CppDict
+        farnDict for which sampling shall be run
+
+    Returns
+    -------
+    Union[CppDict, None]
+        sampled farnDict
+    """
     from farn.sampling.sampling import DiscreteSampling
 
     if '_layers' not in farn_dict:
@@ -295,47 +343,66 @@ def generate_samples(farn_dict: CppDict) -> Union[CppDict, None]:
         farn_dict.source_file, prefix='sampled.'
     )
 
-    logger.info(f'Generate samples in {farn_dict.name}..')
+    logger.info(f'Run sampling in {farn_dict.name}..')
 
     for index, (key, layer) in enumerate(sampled_farn_dict['_layers'].items()):
         populate_layer(index, key, layer)
 
-    logger.info(f'Successfully generated samples in {farn_dict.name}.')
+    logger.info(f'Successfully ran sampling in {farn_dict.name}.')
 
     return sampled_farn_dict
 
 
-def register_cases(
+def list_cases(
     farn_dict: MutableMapping,
     case_dir: Path,
 ) -> list[Case]:
-    '''
-    - recursively registers all cases for each layer defined in farn dict
-    - create a case object for each case, where all relevant information for that case is saved in, including
-        - condition
-        - parameter names and associated values
-        - commands
-    - only valid cases get registered
-    '''
-    logger.info('Register cases..')
+    """Generates a list of case objects representing all valid cases.
+
+    Recursively creates case objects for all valid cases, each case representing a valid permutation of samples acrosss the layers defined in farnDict.
+    list_cases() creates one distinct case object for each case, holding all case attributes readily parameterized and set to their case specific values.
+    Only valid cases will be listed, i.e. cases which fulfill the filter criteria configured for the respective layer.
+    Invalid cases get excluded.
+
+    Note:
+
+    The actual case folders are not yet generated by list_cases().
+    Generating the case folder straucture is the responsibility of generate_case_folder_structure().
+    However, the case_dir argument is passed in to allow list_cases() to already document in each case object
+    its _intended_ case folder path. This information is then read and used in generate_case_folder_structure()
+    to actually create the case folders.
+
+    Parameters
+    ----------
+    farn_dict : MutableMapping
+        farnDict file. Contains the farn configuration.
+    case_dir : Path
+        directory the case folder structure is intended to be generated in.
+
+    Returns
+    -------
+    list[Case]
+        list of case objects representing all valid cases. The attributes of each case object are readily parameterized and set to their case specific values.
+    """
+    logger.info('List all valid cases..')
 
     # Check arguments.
     if '_layers' not in farn_dict:
-        logger.error("register_cases: No '_layers' element contained in farn dict.")
+        logger.error("list_cases: No '_layers' element contained in farn dict.")
         return []
 
-    # Create cases register
+    # Create cases list
     cases: list[Case] = []
     number_of_invalid_cases: int = 0
     # Create a local layers copy and turn that from dict format into list format
-    # in order to ease sequential and indexed access to individual layers in register_next_level_cases()
+    # in order to ease sequential and indexed access to individual layers in list_next_level_cases()
     layers_copy: MutableMapping = deepcopy(farn_dict['_layers'])
     layers: MutableSequence = []
     for key, layer in layers_copy.items():
         layer.update({'_name': key})
         layers.append(layer)
 
-    def register_next_level_cases(
+    def list_next_level_cases(
         level: int = 0,
         base_case: Case = None,
     ):
@@ -366,7 +433,7 @@ def register_cases(
             if name != '_keys'
         }
         names: MutableSequence[str] = deepcopy(base_case.names)
-        names.extend([name for name in samples_without_keys.keys()])
+        names.extend(list(samples_without_keys.keys()))
         values: MutableSequence[float] = []
 
         for index, key in enumerate(layer['_samples']['_keys']):
@@ -385,13 +452,13 @@ def register_cases(
                 condition=condition,
                 names=names,
                 values=values,
-                commands=commands,
+                command_sets=commands,
             )
 
             if case.is_valid:
                 cases.append(case)
-                if not case.is_leaf:            # Recursion for next level cases
-                    register_next_level_cases(
+                if not case.is_leaf:        # Recursion for next level cases
+                    list_next_level_cases(
                         level=level + 1,
                         base_case=case,
                     )
@@ -400,18 +467,33 @@ def register_cases(
 
         return
 
-    # Commence recursive collection and registration of cases among all layers
-    root_case = Case(path=case_dir)
-    register_next_level_cases(level=0, base_case=root_case)
+    # Commence recursive collection of cases among all layers
+    base_case = Case(path=case_dir)
+    list_next_level_cases(level=0, base_case=base_case)
 
     logger.info(
-        f'Successfully registered {len(cases)} valid cases. {number_of_invalid_cases} invalid cases were excluded.'
+        f'Successfully listed {len(cases)} valid cases. {number_of_invalid_cases} invalid cases were excluded.'
     )
 
     return cases
 
 
-def generate_case_folders(cases: MutableSequence[Case]) -> int:
+def generate_case_folder_structure(cases: MutableSequence[Case]) -> int:
+    """Generates the case folder structure for the passed in cases.
+
+    Generates the case folder structure based on a list of parameterized cases
+    as generated by e.g. list_cases().
+
+    Parameters
+    ----------
+    cases : MutableSequence[Case]
+        cases the case folder structure shall be generated for.
+
+    Returns
+    -------
+    int
+        number of case folders generated.
+    """
 
     logger.info('Generate case folder structure..')
     number_of_case_folders_generated: int = 0
@@ -431,6 +513,30 @@ def generate_case_lists(
     target_dir: Path = None,
     levels: Union[int, Sequence[int], None] = None
 ) -> Path:
+    """Generates case list files documenting all case folders per level.
+
+    Case list files are generated per level, meaning i.e. the case list file for level 0
+    contains the paths to all case folders on level 0.
+    A case list for level 1 contains the paths to all case folders on level 1, and so on.
+
+    These lists can then be used with i.e. the batchProcess command line script to execute shell commands
+    in all case folders belonging to a specific nest level in the case folder structure.
+
+    Parameters
+    ----------
+    cases : MutableSequence[Case]
+        cases the case list files shall be generated for (as generated i.e. by list_cases())
+    target_dir : Path, optional
+        directory in which the case list files shall be created. If None, current working directory will be used., by default None
+    levels : Union[int, Sequence[int], None], optional
+        list of integers indicating the individual levels for which case list files shall be generated.
+        If None, by default only a case list file for the deepest level (the leaf level) will be generated., by default None
+
+    Returns
+    -------
+    Path
+        [description]
+    """
 
     _remove_old_case_lists()
     target_dir = target_dir or Path.cwd()
@@ -463,10 +569,24 @@ def generate_case_lists(
     return case_list
 
 
-def drop_param_dict_in_case_folders(cases: MutableSequence[Case]) -> int:
+def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int:
+    """Creates the paramDict file in the case folders of the passed in cases.
+
+    The paramDict file contains the case specific parameters.
+
+    Parameters
+    ----------
+    cases : MutableSequence[Case]
+        cases for which the paramDict file shall be created
+
+    Returns
+    -------
+    int
+        number of paramDict files created
+    """
 
     logger.info('Drop case-specific paramDict files in all case folders..')
-    number_of_param_dicts_dropped: int = 0
+    number_of_param_dicts_created: int = 0
 
     for case in cases:
         logger.debug(f"creating paramDict in {case.path}")  # 1
@@ -482,75 +602,108 @@ def drop_param_dict_in_case_folders(cases: MutableSequence[Case]) -> int:
 
         DictWriter.write(param_dict, target_file)
 
-        number_of_param_dicts_dropped += 1
+        number_of_param_dicts_created += 1
 
     logger.info(
-        f'Successfully dropped {number_of_param_dicts_dropped} paramDict files in {len(cases)} case folders.'
+        f'Successfully dropped {number_of_param_dicts_created} paramDict files in {len(cases)} case folders.'
     )
 
-    return number_of_param_dicts_dropped
+    return number_of_param_dicts_created
 
 
-def execute_command_in_case_folders(
+def _execute_command_set_in_case_folders(
     cases: MutableSequence[Case],
-    command: str,
+    command_set: str,
     ignore_errors: bool = False,
     test: bool = False,
 ) -> int:
+    """Executes the given command set in the case folders of the passed in cases.
 
-    logger.info(f"Execute command {command} in all layers where '{command}' is defined..")
-    number_of_commands_executed: int = 0
+    Parameters
+    ----------
+    cases : MutableSequence[Case]
+        cases for which the specified command set shall be executed.
+    command_set : str
+        name of the command set to be executed, as defined in farnDict
+    ignore_errors : bool, optional
+        if True, does not hold on errors, by default False
+    test : bool, optional
+        if True, executes command set in only first case folder where command set is defined, by default False
+
+    Returns
+    -------
+    int
+        number of case folders in which the command set has been executed
+    """
+
+    logger.info(
+        f"Execute command set '{command_set}' in all layers where '{command_set}' is defined.."
+    )
+    number_of_cases_processed: int = 0
 
     if test:
         logger.warning(
-            f"farn.py called with option --test: Only first case folder where command {command} is defined will be executed."
+            f"farn.py called with option --test: Only first case folder where command set '{command_set}' is defined will be executed."
         )
 
     for case in cases:
-        if case.commands:
-            if command in case.commands:
+        if case.command_sets:
+            if command_set in case.command_sets:
                 shell_commands: MutableSequence[str] = []
-                shell_commands = case.commands[command]
-                logger.debug(f"Execute {command} in {case.path}")                           # level
-                                                                                            # push cwd into case folder to execute the shell commands from there
+                shell_commands = case.command_sets[command_set]
+                logger.debug(f"Execute command set '{command_set}' in {case.path}")                 # level
+                                                                                                    # push cwd into case folder to execute the shell commands from there
                 old_dir = Path.cwd()
                 os.chdir(case.path)
-                                                                                            # Execute shell commands
+                                                                                                    # Execute shell commands
                 _execute_shell_commands(shell_commands, ignore_errors=ignore_errors)
-                                                                                            # pop
+                                                                                                    # pop
                 os.chdir(old_dir)
-                number_of_commands_executed += 1
+                number_of_cases_processed += 1
             else:
-                logger.warning(f"command {command} not defined in case {case.key}")
-        if test and number_of_commands_executed >= 1:                                       # if test and at least one execution
+                logger.warning(f"Command set '{command_set}' not defined in case {case.key}")
+        if test and number_of_cases_processed >= 1:                                                 # if test and at least one execution
             logger.warning(
-                f"Test finished. Executed command {command} in following case folder:\n"
+                f"Test finished. Executed command set '{command_set}' in following case folder:\n"
                 f"\t {case.path}"
             )
             break
 
     logger.info(
-        f'Successfully executed command {command} in {number_of_commands_executed} case folders'
+        f"Successfully executed command set '{command_set}' in {number_of_cases_processed} case folders"
     )
 
-    return number_of_commands_executed
+    return number_of_cases_processed
 
 
 def _set_up_farn_environment(farn_dict_file: Path) -> dict:
-    '''
-    Reads the '_environment' section from farn dict and sets up the farn environment according to directories configured therein.
+    """Reads the '_environment' section from farn dict and sets up the farn environment accordingly.
+
+    Reads the '_environment' section from farnDict and sets up the farn environment directories as configured therein.
     If the '_environment' section or certain entries therein are missing in farn dict, default values will be used.
-    '''
+
+    Parameters
+    ----------
+    farn_dict_file : Path
+        farnDict file
+
+    Returns
+    -------
+    dict
+        dict containing the environment directories set up for farn (matching the _environment section in farnDict)
+    """
+
     logger.info('Set up farn environment..')
 
     # Set up farn environment.
     # 1: Define default values for environment
+    # sourcery skip: merge-dict-assign
     environment: dict = {}
-    environment.update({'CASEDIR': 'cases'})
-    environment.update({'DUMPDIR': 'dump'})
-    environment.update({'LOGDIR': 'logs'})
-    environment.update({'RESULTDIR': 'results'})
-    environment.update({'TEMPLATEDIR': 'template'})
+    environment['CASEDIR'] = 'cases'
+    environment['DUMPDIR'] = 'dump'
+    environment['LOGDIR'] = 'logs'
+    environment['RESULTDIR'] = 'results'
+    environment['TEMPLATEDIR'] = 'template'
     # 2: Overwrite default values with values defined in farn dict, if so
     environment_from_farn_dict = DictReader.read(farn_dict_file, scope=['_environment'])
     if environment_from_farn_dict:
@@ -568,9 +721,7 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
     _configure_additional_logging_handler_exclusively_for_farn(farn_dirs['LOGDIR'])
 
     # Set up system environment variables for each farn directory
-    # @TODO: Is that really necessary? CLAROS, 2021-09-18
-    # INDEED. FRALUM 2021-11-04
-
+    # This is necessary to enable shell commands defined in farnDict to point to them with i.e. %TEMPLATEDIR%
     for key, item in farn_dirs.items():
         append_system_variable(key, str(item))
 
@@ -580,9 +731,13 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
 
 
 def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
-    '''
-    Create an additional logging handler, exclusively for the farn log.
-    '''
+    """Creates an additional logging handler exclusively for the farn log.
+
+    Parameters
+    ----------
+    log_dir : Path
+        folder in which the log file will be created
+    """
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / 'farn.log'
     file_handler = logging.FileHandler(str(log_file.absolute()), 'a')
@@ -597,10 +752,9 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
 
 
 def _remove_old_case_lists():
-    '''
-    Remove old case lists and queue lists, if existing
-    '''
-    logger.info('Remove old case lists..')
+    """Removes old case list files, if existing.
+    """
+    logger.info('Remove old case list files..')
 
     lists = [list for list in Path.cwd().rglob('*') if re.search('(path|queue)List', str(list))]
 
@@ -608,15 +762,14 @@ def _remove_old_case_lists():
         list = Path(list)
         list.unlink()
 
-    logger.info('Successfully removed old case lists.')
+    logger.info('Successfully removed old case list files.')
 
     return
 
 
 def _sys_call(shell_commands: MutableSequence, ignore_errors: bool = False):
-    '''
-    fallback function until _execute_command is usable under linux
-    '''
+    """Fallback function until _execute_command is usable under linux
+    """
 
     for shell_command in shell_commands:
         os.system(shell_command)
@@ -625,9 +778,15 @@ def _sys_call(shell_commands: MutableSequence, ignore_errors: bool = False):
 
 
 def _execute_shell_commands(shell_commands: MutableSequence, ignore_errors: bool = False):
-    '''
-    execute a sequence of os commands using subprocess
-    '''
+    """Execute a sequence of shell commands using subprocess.
+
+    Parameters
+    ----------
+    shell_commands : MutableSequence
+        list with shell commands to be executed
+    ignore_errors : bool, optional
+        if True, does not hold on errors, by default False
+    """
 
     # @TODO: until the problem with vanishing '.'s on Linux systems is solved (e.g. in command "ln -s target ."),
     #        reroute the function call to _sys_call instead, as a workaround.

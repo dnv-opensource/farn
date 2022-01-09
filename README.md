@@ -7,11 +7,11 @@ However, at its core, farn is use-case agnostic and can support a wide spectrum 
 The name ‘farn’ is inspired by the [Barnsley fractal](https://en.wikipedia.org/wiki/Barnsley_fern)
 
 farn
-* generates an arbitrary discrete sampling of the design space (e.g. fixed, linSpace, uniformLHS)
+* runs the sampling of the design space (sampling strategies cover fixed, linSpace, uniformLHS)
 * generates the corresponding case folder structure
 * copies arbitrary files from a template folder to case folders
 * creates case specific parameter files in case folders
-* executes user-defined shell commands in case folders
+* executes user-defined shell command sets in case folders
 * builds case specific OSP (co-)simulation files
 * runs simulation cases as batch process
 
