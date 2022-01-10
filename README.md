@@ -20,7 +20,7 @@ farn
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ farn
 ```
 farn requires the following two (sub-)packages:
-1. [dictIO][dictIO_docs]: foundation package, enabling farn to handle configuration files in C++ dictionary format.
+1. [dictIO][dictIO_docs]: foundation package, enabling farn to handle configuration files in dictIO dict file format.
 2. [ospx][ospx_docs]: extension package, enabling farn to generate OSP (co-)simulation files.
 
 However, both get installed automatically with farn (just pip install farn and you're done).
@@ -44,11 +44,11 @@ farn farnDict --sample --generate
 _For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
 
 ## File Format
-A farnDict is a file in C++ dictionary format used with farn.
+A farnDict is a file in dictIO dict file format used with farn.
 
 _For a documentation of the farnDict file format, see [File Format](fileFormat.md) in [farn's documentation][farn_docs] on GitHub Pages._
 
-_For a detailed documentation of the C++ dictionary format used by farn, see [dictIO's documentation][dictIO_docs] on GitHub Pages._
+_For a detailed documentation of the dictIO dict file format used by farn, see [dictIO's documentation][dictIO_docs] on GitHub Pages._
 
 ## Development Setup
 

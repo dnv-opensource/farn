@@ -2,7 +2,7 @@
 
 ## Description
 
-A farnDict is a file in C++ dictionary format used with farn
+A farnDict is a file in dictIO dict file format used with farn
 
 A farnDict
 * defines the layers, the parameters varied per layer and the related sampling used to create the samples per layer
