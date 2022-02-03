@@ -160,7 +160,7 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = 'INFO'
+    log_level_console: str = 'WARNING'
     if any([args.quiet, args.verbose]):
         log_level_console = 'ERROR' if args.quiet else log_level_console
         log_level_console = 'DEBUG' if args.verbose else log_level_console
