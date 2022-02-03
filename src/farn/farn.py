@@ -61,10 +61,10 @@ def run_farn(
         f"Start farn with following arguments:\n"
         f"\t farn_dict_file: \t{farn_dict_file}\n"
         f"\t sample: \t\t{sample}\n"
-        f"\t generate: \t\t\t{generate}\n"
-        f"\t command: \t\t\t{command}\n"
+        f"\t generate: \t\t{generate}\n"
+        f"\t command: \t\t{command}\n"
         f"\t ignore_errors: \t{ignore_errors}\n"
-        f"\t test: \t\t\t\t{test}"
+        f"\t test: \t\t\t{test}"
     )
 
     # Read farn dict

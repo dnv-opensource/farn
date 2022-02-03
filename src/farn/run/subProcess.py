@@ -13,18 +13,13 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(path: Path, command: str, timeout: int):
+def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600):
     """Creates a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
     """
 
-    # define logg for external
-    try:
-        logger.info('')     # 0
-    except NameError:
-        pass
-                            # logg = Logg(color=False)
+    path = path or Path.cwd()
 
     # Configure and start subprocess in workDir (this part shall be atomic, hence secured by lock)
     with lock:
@@ -39,7 +34,7 @@ def execute_in_sub_process(path: Path, command: str, timeout: int):
 
         logger.info(
             f"Execute {command} in {path} (timout: {timeout}, pid: %{sub_process.pid})"
-        )                                                                                       # level=1  override=False  timestamp=True
+        )                                                                                   # level=1  override=False  timestamp=True
 
     # Wait for subprocess to finish
     stdout = bytes()
