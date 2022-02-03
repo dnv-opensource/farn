@@ -24,9 +24,9 @@ def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600)
     # Configure and start subprocess in workDir (this part shall be atomic, hence secured by lock)
     with lock:
 
-        args = re.sub(r'(^\'|\'$)', '', command)
+        command = re.sub(r'(^\'|\'$)', '', command)
 
-        args = re.split(r'\s+', args.strip())
+        args = re.split(r'\s+', command.strip())
 
         sub_process = sub.Popen(
             args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=r"%s" % path
@@ -49,12 +49,12 @@ def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600)
             child.kill()
         parent.kill()
 
-    str_out = str(stdout, encoding='utf-8')
-    if re.search('ERROR', str_out):
-        logger.warning(f'Execution of {command} failed: {str_out}')
+    out = str(stdout, encoding='utf-8')
+    if re.search('ERROR', out):
+        logger.warning(f'Execution of {command} failed: {out}')
 
-    str_err = str(stderr, encoding='utf-8')
-    if str_err != '':
-        logger.warning(f'Execution of {command} failed: {str_err}')
+    err = str(stderr, encoding='utf-8')
+    if err != '':
+        logger.warning(f'Execution of {command} failed: {err}')
 
     return (stdout, stderr)
