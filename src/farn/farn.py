@@ -806,9 +806,19 @@ def _execute_shell_commands(shell_commands: MutableSequence, ignore_errors: bool
         )
         # @TODO: This kills the process and waiting for job to be finished
         #        Solution?
+        # @TODO: We need to check and possibly adjust the algorith to detect errors.
+        #        CLAROS, 2022-02-03
         stdout, stderr = sub_process.communicate()
         out: str = str(stdout, encoding='utf-8')
         err: str = str(stderr, encoding='utf-8')
+
+        if out != '':
+            logger.debug('STDOUT:')     # level
+            logger.debug('%s' % out)    # level
+
+        if err != '':
+            logger.debug('STDERR:')     # level
+            logger.debug('%s' % err)    # level
 
         if re.search('error', out, re.I) or err != '':
             if ignore_errors:
@@ -822,9 +832,5 @@ def _execute_shell_commands(shell_commands: MutableSequence, ignore_errors: bool
                     '_execute_command: execution of %s stopped on error: %s %s' %
                     (' '.join(shell_command), out, err)
                 )
-
-        if out != '':
-            logger.debug('STDOUT:')     # level
-            logger.debug('%s' % out)    # level
 
     return
