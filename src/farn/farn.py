@@ -796,52 +796,6 @@ def _execute_shell_commands(shell_commands: MutableSequence, ignore_errors: bool
         return
 
     for shell_command in shell_commands:
-
-        stdout, stderr = execute_in_sub_process(shell_command)
-
-        out: str = str(stdout, encoding='utf-8')
-        if out != '':
-            logger.info(out)    # level
-
-        err: str = str(stderr, encoding='utf-8')
-        if err != '':
-            logger.warning(err)     # level
-
-        # shell_command = re.sub(
-        #     r'(^\'|\'$)', '', shell_command
-        # )                                       # temporary unless the formatter is made
-        # shell_command = re.split(r'\s+', shell_command.strip())
-
-        # sub_process = sub.Popen(
-        #     shell_command, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=r"%s" % os.getcwd()
-        # )
-        # # @TODO: This kills the process and waiting for job to be finished
-        # #        Solution?
-        # # @TODO: We need to check and possibly adjust the algorith to detect errors.
-        # #        CLAROS, 2022-02-03
-        # stdout, stderr = sub_process.communicate()
-        # out: str = str(stdout, encoding='utf-8')
-        # err: str = str(stderr, encoding='utf-8')
-
-        # if out != '':
-        #     logger.debug('STDOUT:')     # level
-        #     logger.debug('%s' % out)    # level
-
-        # if err != '':
-        #     logger.debug('STDERR:')     # level
-        #     logger.debug('%s' % err)    # level
-
-        # if re.search('error', out, re.I) or err != '':
-        #     if ignore_errors:
-        #         logger.warning(
-        #             '_execute_command: execution of %s continued on error: %s %s' %
-        #             (' '.join(shell_command), out, err)
-        #         )
-        #     else:
-        #         sub_process.kill()
-        #         logger.error(
-        #             '_execute_command: execution of %s stopped on error: %s %s' %
-        #             (' '.join(shell_command), out, err)
-        #         )
+        execute_in_sub_process(shell_command)
 
     return

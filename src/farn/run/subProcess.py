@@ -3,6 +3,7 @@ import re
 import subprocess as sub
 from pathlib import Path
 from threading import Lock
+from typing import Tuple
 
 from psutil import Process
 
@@ -49,12 +50,27 @@ def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600)
             child.kill()
         parent.kill()
 
-    out = str(stdout, encoding='utf-8')
-    if re.search('ERROR', out):
-        logger.warning(f'Execution of {command} failed: {out}')
-
-    err = str(stderr, encoding='utf-8')
-    if err != '':
-        logger.warning(f'Execution of {command} failed: {err}')
+    _log_subprocess_output(command, path, stdout, stderr)
 
     return (stdout, stderr)
+
+
+def _log_subprocess_output(command: str, path: Path, stdout: bytes, stderr: bytes):
+
+    if out := str(stdout, encoding='utf-8'):
+        _log_subprocess_log(command, path, out)
+
+    if err := str(stderr, encoding='utf-8'):
+        _log_subprocess_log(command, path, err)
+
+
+def _log_subprocess_log(command: str, path: Path, log: str):
+
+    if re.search('error', log, re.I):
+        logger.error(f'during execution of {command} in {path}\n{log}')
+    elif re.search('warning', log, re.I):
+        logger.warning(f'from execution of {command} in {path}\n{log}')
+    elif re.search('info', log, re.I):
+        logger.info(f'from execution of {command} in {path}\n{log}')
+    elif re.search('debug', log, re.I):
+        logger.debug(f'from execution of {command} in {path}\n{log}')
