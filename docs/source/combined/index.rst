@@ -8,8 +8,8 @@ Welcome to farn's documentation!
    :caption: Contents:
 
    README_farn
-   README_dictIO
    README_ospx
+   README_dictIO
    LICENSE
    api
    cli

@@ -5,5 +5,5 @@ API Documentation
    :maxdepth: 4
 
    farn
-   dictIO
    ospx
+   dictIO
