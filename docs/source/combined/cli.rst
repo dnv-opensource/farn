@@ -2,7 +2,7 @@ CLI Documentation
 =================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
    cli.sub.farn
    cli.sub.ospx

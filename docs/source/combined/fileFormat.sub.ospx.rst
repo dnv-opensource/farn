@@ -2,7 +2,7 @@ ospx
 ----
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
     fileFormat.caseDict
     fileFormat.watchDict
