@@ -4,6 +4,6 @@ API Documentation
 .. toctree::
    :maxdepth: 4
 
-   farn
-   ospx
-   dictIO
+   api.sub.farn
+   api.sub.ospx
+   api.sub.dictIO
