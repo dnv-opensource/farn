@@ -52,7 +52,7 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 
 ## Development Setup
 
-1. Install [Python 3.9](https://www.python.org/downloads/release/python-399/)
+1. Install [Python 3.10](https://www.python.org/downloads/release/python-3102/)
 
 2. git clone the farn repository into your local development directory:
 
