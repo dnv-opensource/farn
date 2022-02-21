@@ -175,8 +175,8 @@ class Case:
         filter_expression = self.condition['_filter'] if '_filter' in self.condition else None
         if not filter_expression:
             logger.warning(
-                f"layer {self.layer}: _condition element found but no filter expression defined therein."
-                f"As the filter expression is missing, the condition cannot be evalued. Case {self.key} is hence still considered valid"
+                f"layer {self.layer}: _condition element found but no filter expression defined therein. "
+                f"As the filter expression is missing, the condition cannot be evalued. Case {self.key} is hence still considered valid."
             )
             return True
 
@@ -188,7 +188,7 @@ class Case:
             )
             action = 'exclude'
 
-        # Check for formal errors that lead to invalidty
+        # Check for formal errors that lead to invalidity
         if not self.names and not self.values:
             logger.warning(
                 f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid:"
@@ -214,33 +214,38 @@ class Case:
             return False
         if len(self.names) != len(self.values):
             logger.warning(
-                f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid:"
-                f"A filter expression {filter_expression} is defined, and both parameter names and -values exist,"
+                f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid: "
+                f"A filter expression {filter_expression} is defined, and both parameter names and -values exist, "
                 f"but the number of parameter names does not match the number of parameter values."
                 f"Parameter names: {self.names}"
                 f"Parameter values: {self.values}"
             )
             return False
 
-        # Read all parameter names and their associated vales defined in current case, and assign them to local in-memory variables
+        # provide a white list of internal variables for (latter) filtering.
+        for k in dir(self):
+            if k in ['command_sets', 'condition', 'index', 'is_leaf', 'key', 'layer', 'level', 'no_of_samples', 'path']:
+                locals()[k] = eval('self.'+k)
+        # Read all parameter names and their associated values defined in current case, and assign them to local in-memory variables
         for parameter_name, parameter_value in zip(self.names, self.values):
             if not re.match('^_', parameter_name):
                 try:
                     exec(f'{parameter_name} = {parameter_value}')
                 except Exception:
                     logger.exception(
-                        f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid:"
+                        f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid: "
                         f"Reading parameter named {parameter_name} with value {parameter_value} failed."
                     )
                     return False
 
         # Evaluate filter expression
         filter_expression_evaluates_to_true = False
+
         try:
             filter_expression_evaluates_to_true = eval(filter_expression)
         except Exception:
             logger.exception(
-                f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid:"
+                f"layer {self.layer}, case {self.key} validity check: case {self.key} is invalid: "
                 f"The Evaluation of the filter expression failed."
                 f"Possibly some of the parameters used in the filter expression are not defined yet in current level and case."
                 f"Level: {self.level}"
@@ -647,6 +652,9 @@ def _execute_command_set_in_case_folders(
         )
 
     for case in cases:
+        if case.is_valid == False:
+            logger.warning(f"Case subsequently filtered and hence False, aborting execution.")
+            break
         if case.command_sets:
             if command_set in case.command_sets:
                 shell_commands: MutableSequence[str] = []
