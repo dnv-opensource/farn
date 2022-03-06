@@ -3,7 +3,7 @@ filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
 _environment
 {
-    CASEDIR                   cases;
+    CASEDIR                   cases-2layer;
     DUMPDIR                   dump;
     LOGDIR                    logs;
     RESULTDIR                 results;
@@ -13,16 +13,27 @@ _layers
 {
     layer1
     {
-        _samples
+        _sampling
         {
-            _names
-            (
-                layer1_000      layer1_001      layer1_002
-            );
-            param1
-            (
-                0       1       2
-            );
+            _type fixed;
+            _names (param1);
+            _values ((0.9 1.3));
+        }
+    }
+    layer2
+    {
+        _sampling
+        {
+            _type uniformLhs;
+            _names (param21 param22);
+            _ranges ((-10 10) (0 20));
+            _includeBoundingBox True;
+            _numberOfSamples 10;
+        }
+        _condition
+        {
+            _action           exclude;
+            _filter           'param1 > 1.1';
         }
         _commands
         {
@@ -30,8 +41,6 @@ _layers
             testlinvar ('echo variable $CASEDIR');
             printwinenv ('echo environment & printenv | findstr CASEDIR');
             printlinenv ('echo environment ; printenv | grep CASEDIR');
-
         }
-        _comment                  'test some numbers';
     }
 }
