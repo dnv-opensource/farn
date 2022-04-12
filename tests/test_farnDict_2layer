@@ -32,7 +32,6 @@ _layers
         }
         _condition
         {
-            _show             true;
             _action           exclude;
             _filter           'param1 > 1.1';
         }

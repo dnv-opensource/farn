@@ -181,8 +181,6 @@ class Case:
             )
             return True
 
-        show_available = self.condition['_showAvailable'] if '_showAvailable' in self.condition else None
-
         # Check whether optional argument '_action' is defined. Use default action, if not.
         action = self.condition['_action'] if '_action' in self.condition else None
         if not action:
@@ -251,8 +249,7 @@ class Case:
                     )
                     return False
 
-        if show_available:
-            logger.debug(f"Available filter varables in current level: {'{'+', '.join(available_vars)+'}'}")
+        logger.debug(f"Available filter varables in current level: {'{'+', '.join(available_vars)+'}'}")
 
         # Evaluate filter expression
         # failed filtering produces only warning
