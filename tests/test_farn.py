@@ -34,13 +34,12 @@ def alter_farn_dict(infile, query='', substitution=''):
     with open (infile, 'r') as f:
         buffer = f.read()
 
-    print ('XXX',re.findall(query, buffer))
     with open (infile, 'w') as f:
-        f.write (re.sub(query, substitution, buffer))
+        f.write (re.sub(re.escape(query), substitution, buffer))
 
-'''
+
+@pytest.mark.skip(reason='farn opts have altered, no writing to file')
 def test_default_options():
-    # farn opts have altered, no writing to file
     farn_opts = {
         'farnDict': 'test_farnDict',
         'runSampling': False,
@@ -63,19 +62,16 @@ def test_default_options():
         Path('sampled.test_farnDict'), scope=['_farnOpts']
     ).data
     assert farn_opts_read_from_farn_dict == farn_opts
-'''
+
 
 def test_sample():
-
     os.system('..\\src\\farn\\cli\\farn.py -s test_farnDict')
 
 def test_generate():
-
     os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
 
 
 def test_regenerate():
-
     os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
     os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
 
@@ -90,33 +86,34 @@ def test_execute():
         os.system('..\\src\\farn\\cli\\farn.py sampled.test_farnDict -e printwinenv')
 
 
-
 # testing subfiltering branch
-
-def test_sample_2layer():
-    os.system('..\\src\\farn\\cli\\farn.py -s test_farnDict_2layer')
+def test_sample_2layer(capsys):
+    os.system('..\\src\\farn\\cli\\farn.py -s test_farnDict_2layer -v')
+    assert os.path.exists('sampled.test_farnDict_2layer')
+    captured = capsys.readouterr()
+    #assert captured.out == ""
 
 def test_generate_2layer():
-    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict_2layer')
+    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict_2layer -v')
 
 def test_execute_2layer():
     # to test: normal filtering of variables from subdicts _names and _values
     os.system('..\\src\\farn\\cli\\farn.py -e sampled.test_farnDict_2layer')
 
-# alter query string to locals() index
-alter_farn_dict('sampled.test_farnDict_2layer', query='param1', substitution='index <= 23')
+    # alter query string to locals() index
+    #alter_farn_dict('sampled.test_farnDict_2layer', query='param1', substitution='index != 1')
 
 def test_execute_2layer():
     # to test if index is available
     os.system('..\\src\\farn\\cli\\farn.py -e sampled.test_farnDict_2layer')
-
+'''
 # alter query string to locals() case_name
-alter_farn_dict('sampled.test_farnDict_2layer', query='index <= 23', substitution="case_name in ['layer2_04', 'layer2_06', 'layer2_08']")
+alter_farn_dict('sampled.test_farnDict_2layer', query='index != 1', substitution="case_name in ['layer2_00', 'layer2_06', 'layer2_08']")
 
 def test_execute_2layer():
     # to test if query in list
     os.system('..\\src\\farn\\cli\\farn.py -e sampled.test_farnDict_2layer')
-
+'''
 # todo:
 # re.sub failed to alter sampled.test_farnDict_2layer'
 # test subsequent filtering activates formerly not generated case

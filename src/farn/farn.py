@@ -11,39 +11,13 @@ from typing import MutableMapping, MutableSequence, Sequence, Union
 from dictIO.cppDict import CppDict
 from dictIO.dictReader import DictReader
 from dictIO.dictWriter import DictWriter, create_target_file_name
-from dictIO.utils.strings import remove_quotes
+from dictIO.utils.strings import remove_quotes, plural
 
 from farn.utils.os import append_system_variable
 from farn.run.subProcess import execute_in_sub_process
 
 
 logger = logging.getLogger(__name__)
-
-
-def plural(argN: int, argS: str=None):
-    '''generate simple case estimator
-    argN: required - number of items in list
-    argS: optional - string to be altered
-    mapping: known alterations, implement more here
-    more sophisticated approach: nltk -> load corpus -> stem -> pluralize
-    '''
-    mapping = [
-        ('', 's'),
-        ('is', 'are'),
-        ('was', 'were')
-    ]
-    storeIndex = 0
-    if argS is not None:
-        # find correct tuple
-        for index, item in enumerate(mapping):
-            if argS in item:
-                storeIndex = index
-                break
-
-    if argN == 1:
-        return mapping[storeIndex][0]
-
-    return mapping[storeIndex][1]
 
 
 def run_farn(
