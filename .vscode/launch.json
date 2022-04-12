@@ -28,6 +28,22 @@
             }
         },
         {
+            "name": "farn test sample and generate test_farnDict",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}\\tests",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "args": [
+                "test_farnDict",
+                "--sample",
+                "-g"
+            ],
+            "console": "integratedTerminal",
+            "autoReload": {
+                "enable": true
+            }
+        },
+        {
             "name": "farn test generate test_farnDict",
             "type": "python",
             "request": "launch",
@@ -43,14 +59,30 @@
             }
         },
         {
-            "name": "farn test runSampling test_farnDict_v4",
+            "name": "farn test execute test_farnDict",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}\\tests",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "args": [
+                "sampled.test_farnDict",
+                "-e",
+                "parse",
+            ],
+            "console": "integratedTerminal",
+            "autoReload": {
+                "enable": true
+            }
+        },
+        {
+            "name": "farn test sample test_farnDict_v4",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests",
             "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
             "args": [
                 "test_farnDict_v4",
-                "--runSampling",
+                "--sample",
             ],
             "console": "integratedTerminal",
             "autoReload": {
@@ -73,14 +105,14 @@
             }
         },
         {
-            "name": "farn test runSampling and generate test_farnDict_v4",
+            "name": "farn test sample and generate test_farnDict_v4",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests",
             "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
             "args": [
                 "test_farnDict_v4",
-                "--runSampling",
+                "--sample",
                 "-g"
             ],
             "console": "integratedTerminal",

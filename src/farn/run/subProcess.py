@@ -3,6 +3,7 @@ import re
 import subprocess as sub
 from pathlib import Path
 from threading import Lock
+from typing import Tuple
 
 from psutil import Process
 
@@ -13,25 +14,20 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(path: Path, command: str, timeout: int):
+def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600):
     """Creates a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
     """
 
-    # define logg for external
-    try:
-        logger.info('')     # 0
-    except NameError:
-        pass
-                            # logg = Logg(color=False)
+    path = path or Path.cwd()
 
     # Configure and start subprocess in workDir (this part shall be atomic, hence secured by lock)
     with lock:
 
-        args = re.sub(r'(^\'|\'$)', '', command)
+        command = re.sub(r'(^\'|\'$)', '', command)
 
-        args = re.split(r'\s+', args.strip())
+        args = re.split(r'\s+', command.strip())
 
         sub_process = sub.Popen(
             args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=r"%s" % path
@@ -39,7 +35,7 @@ def execute_in_sub_process(path: Path, command: str, timeout: int):
 
         logger.info(
             f"Execute {command} in {path} (timout: {timeout}, pid: %{sub_process.pid})"
-        )                                                                                       # level=1  override=False  timestamp=True
+        )                                                                                   # level=1  override=False  timestamp=True
 
     # Wait for subprocess to finish
     stdout = bytes()
@@ -54,12 +50,27 @@ def execute_in_sub_process(path: Path, command: str, timeout: int):
             child.kill()
         parent.kill()
 
-    str_out = str(stdout, encoding='utf-8')
-    if re.search('ERROR', str_out):
-        logger.warning(f'Execution of {command} failed: {str_out}')
-
-    str_err = str(stderr, encoding='utf-8')
-    if str_err != '':
-        logger.warning(f'Execution of {command} failed: {str_err}')
+    _log_subprocess_output(command, path, stdout, stderr)
 
     return (stdout, stderr)
+
+
+def _log_subprocess_output(command: str, path: Path, stdout: bytes, stderr: bytes):
+
+    if out := str(stdout, encoding='utf-8'):
+        _log_subprocess_log(command, path, out)
+
+    if err := str(stderr, encoding='utf-8'):
+        _log_subprocess_log(command, path, err)
+
+
+def _log_subprocess_log(command: str, path: Path, log: str):
+
+    if re.search('error', log, re.I):
+        logger.error(f'during execution of {command} in {path}\n{log}')
+    elif re.search('warning', log, re.I):
+        logger.warning(f'from execution of {command} in {path}\n{log}')
+    elif re.search('info', log, re.I):
+        logger.info(f'from execution of {command} in {path}\n{log}')
+    elif re.search('debug', log, re.I):
+        logger.debug(f'from execution of {command} in {path}\n{log}')

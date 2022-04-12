@@ -2,10 +2,8 @@ CLI Documentation
 =================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-   cli.farn
-   cli.batchProcess
-   cli.dictParser
-   cli.ospCaseBuilder
-   cli.watchCosim
+   cli.sub.farn
+   cli.sub.ospx
+   cli.sub.dictIO

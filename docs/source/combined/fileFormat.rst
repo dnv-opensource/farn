@@ -1,10 +1,9 @@
-File Format
-=================
+File Formats
+============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-   fileFormat.cppDict
-   fileFormat.farnDict
-   fileFormat.caseDict
-   fileFormat.watchDict
+   fileFormat.sub.farn
+   fileFormat.sub.ospx
+   fileFormat.sub.dictIO

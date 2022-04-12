@@ -39,7 +39,7 @@ class AsyncBatchProcessor():
 
         for index, path in enumerate(cases):
             path = path.strip()
-            jobs.put(execute_in_sub_process, path, self.command, self.timeout)
+            jobs.put(execute_in_sub_process, self.command, path, self.timeout)
             logger.info('Job %g queued in %s' % (index, path))  # 1
 
         number_of_cpus = cpu_count()
