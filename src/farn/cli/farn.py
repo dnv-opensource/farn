@@ -207,6 +207,7 @@ def _main(
     """Entry point for unit tests.
 
     Processes the arguments parsed by main() on the console and invokes the API.
+    If this is only useful in unit tests, we should consider changeing something or renming, at least the names main and _main.
     """
 
     # Check whether farn dict file exists

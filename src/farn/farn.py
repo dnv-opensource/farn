@@ -19,6 +19,7 @@ from farn.run.subProcess import execute_in_sub_process
 
 logger = logging.getLogger(__name__)
 
+
 def plural(argN: int, argS: str=None):
     '''generate simple case estimator
     argN: required - number of items in list
@@ -43,6 +44,7 @@ def plural(argN: int, argS: str=None):
         return mapping[storeIndex][0]
 
     return mapping[storeIndex][1]
+
 
 def run_farn(
     farn_dict_file: Path,
@@ -101,7 +103,7 @@ def run_farn(
 
         if sampled_farn_dict:
             logger.info(f'Save sampled farn dict {sampled_farn_dict.name}...')              # 1
-            DictWriter.write(sampled_farn_dict)
+            DictWriter.write(sampled_farn_dict, mode='w')
             logger.info(f'Saved sampled farn dict in {sampled_farn_dict.source_file}.')     # 1
 
             # Reassign farn_dict so that it points to the newly created, sampled farn dict
@@ -129,7 +131,7 @@ def run_farn(
     # Create a backup copy of farn dict
     logger.info(f'Save backup copy of {farn_dict.name}...')
     farn_dict_backup_copy = Path(str(farn_dict.source_file) + '.copy')
-    DictWriter.write(farn_dict, farn_dict_backup_copy)
+    DictWriter.write(farn_dict, farn_dict_backup_copy, mode='w')
     logger.info(f'Saved backup copy in {farn_dict_backup_copy}.')   # 1
 
     # Collect and register all cases that can be derived from the samples defined in farn dict
@@ -205,6 +207,8 @@ class Case:
             )
             return True
 
+        show_available = self.condition['_showAvailable'] if '_showAvailable' in self.condition else None
+
         # Check whether optional argument '_action' is defined. Use default action, if not.
         action = self.condition['_action'] if '_action' in self.condition else None
         if not action:
@@ -248,10 +252,12 @@ class Case:
             return False
 
         # transfer a white list of case properties to locals() for subsequent filtering
+        available_vars = set()
         for key in dir(self):
             try:
                 if key in ['case_name', 'command_sets', 'condition', 'index', 'is_leaf', 'layer', 'level', 'no_of_samples', 'path']:
                     locals()[key] = eval('self.' + key)
+                    available_vars.add(key)
             except:
                 logger.exception(
                     f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
@@ -263,6 +269,7 @@ class Case:
             if not re.match('^_', parameter_name):
                 try:
                     exec(f'{parameter_name} = {parameter_value}')
+                    available_vars.add(parameter_name)
                 except Exception:
                     logger.exception(
                         f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
@@ -270,15 +277,19 @@ class Case:
                     )
                     return False
 
+        if show_available:
+            logger.debug(f"Available filter varables in current level: {'{'+', '.join(available_vars)+'}'}")
+
         # Evaluate filter expression
+        # failed filtering produces only warning
         filter_expression_evaluates_to_true = False
         try:
             filter_expression_evaluates_to_true = eval(filter_expression)
         except Exception:
-            logger.exception(
+            logger.warning(
                 f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
-                f"The Evaluation of the filter expression failed. "
-                f"Possibly some of the parameters used in the filter expression are not defined yet in current level and case. "
+                f"The Evaluation of the filter expression failed.\n"
+                f"Possibly some of the parameters used in the filter expression are not defined yet in current level and case.\n"
                 f"Level: {self.level} "
                 f"case: {self.case_name} "
                 f"Filter expression: {filter_expression} "
@@ -534,10 +545,11 @@ def register_cases(
     base_case = Case(path=case_dir)
     create_next_level_cases(level=0, base_case=base_case)
 
+    leaf_cases = [case for case in cases if case.is_leaf==True]
+
     logger.info(
-        f'Successfully listed {len(cases)} valid case{plural(len(cases))}. \
-{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} \
-{plural(number_of_invalid_cases, "were")} excluded.'
+        f'Successfully listed {len(leaf_cases)} valid case{plural(len(leaf_cases))}. \
+{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} {plural(number_of_invalid_cases, "were")} excluded.'
     )
 
     return cases
@@ -665,12 +677,17 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
 
         param_dict.update({'_case': case.to_dict()})
 
-        DictWriter.write(param_dict, target_file)
+        DictWriter.write(param_dict, target_file, mode='w')
 
-        number_of_param_dicts_created += 1
+        if case.is_leaf == True:
+            number_of_param_dicts_created += 1
+
+    leaf_cases = [case for case in cases if case.is_leaf==True]
 
     logger.info(
-        f'Successfully dropped {number_of_param_dicts_created} paramDict file{plural(number_of_param_dicts_created)} in {len(cases)} case folder{plural(len(cases))}.'
+        f'Successfully dropped {number_of_param_dicts_created} \
+paramDict file{plural(number_of_param_dicts_created)} \
+in {len(leaf_cases)} case folder{plural(len(leaf_cases))}.'
     )
 
     return number_of_param_dicts_created
@@ -732,7 +749,9 @@ def _execute_command_set_in_case_folders(
                 _execute_shell_commands(shell_commands, ignore_errors=ignore_errors)
                                                                                                     # pop
                 os.chdir(old_dir)
-                number_of_cases_processed += 1
+
+                if case.is_leaf == True:
+                    number_of_cases_processed += 1
             else:
                 logger.warning(f"Command set '{command_set}' not defined in case {case.case_name}")
         if test and number_of_cases_processed >= 1:                                                 # if test and at least one execution
@@ -744,7 +763,8 @@ def _execute_command_set_in_case_folders(
 
     if number_of_cases_processed > 0:
         logger.info(
-            f"Successfully executed command set '{command_set}' in {number_of_cases_processed} case folder{plural(number_of_cases_processed)}."
+            f"Successfully executed command set '{command_set}' \
+in {number_of_cases_processed} case folder{plural(number_of_cases_processed)}."
         )
 
     return number_of_cases_processed
