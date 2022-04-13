@@ -249,7 +249,7 @@ class Case:
                     )
                     return False
 
-        logger.debug(f"Available filter varables in current level: {'{'+', '.join(available_vars)+'}'}")
+        logger.debug(f"Layer {self.layer}, available filter varables in current scope: {'{'+', '.join(available_vars)+'}'}")
 
         # Evaluate filter expression
         # failed filtering produces only warning
@@ -272,7 +272,7 @@ class Case:
         # Finally: Determine case validity based on filter expression and action
         if filter_expression_evaluates_to_true and action == 'exclude':
             logger.debug(
-                f"layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid:"
+                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid:"
                 f"The filter expression '{filter_expression}' evaluated to True."
                 f"Action '{action}' performed. Case {self.case_name} excluded."
             )
@@ -712,7 +712,7 @@ def _execute_command_set_in_case_folders(
             if command_set in case.command_sets:
                 shell_commands: MutableSequence[str] = []
                 shell_commands = case.command_sets[command_set]
-                logger.debug(f"Execute command set '{command_set}' in {case.path}")                 # level
+                #logger.debug(f"Execute command set '{command_set}' in {case.path}")                # level, done by already by subProcess
                                                                                                     # push cwd into case folder to execute the shell commands from there
                 old_dir = Path.cwd()
                 os.chdir(case.path)

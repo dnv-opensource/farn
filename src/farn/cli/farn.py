@@ -100,7 +100,7 @@ def _argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--test',
         action='store_true',
-        help='run only first case and exit',
+        help='Run only first case and exit. Makes most sens in combiniation with --execute.',
         default=False,
         required=False,
     )
@@ -160,7 +160,8 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = 'WARNING'
+    #log_level_console: str = 'WARNING'
+    log_level_console: str = 'INFO'
     if any([args.quiet, args.verbose]):
         log_level_console = 'ERROR' if args.quiet else log_level_console
         log_level_console = 'DEBUG' if args.verbose else log_level_console
