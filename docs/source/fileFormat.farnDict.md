@@ -112,3 +112,69 @@ _layers
     }
 }
 ~~~
+
+## Filtering
+
+Generic filtering is possible via the _condition statement. The validity of the _condition statement is proved on every farn run, regardeless of the given farn option --sample. --generate or --execute.
+However it makes a difference whether --sample, --generate or --execute was given in combination with a valid present filter expression, see below.
+The general
+### Structure
+is
+~~~js
+_condition
+{
+    _filter  FILTER_EXPRESSION;
+    _action  STATEMENT;
+}
+~~~
+Each statement is a one-off; a level can only contain one _condition and a _condition can only contain one _filter or one _action.
+Where the
+### Filter expression
+using "_filter ARGUMENT" is a string, containing a relational statement or list comparison, e.g:
+* 'param1 > 3'                                    : with param1 an user defined key within the current scope (farn level)
+* "param1 < 0 or param2 == 1"                     : with param1 & param2 keys within current level combined with boolean expressions "and, "or" and "not"
+* "param1 * sqrt(param2)"                         : with param1 & param2 keys within current level in combination with mathematical opertors and constants
+* "param1 in [4, 5, 7]"                           : with param1 list comparison
+* "RESERVED_KEYWORD not in ['case_00', case_01']" : with RESERVED_KEYWORD, an available variable during runtime, see below.
+* or any combination of the statements above.
+
+The subsequent
+### Action
+to take using "_action STATEMENT" can currently be one of the following:
+* include or
+* exclude.
+The default action is "exclude": this is being applied if the key _exclude was omitted.
+
+Farn proves the validity of the _filter expression and sets the validity flag for the regarding case to wheter true or false, depending on users input.
+### Combination with farn options
+* --sample option given and filter expression given   : cases appear or disappear in _samples section withing sampled.farnDict and are available|unavailable from the beginning.
+* --generate option given and filter expression given : cases will be generated or not depending on the given _action statement.
+* --execute option given and filter expression given  : cases will be executed or not depending on the given _action statement.
+Filter expression can be modified during the whole farn process whenever needed by changing the sampled.farnDict.
+If a filter expression was deactivated or mitigated somewhere in between --generate and --execute, farn throws a warning mentioning that the case was not generated.
+### Applying filter expression out-of-scope
+If a given filter expression is not (yet) in the current scope (farn level), the validation (prove) is stopped and no action is taken, hence the case is valid (default).
+### Reserved keywords
+can be one of the following list: {'case_name', 'command_sets', 'condition', 'index', 'is_leaf', 'layer', 'level', 'no_of_samples', 'path'}.
+They are available during runtime (when the current farn level is processed).
+If unsure, elevating farn's log-level from INFO to DEBUG give a list of available keywords.
+The benefit of this approach is the application of subsequent filtering, where the user can exclude "problem" cases afterwards by simply adating to e.g.
+~~~js
+_condition
+{
+    _filter  "index in [0, 200, 201]";
+    _action  exclude;
+}
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
