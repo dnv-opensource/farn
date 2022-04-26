@@ -100,7 +100,8 @@ def _argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--test',
         action='store_true',
-        help='Run only first case and exit. Makes most sens in combiniation with --execute.',
+        help=
+        'Run only first case and exit. (note: --test is most useful in combination with --execute)',
         default=False,
         required=False,
     )
@@ -160,12 +161,11 @@ def main():
 
     # Configure Logging
     # ..to console
-    #log_level_console: str = 'WARNING'
-    log_level_console: str = 'INFO'
+    log_level_console: str = 'INFO'     # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
     if any([args.quiet, args.verbose]):
         log_level_console = 'ERROR' if args.quiet else log_level_console
         log_level_console = 'DEBUG' if args.verbose else log_level_console
-    # ..to file
+                                        # ..to file
     log_file: Union[Path, None] = Path(args.log) if args.log else None
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
@@ -208,8 +208,9 @@ def _main(
     """Entry point for unit tests.
 
     Processes the arguments parsed by main() on the console and invokes the API.
-    If this is only useful in unit tests, we should consider changeing something or renming, at least the names main and _main.
     """
+    # @TODO: If this is only useful in unit tests, we should consider changeing something or renaming, at least the names main and _main.
+    # FRALUM, 2022-04-12
 
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():

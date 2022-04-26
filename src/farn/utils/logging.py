@@ -42,3 +42,34 @@ def configure_logging(
         root_logger.addHandler(file_handler)
 
     return
+
+
+def plural(count: int, string: str = '') -> str:
+    """conditionally returns the singular or plural form of the passed in string.
+
+    Parameters
+    ----------
+    count : int
+        used to determine whether singular or plural form of string shall be returned. Could i.e. be length of an iterable. If count > 1, plural form will be returned, else singular.
+    string : str, optional
+        the string to be returned in its singular or plural form, by default ''
+
+    Returns
+    -------
+    str
+        the singular or plural form of the passed in string (depending on count)
+    """
+    # The approach used here is a simple mapping.
+    # A more sophisticated approach in future could be: nltk -> load corpus -> stem -> pluralize
+
+    mappings = [
+        ('', 's'),       # default / fallback
+        ('is', 'are'),
+        ('was', 'were')
+    ]
+
+    # Select the first mapping which contains the passed in string. Use mappings[0] as default / fallback.
+    mapping = next((m for m in mappings if string in m), mappings[0])
+
+    # Return singular or plural form of passed in string, depending on count
+    return mapping[0] if count <= 1 else mapping[1]
