@@ -171,10 +171,22 @@ Correspondingly, a case is considered _invalid_ if either of the two complementi
 | _action is 'include' and _filter expression evaluates to False              | ->  case is considered invalid and will be excluded |
 
 ### Case Attributes
-The following case attributes can be used in filter expressions: {'case_name', 'command_sets', 'condition', 'index', 'is_leaf', 'layer', 'level', 'no_of_samples', 'path'}.
-These attributes are made available as variables by farn during runtime.
-If unsure, elevate farn's log-level from INFO to DEBUG to see a list of available attributes for each processsed case.
-The benefit of this approach is that it enables a user to use filtering in order to e.g. process small chunks of specific cases, simply by adapting a filter expression in the sampled.farnDict file. This can be quite handy when i.e. drilling down on "problem" cases, see following example:
+The following case attributes can be used in filter expressions. They are made available as variables by farn during runtime.
+| Case Attribute            | Description                                     |
+| ------------------------- | ----------------------------------------------- |
+| `case_name` | Name of the case |
+| `layer` | Name of the layer |
+| `level` | Level (integer, zero-based) |
+| `index` | Index (integer, zero-based) |
+| `path` | case folder path |
+| `is_leaf` | Indication whether or not a case is a leaf case (bool) |
+<!-- | `no_of_samples` | Total no of samples in the layer the case belongs to | -->
+<!-- | `condition` | Filter condition defined in the layer the case belongs to | -->
+<!-- | `command_sets` | Command set being executed | -->
+
+If unsure, elevate farn's log-level from INFO to DEBUG to see a list of available attributes for each processsed case.<br>
+
+The benefit of this approach is that it allows to use filtering in order to e.g. process small chunks of specific cases, simply by adapting a filter expression in the sampled.farnDict file. This can come handy when i.e. drilling down on "problem" cases, see following example:
 ~~~js
 _condition
 {
