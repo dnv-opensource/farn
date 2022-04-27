@@ -12,7 +12,7 @@ from farn.farn import run_farn
 
 
 farn_dirs = ['cases', 'cases-1layer', 'cases-2layer', 'cases-nofiltering', 'cases-initialfiltering', 'cases-excludefiltering', 'dump', 'logs', 'results', 'templates']
-farn_files = ['queueList*', '*.copy', 'splash.png', 'caseList']
+farn_files = ['queueList*', '*.copy', 'splash.png', 'caseList*']
 
 
 @pytest.fixture(autouse=True)
@@ -25,7 +25,6 @@ def default_setup_and_teardown():
 def remove_farn_dirs_and_files():
     for folder in farn_dirs:
         rmtree(folder, ignore_errors=True)
-
     for pattern in farn_files:
         for file in glob(pattern):
             file = Path(file)
@@ -158,7 +157,7 @@ def test_filtering_output():
     #assert is_string_in_stdout(stdout, "Action 'exclude' performed. Case lhsVariation_\d excluded.")
 
 
-# testing subfiltering
+# testing subfiltering, 1 layer
 def test_sample_1layer():
     # sample
     command = '..\\src\\farn\\cli\\farn.py -s test_farnDict_1layer'
@@ -182,21 +181,27 @@ def test_sample_1layer():
     # stdout
     assert is_string_in_stdout(stdout, re.escape('Successfully dropped 2 paramDict files in 2 case folders.'))
 
-    # alter query string to locals() case_name
-    alter_farn_dict('sampled.test_farnDict_1layer', query='param0 > 2', substitution="case_name in ['layer0_1']")
+    # alter query string to locals() case name
+    alter_farn_dict('sampled.test_farnDict_1layer', query='param0 > 2', substitution='name in ["layer0_1"]')
 
-
-    #rmtree('cases-1layer', ignore_errors=True)
+    # remove for later filtering being effective
+    rmtree('cases-1layer', ignore_errors=True)
 
     # re-generate
-    #command = '..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict_1layer'
-    #S = sub.Popen(Split(command), stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
-    #stdout, stderr = S.communicate()
+    command = '..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict_1layer'
+    S = sub.Popen(Split(command), stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
+    stdout, stderr = S.communicate()
+
+    # folder "layer0_1" must not exist
+    assert not os.path.exists('cases-1layer\\layer0_1')
+
+    # stdout shall contain
+    assert is_string_in_stdout(stdout, 'Successfully listed 2 valid cases. 1 invalid case was excluded.')
+    assert is_string_in_stdout(stdout, 'Successfully generated 2 case folders.')
+    assert is_string_in_stdout(stdout, 'Successfully dropped 2 paramDict files in 2 case folders.')
 
 
-'''
-1 layer first
-# testing subfiltering
+# testing subfiltering, 2 layers
 def test_sample_2layer():
     # sample
     command = '..\\src\\farn\\cli\\farn.py -s test_farnDict_2layer'
@@ -220,9 +225,10 @@ def test_sample_2layer():
     # stdout
     assert is_string_in_stdout(stdout, re.escape('Successfully dropped 3 paramDict files in 3 case folders.'))
 
-    # alter query string to locals() case_name
-    alter_farn_dict('sampled.test_farnDict_2layer', query='param1 > 2', substitution="case_name in ['layer2_0', 'layer2_1']")
+    # alter query string to locals() case name
+    alter_farn_dict('sampled.test_farnDict_2layer', query='param1 > 2', substitution='name in ["layer2_0", "layer2_1"]')
 
+    # remove for later filtering being effective
     rmtree('cases-2layer', ignore_errors=True)
 
     # re-generate
@@ -232,4 +238,8 @@ def test_sample_2layer():
 
     # folder
     assert not os.path.exists('cases-2layer\\layer1_0\\layers_0')
-'''
+
+    # stdout shall contain
+    assert is_string_in_stdout(stdout, 'Successfully listed 3 valid cases. 6 invalid cases were excluded.')
+    assert is_string_in_stdout(stdout, 'Successfully generated 6 case folders.')
+    assert is_string_in_stdout(stdout, 'Successfully dropped 3 paramDict files in 3 case folders.')
