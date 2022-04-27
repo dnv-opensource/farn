@@ -11,8 +11,8 @@ from dictIO.cppDict import CppDict
 from dictIO.dictReader import DictReader
 from dictIO.dictWriter import DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
-from utils.logging import plural
 
+from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
 from farn.run.subProcess import execute_in_sub_process
 
@@ -270,36 +270,34 @@ class Case:
             filter_expression_evaluates_to_true = eval(filter_expression)
         except Exception:
             # In case evaluation of the filter expression fails, processing will not stop.
-            # However, a warning will be logged and the respective case will be considered invalid.
+            # However, a warning will be logged and the respective case will be considered valid.
             logger.warning(
-                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
-                f"The Evaluation of the filter expression failed.\n"
-                f"Possibly one or more of the variables used in the filter expression are not defined or accessible in the current scope (layer).\n"
-                f"\tLayer: {self.layer}\n"
-                f"\tLevel: {self.level}\n"
-                f"\tCase: {self.case_name}\n"
-                f"\tFilter expression: {filter_expression}\n"
-                f"\tParameter names: {self.parameter_names}\n"
-                f"\tParameter values: {self.parameter_values} "
+                f"Layer {self.layer}, case {self.case_name} evaluation of the filter expression failed:\n"
+                f"\tPossibly one or more of the variables used in the filter expression are not defined or accessible in the current scope (layer).\n"
+                f"\t\tLayer: {self.layer}\n"
+                f"\t\tLevel: {self.level}\n"
+                f"\t\tCase: {self.case_name}\n"
+                f"\t\tFilter expression: {filter_expression}\n"
+                f"\t\tParameter names: {self.parameter_names}\n"
+                f"\t\tParameter values: {self.parameter_values} "
             )
-            return False
 
         # Finally: Determine case validity based on filter expression and action
         if action == 'exclude':
             if filter_expression_evaluates_to_true:
                 logger.debug(
-                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid:"
-                    f"The filter expression '{filter_expression}' evaluated to True."
-                    f"Action '{action}' performed. Case {self.case_name} excluded."
+                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid:\n"
+                    f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
+                    f"\tAction '{action}' performed. Case {self.case_name} excluded."
                 )
                 return False
             return True
         if action == 'include':
             if filter_expression_evaluates_to_true:
                 logger.debug(
-                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is valid:"
-                    f"The filter expression '{filter_expression}' evaluated to True."
-                    f"Action '{action}' performed. Case {self.case_name} included."
+                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is valid:\n"
+                    f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
+                    f"\tAction '{action}' performed. Case {self.case_name} included."
                 )
                 return True
             return False
