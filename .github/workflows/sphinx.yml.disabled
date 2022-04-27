@@ -1,11 +1,7 @@
 # From: https://github.com/coderefinery/sphinx-lesson/blob/master/.github/workflows/sphinx.yml
 
-name: Build and publish Sphinx documentation in combined version (farn, dictIO, ospx) on GitHub Pages
-on:
-  push:
-    branches:
-      - release
-      - main
+name: Build and publish Sphinx documentation on GitHub Pages
+on: push
 
 env:
   DEFAULT_BRANCH: "release"
@@ -14,9 +10,8 @@ env:
 
 jobs:
   build-and-publish-docs:
-    name: Build and publish Sphinx documentation in combined version (farn, dictIO, ospx) on GitHub Pages
+    name: Build and publish Sphinx documentation on GitHub Pages
     runs-on: ubuntu-latest
-    environment: sphinx_combined
     steps:
 
       # PREPARE
@@ -28,61 +23,6 @@ jobs:
         with:
           fetch-depth: 1
           lfs: true
-      - name: prepare farn
-        run: |
-          cp -v -f README.md docs/source/README_farn.md
-
-      # Create temporary subfolders to hold the checked out sub-packages
-      - name: Create subfolders
-        run: |
-          mkdir dictIO
-          mkdir ospx
-
-      # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
-      # https://github.com/marketplace/actions/checkout
-      - name: Checkout dictIO
-        uses: actions/checkout@v2
-        with:
-          repository: 'dnv-opensource/dictIO'
-          ref: ${{github.ref}}
-          path: dictIO
-          token: ${{ secrets.PAT_for_sphinx_combined }}
-          fetch-depth: 1
-          lfs: true
-      - name: Prepare dictIO
-        run: |
-          rm -rf dictIO/.git/
-          cp -v -f dictIO/README.md dictIO/docs/source/README_dictIO.md
-
-      # Checkout ospx (same branch as the one that triggered the workflow here in farn)
-      # https://github.com/marketplace/actions/checkout
-      - name: Checkout ospx
-        uses: actions/checkout@v2
-        with:
-          repository: 'dnv-opensource/ospx'
-          ref: ${{github.ref}}
-          path: ospx
-          token: ${{ secrets.PAT_for_sphinx_combined }}
-          fetch-depth: 1
-          lfs: true
-      - name: Prepare ospx
-        run: |
-          rm -rf ospx/.git/
-          cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
-
-      # merge sub-packages into root
-      - name: merge sub-packages
-        run: |
-         cp -v -n -r dictIO/* .
-         cp -v -n -r ospx/* .
-
-
-      # replace TOC files by its combined versions
-      - name: replace TOC files
-        run: |
-          cp -v -f docs/source/combined/* docs/source
-          rm -v -r docs/source/combined
-
 
       # Install Python
       # https://github.com/marketplace/actions/setup-python
