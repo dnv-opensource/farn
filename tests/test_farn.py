@@ -182,7 +182,7 @@ def test_sample_1layer():
     assert is_string_in_stdout(stdout, re.escape('Successfully dropped 2 paramDict files in 2 case folders.'))
 
     # alter query string to locals() case name
-    alter_farn_dict('sampled.test_farnDict_1layer', query='param0 > 2', substitution='name in ["layer0_1"]')
+    alter_farn_dict('sampled.test_farnDict_1layer', query='param0 > 2', substitution='case in ["layer0_1"]')
 
     # remove for later filtering being effective
     rmtree('cases-1layer', ignore_errors=True)
@@ -226,7 +226,7 @@ def test_sample_2layer():
     assert is_string_in_stdout(stdout, re.escape('Successfully dropped 3 paramDict files in 3 case folders.'))
 
     # alter query string to locals() case name
-    alter_farn_dict('sampled.test_farnDict_2layer', query='param1 > 2', substitution='name in ["layer2_0", "layer2_1"]')
+    alter_farn_dict('sampled.test_farnDict_2layer', query='param1 > 2', substitution='case in ["layer2_0", "layer2_1"]')
 
     # remove for later filtering being effective
     rmtree('cases-2layer', ignore_errors=True)
