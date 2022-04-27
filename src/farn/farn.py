@@ -143,7 +143,7 @@ class Case:
         - commands
         - ..
     """
-    name: Union[str, None] = None
+    case_name: Union[str, None] = None
     layer: Union[str, None] = None
     level: int = 0
     no_of_samples: int = 0
@@ -177,7 +177,7 @@ class Case:
         if not filter_expression:
             logger.warning(
                 f"Layer {self.layer}: _condition element found but no _filter element defined therein. "
-                f"As the filter expression is missing, the condition cannot be evalued. Case {self.name} is hence considered valid. "
+                f"As the filter expression is missing, the condition cannot be evalued. Case {self.case_name} is hence considered valid. "
             )
             return True
 
@@ -192,21 +192,21 @@ class Case:
         # Check for formal errors that lead to invalidity
         if not self.parameter_names and not self.parameter_values:
             logger.warning(
-                f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                 f"A filter expression {filter_expression} is defined, "
                 f"but no parameter names, nor parameter values exist. "
             )
             return False
         if not self.parameter_names:
             logger.warning(
-                f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                 f"A filter expression {filter_expression} is defined, "
                 f"but parameter names are missing. "
             )
             return False
         if not self.parameter_values:
             logger.warning(
-                f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                 f"A filter expression {filter_expression} is defined and parameter names exist, "
                 f"but parameter values are missing. "
                 f"Parameter names: {self.parameter_names} "
@@ -215,7 +215,7 @@ class Case:
             return False
         if len(self.parameter_names) != len(self.parameter_values):
             logger.warning(
-                f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                 f"A filter expression {filter_expression} is defined, and both parameter names and -values exist, "
                 f"but the number of parameter names does not match the number of parameter values. "
                 f"Parameter names: {self.parameter_names} "
@@ -228,7 +228,7 @@ class Case:
         for attribute in dir(self):
             try:
                 if attribute in [
-                    'name',
+                    'case_name',
                     'layer',
                     'level',
                     'index',
@@ -242,7 +242,7 @@ class Case:
                     available_vars.add(attribute)
             except Exception:
                 logger.exception(
-                    f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                     f"Reading case property '{attribute}' failed."
                 )
                 return False
@@ -255,7 +255,7 @@ class Case:
                     available_vars.add(parameter_name)
                 except Exception:
                     logger.exception(
-                        f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid: "
+                        f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid: "
                         f"Reading parameter {parameter_name} with value {parameter_value} failed. "
                     )
                     return False
@@ -272,11 +272,11 @@ class Case:
             # In case evaluation of the filter expression fails, processing will not stop.
             # However, a warning will be logged and the respective case will be considered valid.
             logger.warning(
-                f"Layer {self.layer}, case {self.name} evaluation of the filter expression failed:\n"
+                f"Layer {self.layer}, case {self.case_name} evaluation of the filter expression failed:\n"
                 f"\tPossibly one or more of the variables used in the filter expression are not defined or accessible in the current scope (layer).\n"
                 f"\t\tLayer: {self.layer}\n"
                 f"\t\tLevel: {self.level}\n"
-                f"\t\tCase: {self.name}\n"
+                f"\t\tCase: {self.case_name}\n"
                 f"\t\tFilter expression: {filter_expression}\n"
                 f"\t\tParameter names: {self.parameter_names}\n"
                 f"\t\tParameter values: {self.parameter_values} "
@@ -286,18 +286,18 @@ class Case:
         if action == 'exclude':
             if filter_expression_evaluates_to_true:
                 logger.debug(
-                    f"Layer {self.layer}, case {self.name} validity check: case {self.name} is invalid:\n"
+                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is invalid:\n"
                     f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
-                    f"\tAction '{action}' performed. Case {self.name} excluded."
+                    f"\tAction '{action}' performed. Case {self.case_name} excluded."
                 )
                 return False
             return True
         if action == 'include':
             if filter_expression_evaluates_to_true:
                 logger.debug(
-                    f"Layer {self.layer}, case {self.name} validity check: case {self.name} is valid:\n"
+                    f"Layer {self.layer}, case {self.case_name} validity check: case {self.case_name} is valid:\n"
                     f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
-                    f"\tAction '{action}' performed. Case {self.name} included."
+                    f"\tAction '{action}' performed. Case {self.case_name} included."
                 )
                 return True
             return False
@@ -313,7 +313,7 @@ class Case:
             dict with all case attributes
         """
         return {
-            '_name': self.name,
+            '_case_name': self.case_name,
             '_layer': self.layer,
             '_level': self.level,
             '_index': self.index,
@@ -358,7 +358,7 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
         )
         return None
 
-    def populate_layer(index: int, name: str, layer: MutableMapping):
+    def populate_layer(index: int, case_name: str, layer: MutableMapping):
         '''
         populates the layer with dynamically generated samples
         '''
@@ -372,7 +372,7 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
         sampling = DiscreteSampling()
         sampling.set_sampling_type(sampling_type=layer['_sampling']['_type'])
         # parameterize the sampling
-        sampling.set_sampling_parameters(base_name=name, kwargs=layer['_sampling'])
+        sampling.set_sampling_parameters(base_name=case_name, kwargs=layer['_sampling'])
 
         # in case the layer contains an (old) samples section -> delete it
         if '_samples' in layer:
@@ -384,7 +384,7 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
         layer.update({'_samples': samples})
 
         # update the comment element in the populated layer
-        fallback_comment = f'level {index:d} for basename {name}'
+        fallback_comment = f'level {index:d} for basename {case_name}'
         comment = layer['_comment'] if '_comment' in layer else fallback_comment
         layer.update({'_comment': comment})
 
@@ -516,7 +516,7 @@ def register_cases(
                 no_of_samples=no_of_samples,
                 index=index,
                 path=base_case.path / key,
-                name=key,
+                case_name=key,
                 is_leaf=is_leaf,
                 condition=condition,
                 parameter_names=param_names,
@@ -728,7 +728,7 @@ def _execute_command_set_in_case_folders(
     for case in cases:
         if not case.is_valid:
             logger.warning(
-                f'Case {case.name} skipped. (invalid / excluded through filter expression)'
+                f'Case {case.case_name} skipped. (invalid / excluded through filter expression)'
             )
             break
         if not case.path.exists():
@@ -756,7 +756,7 @@ def _execute_command_set_in_case_folders(
                 if case.is_leaf:
                     number_of_cases_processed += 1
             else:
-                logger.warning(f"Command set '{command_set}' not defined in case {case.name}")
+                logger.warning(f"Command set '{command_set}' not defined in case {case.case_name}")
         if test and number_of_cases_processed >= 1:                                                 # if test and at least one execution
             logger.warning(
                 f"Test finished. Executed command set '{command_set}' in following case folder:\n"
