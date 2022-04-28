@@ -1,7 +1,11 @@
 # From: https://github.com/coderefinery/sphinx-lesson/blob/master/.github/workflows/sphinx.yml
 
 name: Build and publish Sphinx documentation in combined version (farn, dictIO, ospx) on GitHub Pages
-on: push
+on:
+  push:
+    branches:
+      - release
+      - main
 
 env:
   DEFAULT_BRANCH: "release"

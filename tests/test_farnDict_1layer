@@ -3,7 +3,7 @@ filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
 _environment
 {
-    CASEDIR                   cases;
+    CASEDIR                   cases-1layer;
     DUMPDIR                   dump;
     LOGDIR                    logs;
     RESULTDIR                 results;
@@ -11,18 +11,18 @@ _environment
 }
 _layers
 {
-    layer1
+    layer0
     {
-        _samples
+        _sampling
         {
-            _names
-            (
-                layer1_000      layer1_001      layer1_002
-            );
-            param1
-            (
-                0       1       2
-            );
+            _type fixed;
+            _names (param0);
+            _values ((1 2 3));
+        }
+        _condition
+        {
+            _action           exclude;
+            _filter           'param0 > 2';
         }
         _commands
         {
@@ -30,11 +30,6 @@ _layers
             testlinvar ('echo variable $CASEDIR');
             printwinenv ('echo environment & printenv | findstr CASEDIR');
             printlinenv ('echo environment ; printenv | grep CASEDIR');
-            parse
-            (
-                'dictParser paramDict --verbose --log logs\dictParser.log --log-level INFO'
-            );
         }
-        _comment                  'test some numbers';
     }
 }

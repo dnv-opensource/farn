@@ -33,9 +33,17 @@ def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600)
             args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=r"%s" % path
         )
 
+        if len(command) > 18:
+            cmd_string = '"' + ''.join(list(command)[:11] ) + '..' + ''.join(list(command)[-3:]) + '"'
+        else:
+            cmd_string = '"' + command + '"'
+
         logger.info(
-            f"Execute {command} in {path} (timout: {timeout}, pid: %{sub_process.pid})"
-        )                                                                                   # level=1  override=False  timestamp=True
+            "Execute {:18} in {:}".format(cmd_string, path)
+        )
+        logger.debug(
+            f"(timout: {timeout}, pid: %{sub_process.pid})"
+        )
 
     # Wait for subprocess to finish
     stdout = bytes()
