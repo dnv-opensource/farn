@@ -1,6 +1,5 @@
-import logging
+# import logging
 import os
-import re
 from pathlib import Path
 
 import pytest
@@ -8,6 +7,6 @@ import pytest
 
 @pytest.fixture(scope='package', autouse=True)
 def chdir():
-    os.chdir(Path(__file__).parent.absolute())
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.DEBUG)
+    os.chdir(Path(__file__).parent.absolute() / 'test_dicts')
+    # root_logger = logging.getLogger()
+    # root_logger.setLevel(logging.DEBUG)

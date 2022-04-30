@@ -3,7 +3,7 @@ filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
 _environment
 {
-    CASEDIR                   cases-initialfiltering;
+    CASEDIR                   cases_failed_filtering;
     DUMPDIR                   dump;
     LOGDIR                    logs;
     RESULTDIR                 results;

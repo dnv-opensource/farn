@@ -1,17 +1,6 @@
 #!/usr/bin/env python
 # coding utf-8
 
-__author__ = "DNV"
-__copyright__ = "Copyright THIS_YEAR, github.com/dnv-opensource"
-__credits__ = ["Claas Rostock", "Seunghyeon Yoo", "Frank Lumpitzsch"]
-__description__ = """generate and manipulate deeply nested case structures, apply arbitrary sampling and hierarchical or non-hierarchical filtering"""
-__email__ = "n.n.@dnv.com"
-__license__ = "MIT"
-__maintainer__ = "n.n."
-__prog__ = "farn"
-__status__ = "Development"
-__version__ = "MAJOR_VERSION.MINOR_VERSION.PATCH_VERSION"
-
 import argparse
 import logging
 import sys
@@ -78,7 +67,7 @@ def _argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-e',
         '--execute',
-        metavar='COMMAND',
+        metavar='command',
         action='store',
         type=str,
         help=(
@@ -173,7 +162,7 @@ def main():
     farn_dict_file: Path = Path(args.farnDict)
     sample: bool = args.sample
     generate: bool = args.generate
-    command: str = args.execute
+    command: Union[str, None] = args.execute
     ignore_errors: bool = args.ignore_errors
     test: bool = args.test
 
@@ -186,39 +175,14 @@ def main():
             "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
         )
 
-    # Dispatch to _main(), which takes care of processing the arguments and invoking the API.
-    _main(
-        farn_dict_file=farn_dict_file,
-        sample=sample,
-        generate=generate,
-        command=command,
-        ignore_errors=ignore_errors,
-        test=test,
-    )
-
-
-def _main(
-    farn_dict_file: Path,
-    sample: bool = False,
-    generate: bool = False,
-    command: str = None,
-    ignore_errors: bool = False,
-    test: bool = False,
-):
-    """Entry point for unit tests.
-
-    Processes the arguments parsed by main() on the console and invokes the API.
-    """
-    # @TODO: If this is only useful in unit tests, we should consider changeing something or renaming, at least the names main and _main.
-    # FRALUM, 2022-04-12
-
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
         logger.error(f"farn: File {farn_dict_file} not found.")
         # easter egg: Generate Barnsley fern
-        _generate_barnsley_fern()
+        # _generate_barnsley_fern()
         return
 
+    # Invoke API
     run_farn(
         farn_dict_file=farn_dict_file,
         sample=sample,
@@ -227,8 +191,6 @@ def _main(
         ignore_errors=ignore_errors,
         test=test,
     )
-
-    return
 
 
 def _generate_barnsley_fern():

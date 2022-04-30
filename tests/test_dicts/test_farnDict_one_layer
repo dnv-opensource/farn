@@ -3,7 +3,7 @@ filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
 _environment
 {
-    CASEDIR                   cases-2layer;
+    CASEDIR                   cases_one_layer;
     DUMPDIR                   dump;
     LOGDIR                    logs;
     RESULTDIR                 results;
@@ -11,7 +11,7 @@ _environment
 }
 _layers
 {
-    layer1
+    layer0
     {
         _sampling
         {
@@ -19,19 +19,10 @@ _layers
             _names (param0);
             _values ((1 2 3));
         }
-    }
-    layer2
-    {
-        _sampling
-        {
-            _type fixed;
-            _names (param1);
-            _values ((2 4 8));
-        }
         _condition
         {
             _action           exclude;
-            _filter           'param1 > 2';
+            _filter           'param0 > 2';
         }
         _commands
         {

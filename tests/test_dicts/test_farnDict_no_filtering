@@ -3,7 +3,7 @@ filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
 \*----------------------------------------------------------------------------*/
 _environment
 {
-    CASEDIR                   cases-exceptionlistfiltering;
+    CASEDIR                   cases_no_filtering;
     DUMPDIR                   dump;
     LOGDIR                    logs;
     RESULTDIR                 results;
@@ -23,16 +23,10 @@ _layers
             _values
             (
                 (
-                    0.5       0.75       1.0
+                    0.5               1.0
                 )
             );
         }
-        _condition
-        {
-            _filter           'index != 1';
-            _action           exclude;
-        }
-
         _commands
         {
             echo0
@@ -66,11 +60,6 @@ _layers
             _includeBoundingBox        False;
             _numberOfSamples        5;
         }
-        _condition
-        {
-            _filter           'abs(param0 * param1) >= 3.5';
-            _action           exclude;
-        }
         _commands
         {
             echo1
@@ -78,8 +67,6 @@ _layers
                 "echo  param1 param2 param3"  'echo %cd%'   pwd
             );
         }
-        _comment              'level 1 lhsVariation,
-                                start -g with no filtering,
-                                continue -e with given exception list';
+        _comment              'level 1 lhsVariation';
     }
 }

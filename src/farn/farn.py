@@ -24,7 +24,7 @@ def run_farn(
     farn_dict_file: Path,
     sample: bool = False,
     generate: bool = False,
-    command: str = None,            # type: ignore
+    command: Union[str, None] = None,
     ignore_errors: bool = False,
     test: bool = False,
 ):
@@ -42,7 +42,7 @@ def run_farn(
         if True, runs the sampling defined for each layer and saves the sampled farnDict file with prefix sampled., by default False
     generate : bool, optional
         if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
-    command : str, optional
+    command : Union[str, None], optional
         executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
     ignore_errors : bool, optional
         if True, does not halt on errors, by default False

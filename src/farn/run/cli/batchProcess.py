@@ -133,31 +133,12 @@ def main():
     timeout: int = args.timeout
     max_number_of_cpus: int = args.cpu
 
-    # Dispatch to _main(), which takes care of processing the arguments and invoking the API.
-    _main(
-        case_list_file=case_list_file,
-        command=command,
-        timeout=timeout,
-        max_number_of_cpus=max_number_of_cpus,
-    )
-
-
-def _main(
-    case_list_file: Path,
-    command: str,
-    timeout: int = 0,
-    max_number_of_cpus: int = 0,
-):
-    """Entry point for unit tests.
-
-    Processes the arguments parsed by main() on the console and invokes the API.
-    """
-
     # Check whether caselist file exists
     if not case_list_file.is_file():
         logger.error(f'runCases.py: File {case_list_file} not found.')
         return
 
+    # Invoke API
     batch_processor: AsyncBatchProcessor = AsyncBatchProcessor(
         case_list_file=case_list_file,
         command=command,
@@ -165,8 +146,6 @@ def _main(
         max_number_of_cpus=max_number_of_cpus,
     )
     batch_processor.run()
-
-    return
 
 
 if __name__ == '__main__':
