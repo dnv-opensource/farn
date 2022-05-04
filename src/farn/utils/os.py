@@ -7,5 +7,5 @@ def append_system_variable(variable, value):
     '''
     append system variable depending on system
     '''
-    os.environ['%s' % variable] = str(value)
+    os.environ[f'{variable}'] = str(value)
     return

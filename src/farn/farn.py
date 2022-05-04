@@ -73,9 +73,7 @@ def run_farn(
 
     # Run sampling and create the samples for all layers in farn dict
     if sample:
-        sampled_farn_dict = run_sampling(farn_dict)
-
-        if sampled_farn_dict:
+        if sampled_farn_dict := run_sampling(farn_dict):
             logger.info(f'Save sampled farn dict {sampled_farn_dict.name}...')              # 1
             DictWriter.write(sampled_farn_dict, mode='w')
             logger.info(f'Saved sampled farn dict in {sampled_farn_dict.source_file}.')     # 1
@@ -103,10 +101,11 @@ def run_farn(
     # farn_dict.order_keys()
 
     # Create a backup copy of farn dict
-    logger.info(f'Save backup copy of {farn_dict.name}...')
-    farn_dict_backup_copy = Path(str(farn_dict.source_file) + '.copy')
-    DictWriter.write(farn_dict, farn_dict_backup_copy, mode='w')
-    logger.info(f'Saved backup copy in {farn_dict_backup_copy}.')   # 1
+    if farn_dict.source_file:
+        logger.info(f'Save backup copy of {farn_dict.name}...')
+        farn_dict_backup_copy = Path(f'{farn_dict.source_file.name}.copy')
+        DictWriter.write(farn_dict, farn_dict_backup_copy, mode='w')
+        logger.info(f'Saved backup copy in {farn_dict_backup_copy}.')   # 1
 
     # Collect and register all cases that can be derived from the samples defined in farn dict
     cases = register_cases(farn_dict, farn_dirs['CASEDIR'])
@@ -326,7 +325,7 @@ class Case:
             '_commands': self.command_sets,
         }
 
-    def add_uservars(self, sublayer: dict):
+    def add_uservars(self, sublayer: MutableMapping):
         '''add non-_-keywords to names, values
         from inside the level scope,
         making them available during runtime
@@ -392,7 +391,8 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
 
     sampled_farn_dict = deepcopy(farn_dict)
     sampled_farn_dict.source_file = create_target_file_name(
-        farn_dict.source_file, prefix='sampled.'
+        farn_dict.source_file,                                  # type: ignore
+        prefix='sampled.'
     )
 
     logger.info(f'Run sampling in {farn_dict.name}...')
@@ -456,7 +456,7 @@ def register_cases(
 
     def create_next_level_cases(
         level: int = 0,
-        base_case: Case = None,
+        base_case: Union[Case, None] = None,
     ):
         nonlocal cases
         nonlocal number_of_invalid_cases
@@ -491,14 +491,14 @@ def register_cases(
         # workaround: loop over list skipping already taken names
         # The solution is perhaps simple but I cannot see it.
         # The structure of two lists (names, values) and appending separately is unlucky!
-        nList = []
-        nSet = set([])
-        for iName in base_case.parameter_names:
-            if iName not in nSet:
-                nList.append(iName)
-            nSet.add(iName)
-        #param_names: MutableSequence[str] = deepcopy(base_case.param_names)
-        param_names: MutableSequence[str] = nList
+        n_list = []
+        n_set = set([])
+        for i_name in base_case.parameter_names:
+            if i_name not in n_set:
+                n_list.append(i_name)
+            n_set.add(i_name)
+        # param_names: MutableSequence[str] = deepcopy(base_case.param_names)
+        param_names: MutableSequence[str] = n_list
 
         param_names.extend(list(samples_without_names.keys()))
         param_values: MutableSequence[float] = []
@@ -583,7 +583,7 @@ def generate_case_folder_structure(cases: MutableSequence[Case]) -> int:
 
 def generate_case_lists(
     cases: MutableSequence[Case],
-    target_dir: Path = None,
+    target_dir: Union[Path, None] = None,
     levels: Union[int, Sequence[int], None] = None
 ) -> Path:
     """Generates case list files documenting all case folders per level.
@@ -676,7 +676,7 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
 
         DictWriter.write(param_dict, target_file, mode='w')
 
-        if case.is_leaf == True:
+        if case.is_leaf:
             number_of_param_dicts_created += 1
 
     leaf_cases = [case for case in cases if case.is_leaf]
@@ -802,9 +802,8 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
     environment['RESULTDIR'] = 'results'
     environment['TEMPLATEDIR'] = 'template'
     # 2: Overwrite default values with values defined in farn dict, if so
-    environment_from_farn_dict = DictReader.read(farn_dict_file, scope=['_environment'])
-    if environment_from_farn_dict:
-        environment.update(environment_from_farn_dict)
+    if environment_from_farn_dict := DictReader.read(farn_dict_file, scope=['_environment']):
+        environment |= environment_from_farn_dict
     else:
         logger.warning(
             f"Key '_environment' is missing in farn dict {farn_dict_file}. Using default values for farn environment."
@@ -848,7 +847,7 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
     return
 
 
-def _remove_old_case_lists():
+def _remove_old_case_lists():   # sourcery skip: avoid-builtin-shadow
     """Removes old case list files, if existing.
     """
     logger.info('Remove old case list files...')

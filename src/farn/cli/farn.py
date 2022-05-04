@@ -255,14 +255,14 @@ def _generate_barnsley_fern():
     rng = random.default_rng()
     rnd = rng.random()
     rnd2 = rng.normal(1, 0)
-    E = 1
-    S = 0
-    rnd3 = (rng.normal(E, S), rng.normal(E, S), rng.normal(E, S))
+    e = 1
+    s = 0
+    rnd3 = (rng.normal(e, s), rng.normal(e, s), rng.normal(e, s))
     while ii < end:
         rnd = rng.random()
         rnd2 = rng.normal(1, 0)
         if ii % 1 == 0:
-            rnd3 = (rng.normal(E, S), rng.normal(E, S), rng.normal(E, S))
+            rnd3 = (rng.normal(e, s), rng.normal(e, s), rng.normal(e, s))
         rgb = [148, 204, 48]
         if rnd <= (0.01 * rnd2):
             p = t1(p)
