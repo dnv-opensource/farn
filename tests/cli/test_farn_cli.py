@@ -8,9 +8,12 @@ import pytest
 from farn.cli import farn
 from farn.cli.farn import _argparser, main
 
+# *****Test commandline interface (CLI)************************************************************
+
 
 @dataclass()
 class CliArgs():
+    # Expected default values for the CLI arguments when farn gets called via the commandline
     quiet: bool = False
     verbose: bool = False
     log: Union[str, None] = None
@@ -54,7 +57,7 @@ class CliArgs():
         (['test_farnDict', '-t'], ArgumentError),
     ]
 )
-def test_argparser(
+def test_cli(
     inputs: List[str],
     expected: Union[CliArgs, type],
     monkeypatch,
@@ -78,9 +81,13 @@ def test_argparser(
         assert False
 
 
+# *****Ensure the CLI correctly configures logging*************************************************
+
+
 @dataclass()
 class ConfigureLoggingArgs():
-    log_level_console: str = 'WARNING'
+    # Values that main() is expected to pass to ConfigureLogging() by default when configuring the logging
+    log_level_console: str = 'INFO'     # this deviates from standard 'WARNING', but was decided intentionally for farn
     log_file: Union[Path, None] = None
     log_level_file: str = 'WARNING'
 
@@ -89,25 +96,19 @@ class ConfigureLoggingArgs():
     "inputs, expected",
     [
         ([], ArgumentError),
-        (['test_farnDict'], ConfigureLoggingArgs(log_level_console='INFO')),
+        (['test_farnDict'], ConfigureLoggingArgs()),
         (['test_farnDict', '-q'], ConfigureLoggingArgs(log_level_console='ERROR')),
         (['test_farnDict', '--quiet'], ConfigureLoggingArgs(log_level_console='ERROR')),
         (['test_farnDict', '-v'], ConfigureLoggingArgs(log_level_console='DEBUG')),
         (['test_farnDict', '--verbose'], ConfigureLoggingArgs(log_level_console='DEBUG')),
         (['test_farnDict', '-qv'], ArgumentError),
-        (
-            ['test_farnDict', '--log', 'logFile'],
-            ConfigureLoggingArgs(log_level_console='INFO', log_file=Path('logFile'))
-        ),
+        (['test_farnDict', '--log', 'logFile'], ConfigureLoggingArgs(log_file=Path('logFile'))),
         (['test_farnDict', '--log'], ArgumentError),
-        (
-            ['test_farnDict', '--log-level', 'INFO'],
-            ConfigureLoggingArgs(log_level_console='INFO', log_level_file='INFO')
-        ),
+        (['test_farnDict', '--log-level', 'INFO'], ConfigureLoggingArgs(log_level_file='INFO')),
         (['test_farnDict', '--log-level'], ArgumentError),
     ]
 )
-def test_configure_logging(
+def test_logging_configuration(
     inputs: List[str],
     expected: Union[ConfigureLoggingArgs, type],
     monkeypatch,
@@ -153,8 +154,12 @@ def test_configure_logging(
         assert False
 
 
+# *****Ensure the CLI correctly invokes the API****************************************************
+
+
 @dataclass()
 class ApiArgs():
+    # Values that main() is expected to pass to run_farn() by default when invoking the API
     farn_dict_file: Path = Path('test_farnDict')
     sample: bool = False
     generate: bool = False
@@ -185,7 +190,7 @@ class ApiArgs():
         (['test_farnDict', '-t'], ArgumentError),
     ]
 )
-def test_invoke_api(
+def test_api_invokation(
     inputs: List[str],
     expected: Union[ApiArgs, type],
     monkeypatch,
