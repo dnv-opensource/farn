@@ -17,7 +17,7 @@ farn
 
 ## Installation
 ```sh
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ farn
+pip install farn
 ```
 farn requires the following two (sub-)packages:
 1. [dictIO][dictIO_docs]: foundation package, enabling farn to handle configuration files in dictIO dict file format.
