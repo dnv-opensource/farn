@@ -84,7 +84,7 @@ class DiscreteSampling():
         # determine the dimension (=number of fields)
         self.number_of_fields = len(self.fields)
 
-    def generate(self):
+    def generate(self) -> dict:
         '''
         '''
         return_dict = {}

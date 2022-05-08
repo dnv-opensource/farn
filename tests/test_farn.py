@@ -9,26 +9,40 @@ from dictIO.utils.path import silent_remove
 
 
 def test_sample():
-    os.system('..\\src\\farn\\cli\\farn.py -s test_farnDict')
+    # Prepare
+    source_file = 'test_farnDict'
+    # Execute
+    os.system(f'python -m farn.cli.farn --sample {source_file}')
 
 
 def test_generate():
-    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
+    # Prepare
+    source_file = 'sampled.test_farnDict'
+    # Execute
+    os.system(f'python -m farn.cli.farn --generate {source_file}')
 
 
 def test_regenerate():
-    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
-    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
+    # Prepare
+    source_file = 'sampled.test_farnDict'
+    # Execute
+    os.system(f'python -m farn.cli.farn --generate {source_file}')
+    os.system(f'python -m farn.cli.farn --generate {source_file}')
 
 
 def test_execute():
-    os.system('..\\src\\farn\\cli\\farn.py -g sampled.test_farnDict')
+    # Prepare
+    source_file = 'test_farnDict'
+    os.system(f'python -m farn.cli.farn --sample {source_file}')
+    source_file = 'sampled.test_farnDict'
+    os.system(f'python -m farn.cli.farn --generate {source_file}')
+    # Execute
     if platform.system() == 'Linux':
         os.system('farn.py sampled.test_farnDict -e testlinvar')
         os.system('farn.py sampled.test_farnDict -e printlinenv')
     else:
-        os.system('..\\src\\farn\\cli\\farn.py sampled.test_farnDict -e testwinvar')
-        os.system('..\\src\\farn\\cli\\farn.py sampled.test_farnDict -e printwinenv')
+        os.system(f'python -m farn.cli.farn {source_file} --execute testwinvar')
+        os.system(f'python -m farn.cli.farn {source_file} --execute printwinenv')
 
 
 def test_logging_verbosity(monkeypatch, capsys):

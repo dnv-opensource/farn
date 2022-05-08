@@ -357,9 +357,9 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
         )
         return None
 
-    def populate_layer(index: int, case: str, layer: MutableMapping):
+    def generate_samples_for_layer(level: int, layer_name: str, layer: MutableMapping):
         '''
-        populates the layer with dynamically generated samples
+        generates the samples for the specified layer
         '''
         if '_sampling' not in layer:
             logger.error("no '_sampling' element in layer")
@@ -371,21 +371,21 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
         sampling = DiscreteSampling()
         sampling.set_sampling_type(sampling_type=layer['_sampling']['_type'])
         # parameterize the sampling
-        sampling.set_sampling_parameters(base_name=case, kwargs=layer['_sampling'])
+        sampling.set_sampling_parameters(base_name=layer_name, kwargs=layer['_sampling'])
 
-        # in case the layer contains an (old) samples section -> delete it
+        # in case the layer already contains an samples section (e.g. from a former run) -> delete it
         if '_samples' in layer:
             del layer['_samples']
 
-        # generate the samples and write them into the keys element of the populated layer
+        # generate the samples and write them into the _samples element of the populated layer
         samples = sampling.generate()
 
         layer.update({'_samples': samples})
 
-        # update the comment element in the populated layer
-        fallback_comment = f'level {index:d} for basename {case}'
-        comment = layer['_comment'] if '_comment' in layer else fallback_comment
-        layer.update({'_comment': comment})
+        # if the layer does not have a _comment element yet: create a default comment
+        if '_comment' not in layer:
+            default_comment = f'level {level:d}, layer {layer_name}'
+            layer['_comment'] = default_comment
 
         return layer
 
@@ -397,8 +397,12 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
 
     logger.info(f'Run sampling in {farn_dict.name}...')
 
-    for index, (key, layer) in enumerate(sampled_farn_dict['_layers'].items()):
-        populate_layer(index, key, layer)
+    for index, (key, value) in enumerate(sampled_farn_dict['_layers'].items()):
+        generate_samples_for_layer(
+            level=index,
+            layer_name=key,
+            layer=value,
+        )
 
     logger.info(f'Successfully ran sampling in {farn_dict.name}.')
 
@@ -480,10 +484,10 @@ def register_cases(
                         None] = layer['_commands'] if '_commands' in layer else None
 
         samples_without_names: MutableMapping = {
-            name: param_values
-            for name,
+            param_name: param_values
+            for param_name,
             param_values in layer['_samples'].items()
-            if name != '_names'
+            if param_name != '_names'
         }
 
         # There is a bug! Or is it a misunderstood feature?
@@ -503,8 +507,8 @@ def register_cases(
         param_names.extend(list(samples_without_names.keys()))
         param_values: MutableSequence[float] = []
 
-        for index, key in enumerate(layer['_samples']['_names']):
-            key = remove_quotes(key)
+        for index, name in enumerate(layer['_samples']['_names']):
+            name = remove_quotes(name)
             param_values = deepcopy(base_case.parameter_values)
             param_values.extend(
                 [param_values[index] for param_values in samples_without_names.values()]
@@ -515,8 +519,8 @@ def register_cases(
                 level=level,
                 no_of_samples=no_of_samples,
                 index=index,
-                path=base_case.path / key,
-                case=key,
+                path=base_case.path / name,
+                case=name,
                 is_leaf=is_leaf,
                 condition=condition,
                 parameter_names=param_names,
