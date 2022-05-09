@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 def run_farn(
-    farn_dict_file: Path,
+    farn_dict_file: Union[str, os.PathLike[str]],
     sample: bool = False,
     generate: bool = False,
     command: Union[str, None] = None,
@@ -36,7 +36,7 @@ def run_farn(
 
     Parameters
     ----------
-    farn_dict_file : Path
+    farn_dict_file : Union[str, os.PathLike[str]]
         farnDict file. Contains the farn configuration.
     sample : bool, optional
         if True, runs the sampling defined for each layer and saves the sampled farnDict file with prefix sampled., by default False
@@ -49,6 +49,12 @@ def run_farn(
     test : bool, optional
         if True, runs only first case and returns, by default False
     """
+
+    # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
+    farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
+    if not farn_dict_file.exists():
+        logger.error(f"DictParser: File {farn_dict_file} not found.")
+        raise FileNotFoundError(farn_dict_file)
 
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
