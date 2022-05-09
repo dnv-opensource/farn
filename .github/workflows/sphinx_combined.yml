@@ -46,7 +46,6 @@ jobs:
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
           path: dictIO
-          token: ${{ secrets.PAT_for_sphinx_combined }}
           fetch-depth: 1
           lfs: true
       - name: Prepare dictIO
@@ -62,7 +61,6 @@ jobs:
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
           path: ospx
-          token: ${{ secrets.PAT_for_sphinx_combined }}
           fetch-depth: 1
           lfs: true
       - name: Prepare ospx
