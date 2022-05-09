@@ -57,7 +57,7 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 2. git clone the farn repository into your local development directory:
 
 ~~~sh
-git clone git://github.com/dnv-opensource/farn.git path/to/your/dev/farn
+git clone https://github.com/dnv-opensource/farn path/to/your/dev/farn
 ~~~
 
 3. In the farn root folder:
