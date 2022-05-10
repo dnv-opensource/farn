@@ -1,5 +1,5 @@
 # farn
-farn is an n-dimensional case generator.
+[farn][farn_docs] is an n-dimensional case generator.
 
 Its primary design goal is to parameterize and execute simulation cases.
 However, at its core, farn is use-case agnostic and can support a wide spectrum of applications.
@@ -43,6 +43,15 @@ farn farnDict --sample --generate
 
 _For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
 
+Further, the [farn-demo][farn_demo_repo] repository on GitHub is an excellent place for a jumpstart into farn.
+Simply clone the [farn-demo][farn_demo_repo] repository to your local machine and click through the demos and related READMEs, by recommendation in the following sequence:
+
+    README in root folder -> guides you through installation of farn
+    \ospCaseBuilder Demo (see README in ospCaseBuilder folder)
+    \farn Demo (see README in farn folder)
+    \importSystemStructure  Demo (see README in importSystemStructure folder)
+
+
 ## File Format
 A farnDict is a file in dictIO dict file format used with farn.
 
@@ -52,7 +61,7 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 
 ## Development Setup
 
-1. Install [Python 3.10](https://www.python.org/downloads/release/python-3102/)
+1. Install Python 3.9 or higher, i.e. [Python 3.9](https://www.python.org/downloads/release/python-3912/) or [Python 3.10](https://www.python.org/downloads/release/python-3104/)
 
 2. Update pip and setuptools:
 
@@ -113,9 +122,9 @@ Distributed under the MIT license. See [LICENSE](LICENSE.md) for more informatio
 ## Contributing
 
 1. Fork it (<https://github.com/dnv-opensource/farn/fork>)
-2. Create your branch (`git checkout -b fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin fooBar`)
+2. Create your branch (`git checkout -b myBranchName`)
+3. Commit your changes (`git commit -am 'place your commit message here'`)
+4. Push to the branch (`git push origin myBranchName`)
 5. Create a new Pull Request
 
 For your contribution, please make sure you follow the [STYLEGUIDE](STYLEGUIDE.md) before creating the Pull Request.
@@ -124,3 +133,4 @@ For your contribution, please make sure you follow the [STYLEGUIDE](STYLEGUIDE.m
 [dictIO_docs]: https://dnv-opensource.github.io/dictIO/
 [ospx_docs]: https://dnv-opensource.github.io/ospx/
 [farn_docs]: https://dnv-opensource.github.io/farn/
+[farn_demo_repo]: https://github.com/dnv-opensource/farn-demo
