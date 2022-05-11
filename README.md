@@ -102,7 +102,7 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 
 ## Release History
 
-* 0.0.22
+* 0.0.23
     * Pre-release
 
 ## Meta
