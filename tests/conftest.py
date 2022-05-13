@@ -21,9 +21,15 @@ farn_dirs = [
     'dump',
     'logs',
     'results',
-    'templates'
+    'templates',
 ]
-farn_files = ['queueList*', '*.copy', 'splash.png', 'caseList*']
+farn_files = [
+    'sampled*',
+    'queueList*',
+    '*.copy',
+    'splash.png',
+    'caseList*',
+]
 
 
 @pytest.fixture(autouse=True)
