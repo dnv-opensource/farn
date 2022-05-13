@@ -67,11 +67,11 @@ def test_cli(
     parser = _argparser()
     # Execute
     if isinstance(expected, CliArgs):
-        args_assert: CliArgs = expected
+        args_expected: CliArgs = expected
         args = parser.parse_args()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised
@@ -140,11 +140,11 @@ def test_logging_configuration(
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
-        args_assert: ConfigureLoggingArgs = expected
+        args_expected: ConfigureLoggingArgs = expected
         main()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised
@@ -217,11 +217,11 @@ def test_api_invokation(
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
-        args_assert: ApiArgs = expected
+        args_expected: ApiArgs = expected
         main()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised
