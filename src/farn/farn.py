@@ -5,16 +5,16 @@ import re
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import MutableMapping, MutableSequence, Sequence, Union
+from typing import MutableMapping, MutableSequence, MutableSet, Sequence, Union
 
 from dictIO.cppDict import CppDict
 from dictIO.dictReader import DictReader
 from dictIO.dictWriter import DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
+from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
-from farn.run.subProcess import execute_in_sub_process
 
 
 logger = logging.getLogger(__name__)
@@ -79,18 +79,19 @@ def run_farn(
 
     # Run sampling and create the samples for all layers in farn dict
     if sample:
-        if sampled_farn_dict := run_sampling(farn_dict):
-            logger.info(f'Save sampled farn dict {sampled_farn_dict.name}...')              # 1
-            DictWriter.write(sampled_farn_dict, mode='w')
-            logger.info(f'Saved sampled farn dict in {sampled_farn_dict.source_file}.')     # 1
+        create_samples(farn_dict)                                               # run sampling
+        farn_dict.source_file = create_target_file_name(                        # change filename to 'sampled.*'
+            farn_dict.source_file,                                              # type: ignore
+            prefix='sampled.'
+        )
+        logger.info(f'Save sampled farn dict {farn_dict.name}...')              # 1
+        DictWriter.write(farn_dict, mode='w')                                   # save sampled.* farn dict file
+        logger.info(f'Saved sampled farn dict in {farn_dict.source_file}.')     # 1
 
-            # Reassign farn_dict so that it points to the newly created, sampled farn dict
-            farn_dict = sampled_farn_dict
-
-    # Document CLI arguments of current farn call in the farn dict
+    # Document CLI arguments of current farn call in the farn dict (for traceability)
     farn_opts = {
         'farnDict': farn_dict.name,
-        'runSampling': sample,
+        'sample': sample,
         'generate': generate,
         'execute': command,
         'ignore-errors': ignore_errors,
@@ -98,37 +99,26 @@ def run_farn(
     }
     farn_dict.update({'_farnOpts': farn_opts})
 
-    # @TODO: Ordering would be harmful now as we do not anylonger use a distinct
-    #        'level' attribute for each layer, but derive levels implicitely
-    #        following the order in which the layers are defined in the farn dict.
-    #        We need to discuss, whether we want the order of layers in farn dict
-    #        to determine their level, or whether we want to ignore their order of definition
-    #        but set an explicit level attribute on each layer.
-    # farn_dict.order_keys()
-
-    # Create a backup copy of farn dict
-    if farn_dict.source_file:
-        logger.info(f'Save backup copy of {farn_dict.name}...')
-        farn_dict_backup_copy = Path(f'{farn_dict.source_file.name}.copy')
-        DictWriter.write(farn_dict, farn_dict_backup_copy, mode='w')
-        logger.info(f'Saved backup copy in {farn_dict_backup_copy}.')   # 1
-
-    # Collect and register all cases that can be derived from the samples defined in farn dict
-    cases = register_cases(farn_dict, farn_dirs['CASEDIR'])
+    # Create all valid cases from the samples defined in farn dict.
+    cases = create_cases(
+        farn_dict=farn_dict,
+        case_dir=farn_dirs['CASEDIR'],
+        valid_only=True,
+    )
 
     # Generate case folder structure
     # and create a case-specific paramDict file in each case folder
     if generate:
-        generate_case_folder_structure(cases)
-        generate_case_lists(
+        create_case_folders(cases)
+        create_param_dict_files(cases)
+        create_case_list_files(
             cases=cases,
             target_dir=farn_dirs['ROOTDIR'],
         )
-        _create_param_dict_file_in_case_folders(cases)
 
-    # Execute a given command in all case folders
+    # Execute a given command set in all case folders
     if command:
-        _execute_command_set_in_case_folders(
+        execute_command_set(
             cases=cases,
             command_set=command,
             ignore_errors=ignore_errors,
@@ -136,6 +126,14 @@ def run_farn(
         )
 
     logger.info('Successfully finished farn.\n')
+
+
+@dataclass
+class Parameter:
+    """Dataclass holding the parameter attributes 'name' and 'value'
+    """
+    name: Union[str, None] = None
+    value: Union[float, None] = None
 
 
 @dataclass
@@ -156,8 +154,7 @@ class Case:
     path: Path = Path.cwd()
     is_leaf: bool = False
     condition: Union[MutableMapping, None] = None
-    parameter_names: Union[MutableSequence[str], None] = None
-    parameter_values: Union[MutableSequence[float], None] = None
+    parameters: Union[MutableSequence[Parameter], None] = None
     command_sets: Union[MutableMapping, None] = None
 
     @property
@@ -195,38 +192,29 @@ class Case:
             action = 'exclude'
 
         # Check for formal errors that lead to invalidity
-        if not self.parameter_names and not self.parameter_values:
+        if not self.parameters:
             logger.warning(
                 f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                f"A filter expression {filter_expression} is defined, "
-                f"but no parameter names, nor parameter values exist. "
+                f"A filter expression {filter_expression} is defined, but no parameters exist. "
             )
             return False
-        if not self.parameter_names:
-            logger.warning(
-                f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                f"A filter expression {filter_expression} is defined, "
-                f"but parameter names are missing. "
-            )
-            return False
-        if not self.parameter_values:
-            logger.warning(
-                f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                f"A filter expression {filter_expression} is defined and parameter names exist, "
-                f"but parameter values are missing. "
-                f"Parameter names: {self.parameter_names} "
-                f"Parameter values: None "
-            )
-            return False
-        if len(self.parameter_names) != len(self.parameter_values):
-            logger.warning(
-                f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                f"A filter expression {filter_expression} is defined, and both parameter names and -values exist, "
-                f"but the number of parameter names does not match the number of parameter values. "
-                f"Parameter names: {self.parameter_names} "
-                f"Parameter values: {self.parameter_values} "
-            )
-            return False
+        for parameter in self.parameters:
+            if not parameter.name:
+                logger.warning(
+                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
+                    f"A filter expression {filter_expression} is defined, "
+                    f"but at least one parameter name is missing. "
+                )
+                return False
+            if not parameter.value:
+                logger.warning(
+                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
+                    f"A filter expression {filter_expression} is defined and parameter names exist, "
+                    f"but parameter values are missing. "
+                    f"Parameter name: {parameter.name} "
+                    f"Parameter value: None "
+                )
+                return False
 
         # transfer a white list of case properties to locals() for subsequent filtering
         available_vars = set()
@@ -253,15 +241,15 @@ class Case:
                 return False
 
         # Read all parameter names and their associated values defined in current case, and assign them to local in-memory variables
-        for parameter_name, parameter_value in zip(self.parameter_names, self.parameter_values):
-            if not re.match('^_', parameter_name):
+        for parameter in self.parameters:
+            if parameter.name and not re.match('^_', parameter.name):
                 try:
-                    exec(f'{parameter_name} = {parameter_value}')
-                    available_vars.add(parameter_name)
+                    exec(f'{parameter.name} = {parameter.value}')
+                    available_vars.add(parameter.name)
                 except Exception:
                     logger.exception(
                         f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                        f"Reading parameter {parameter_name} with value {parameter_value} failed. "
+                        f"Reading parameter {parameter.name} with value {parameter.value} failed. "
                     )
                     return False
 
@@ -278,13 +266,13 @@ class Case:
             # However, a warning will be logged and the respective case will be considered valid.
             logger.warning(
                 f"Layer {self.layer}, case {self.case} evaluation of the filter expression failed:\n"
-                f"\tPossibly one or more of the variables used in the filter expression are not defined or accessible in the current scope (layer).\n"
+                f"\tOne or more of the variables used in the filter expression are not defined or not accessible in the current layer.\n"
                 f"\t\tLayer: {self.layer}\n"
                 f"\t\tLevel: {self.level}\n"
                 f"\t\tCase: {self.case}\n"
                 f"\t\tFilter expression: {filter_expression}\n"
-                f"\t\tParameter names: {self.parameter_names}\n"
-                f"\t\tParameter values: {self.parameter_values} "
+                f"\t\tParameter names: {[parameter.name for parameter in self.parameters]}\n"
+                f"\t\tParameter values: {[parameter.value for parameter in self.parameters]} "
             )
 
         # Finally: Determine case validity based on filter expression and action
@@ -326,67 +314,53 @@ class Case:
             '_is_leaf': self.is_leaf,
             '_no_of_samples': self.no_of_samples,
             '_condition': self.condition,
-            '_parameter_names': self.parameter_names,
-            '_parameter_values': self.parameter_values,
+            '_parameters':
+            {parameter.name: parameter.value
+             for parameter in self.parameters or []},
             '_commands': self.command_sets,
         }
 
-    def add_uservars(self, sublayer: MutableMapping):
-        '''add non-_-keywords to names, values
-        from inside the level scope,
-        making them available during runtime
-        '''
-        for key, item in sublayer.items():
-            if not key.startswith('_'):
-                self.parameter_names.append(key)
-                self.parameter_values.append(item)
 
+def create_samples(farn_dict: CppDict):
+    """Run sampling and create the samples inside all layers of the passed in farn dict.
 
-def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
-    """Runs the sampling for all layers and returns the sampled farnDict
+    Creates the _samples element in each layer and populates it with the discrete samples generated for the parameters defined and varied in the respective layer.
+    In case the _samples element already exists in a layer, it will be overwritten.
 
     Parameters
     ----------
     farn_dict : CppDict
-        farnDict for which sampling shall be run
-
-    Returns
-    -------
-    Union[CppDict, None]
-        sampled farnDict
+        farn dict the samples shall be created in
     """
     from farn.sampling.sampling import DiscreteSampling
 
     if '_layers' not in farn_dict:
-        logger.error(
-            f"no '_layers' element in farn dict {farn_dict.name}. Conversion to sampled dict not possible."
-        )
-        return None
+        logger.error(f"no '_layers' element in farn dict {farn_dict.name}. Sampling not possible.")
+        return
 
-    def generate_samples_for_layer(level: int, layer_name: str, layer: MutableMapping):
+    def create_samples_in_layer(level: int, layer_name: str, layer: MutableMapping):
         '''
-        generates the samples for the specified layer
+        runs sampling and generates the samples in the passed in layer
         '''
         if '_sampling' not in layer:
             logger.error("no '_sampling' element in layer")
-            return None
+            return
         if '_type' not in layer['_sampling']:
             logger.error("no '_type' element in sampling")
-            return None
+            return
 
+        # instantiate and parameterize the sampling object
         sampling = DiscreteSampling()
         sampling.set_sampling_type(sampling_type=layer['_sampling']['_type'])
-        # parameterize the sampling
         sampling.set_sampling_parameters(base_name=layer_name, kwargs=layer['_sampling'])
 
-        # in case the layer already contains an samples section (e.g. from a former run) -> delete it
+        # in case a _samples element already exists (e.g. from a former run) -> delete it
         if '_samples' in layer:
             del layer['_samples']
 
-        # generate the samples and write them into the _samples element of the populated layer
+        # generate the samples and write them into the _samples element of the layer
         samples = sampling.generate()
-
-        layer.update({'_samples': samples})
+        layer['_samples'] = samples
 
         # if the layer does not have a _comment element yet: create a default comment
         if '_comment' not in layer:
@@ -395,74 +369,71 @@ def run_sampling(farn_dict: CppDict) -> Union[CppDict, None]:
 
         return layer
 
-    sampled_farn_dict = deepcopy(farn_dict)
-    sampled_farn_dict.source_file = create_target_file_name(
-        farn_dict.source_file,                                  # type: ignore
-        prefix='sampled.'
-    )
-
-    logger.info(f'Run sampling in {farn_dict.name}...')
-
-    for index, (key, value) in enumerate(sampled_farn_dict['_layers'].items()):
-        generate_samples_for_layer(
+    logger.info(f'Run sampling of {farn_dict.name}...')
+    for index, (key, value) in enumerate(farn_dict['_layers'].items()):
+        create_samples_in_layer(
             level=index,
             layer_name=key,
             layer=value,
         )
+    logger.info(f'Successfully ran sampling of {farn_dict.name}.')
 
-    logger.info(f'Successfully ran sampling in {farn_dict.name}.')
-
-    return sampled_farn_dict
+    return
 
 
-def register_cases(
+def create_cases(
     farn_dict: MutableMapping,
     case_dir: Path,
+    valid_only: bool = False,
 ) -> list[Case]:
-    """Generates a list of case objects representing all valid cases.
+    """Creates cases based on the layers, filter expressions and samples defined in the passed farn dict.
 
-    Recursively creates case objects for all valid cases, each case representing a valid permutation of samples acrosss the layers defined in farnDict.
-    register_cases() creates one distinct case object for each case, holding all case attributes readily parameterized and set to their case specific values.
-    Only valid cases will be registered, i.e. cases which fulfill the filter criteria configured for the respective layer.
-    Invalid cases get excluded.
+    Creates case objects for all cases derived by recursive permutation of layers and the case specific samples defined per layer.
+    create_cases() creates one distinct case object for each case, holding all case attributes (parameters) set to their case specific values.
+
+    Optionally, only _valid_ cases can be returned, i.e. cases which fulfill the filter criteria configured for the respective layer.
+    Invalid cases then get excluded.
 
     Note:
-
-    The actual case folders are not yet generated by register_cases().
-    Generating the case folder structure is the responsibility of generate_case_folder_structure().
-    However, the case_dir argument is passed in to allow register_cases() to already document in each case object
-    its _intended_ case folder path. This information is then read and used in generate_case_folder_structure()
+    The corresponding case folder structure is not yet created by create_cases().
+    Creating the case folder structure is the responsibility of create_case_folder_structure().
+    However, the case_dir argument is passed in to allow create_cases() to already document in each case object
+    its _intended_ case folder path. This information is then read and used in create_case_folder_structure()
     to actually create the case folders.
 
     Parameters
     ----------
     farn_dict : MutableMapping
-        farnDict, containing the farn configuration.
+        farn dict. The farn dict must be sampled, e.g. samples must have been generated for all layers defined in the farn dict.
     case_dir : Path
-        directory the case folder structure is intended to be generated in.
+        directory the case folder structure is (intended) to be generated in.
+    valid_only: bool
+        whether or not only valid cases shall be returned, i.e. cases which fulfill the filter criteria configured for the respective layer., by default False
 
     Returns
     -------
     list[Case]
-        list of case objects representing all valid cases. The attributes of each case object are readily parameterized and set to their case specific values.
+        list of case objects representing all created cases.
     """
-    logger.info('Register all valid cases..')
+    log_msg: str = 'List all valid cases..' if valid_only else 'List all cases..'
+    logger.info(log_msg)
 
     # Check arguments.
     if '_layers' not in farn_dict:
-        logger.error("register_cases: No '_layers' element contained in farn dict.")
+        logger.error("create_cases: No '_layers' element contained in farn dict.")
         return []
 
-    # Create cases list
+    # Initialize cases list
     cases: list[Case] = []
     number_of_invalid_cases: int = 0
-    # Create a local layers copy and turn that from dict format into list format
-    # in order to ease sequential and indexed access to individual layers in create_next_level_cases()
-    layers_copy: MutableMapping = deepcopy(farn_dict['_layers'])
-    layers: MutableSequence = []
-    for key, layer in layers_copy.items():
-        layer.update({'_name': key})
-        layers.append(layer)
+
+    # Create a local layers list that carries also the layers' name
+    # to ease sequential and indexed access to individual layers in create_next_level_cases()
+    layers: MutableSequence[MutableMapping] = []
+    for layer_name, layer in farn_dict['_layers'].items():
+        layer_copy = deepcopy(layer)
+        layer_copy['_name'] = layer_name
+        layers.append(layer_copy)
 
     def create_next_level_cases(
         level: int = 0,
@@ -473,69 +444,101 @@ def register_cases(
         nonlocal layers
 
         base_case = base_case or Case(path=Path.cwd())
-        base_case.parameter_names = base_case.parameter_names or []
-        base_case.parameter_values = base_case.parameter_values or []
+        base_case.parameters = base_case.parameters or []
 
-        layer: MutableMapping = layers[level]
-
-        if '_samples' not in layer or '_names' not in layer['_samples']:
+        current_layer: MutableMapping = layers[level]
+        # validity checks for current layer
+        if '_samples' not in current_layer:
+            logger.warning(
+                f"No _samples element found in layer {current_layer['_name']}.\n"
+                f"Creation of cases for level {level:d2} aborted. "
+            )
+            return
+        if '_names' not in current_layer['_samples']:
+            logger.warning(
+                f"The _samples element in layer {current_layer['_name']} is empty, or does not have a _names element.\n"
+                f"Creation of cases for level {level:d2} aborted. "
+            )
             return
 
-        layer_name: str = layer['_name']
-        no_of_samples: int = len(layer['_samples']['_names'])
-        is_leaf: bool = (level == len(layers) - 1)
-        condition: Union[MutableMapping,
-                         None] = layer['_condition'] if '_condition' in layer else None
-        commands: Union[MutableMapping,
-                        None] = layer['_commands'] if '_commands' in layer else None
+        current_layer_name: str = current_layer['_name']
+        current_layer_is_leaf: bool = (level == len(layers) - 1)
 
-        samples_without_names: MutableMapping = {
+        no_of_samples_in_current_layer: int = len(current_layer['_samples']['_names'])
+        samples_in_current_layer: MutableMapping[str, MutableSequence[float]] = {
             param_name: param_values
             for param_name,
-            param_values in layer['_samples'].items()
+            param_values in current_layer['_samples'].items()
             if param_name != '_names'
         }
 
-        # There is a bug! Or is it a misunderstood feature?
-        # Could not evaluate why some variable names are inherited twice from base_case
-        # workaround: loop over list skipping already taken names
-        # The solution is perhaps simple but I cannot see it.
-        # The structure of two lists (names, values) and appending separately is unlucky!
-        n_list = []
-        n_set = set([])
-        for i_name in base_case.parameter_names:
-            if i_name not in n_set:
-                n_list.append(i_name)
-            n_set.add(i_name)
-        # param_names: MutableSequence[str] = deepcopy(base_case.param_names)
-        param_names: MutableSequence[str] = n_list
+        parameter_names_used_in_preceeding_layers: MutableSet[str] = {
+            parameter.name
+            for parameter in base_case.parameters
+            if parameter.name
+        }
 
-        param_names.extend(list(samples_without_names.keys()))
-        param_values: MutableSequence[float] = []
+        parameter_names_in_current_layer: MutableSequence[str] = []
+        for parameter_name in list(samples_in_current_layer.keys()):
+            if parameter_name in parameter_names_used_in_preceeding_layers:
+                logger.warning(
+                    f'The parameter {parameter_name} defined in layer {current_layer_name} had already been defined in a preceeding layer.\n'
+                    f'The preceeding definition prevails. The samples for parameter {parameter_name} defined in layer {current_layer_name} are skipped. '
+                )
+            else:
+                parameter_names_in_current_layer.append(parameter_name)
 
-        for index, name in enumerate(layer['_samples']['_names']):
-            name = remove_quotes(name)
-            param_values = deepcopy(base_case.parameter_values)
-            param_values.extend(
-                [param_values[index] for param_values in samples_without_names.values()]
+        user_variables_in_current_layer: MutableSequence[Parameter] = []
+        for key, item in current_layer.items():
+            if not key.startswith('_'):
+                user_variable = Parameter(name=key, value=item)
+                if user_variable.name in parameter_names_used_in_preceeding_layers:
+                    logger.warning(
+                        f'The user variable {user_variable.name} defined in layer {current_layer_name} matches a parameter that\n'
+                        f'had already been defined in a preceeding layer.\n'
+                        f'The preceeding definition prevails. The user variable {user_variable.name} defined in layer {current_layer_name} is skipped. '
+                    )
+                elif user_variable.name in parameter_names_in_current_layer:
+                    logger.warning(
+                        f'The user variable {user_variable.name} defined in layer {current_layer_name} matches a parameter name defined in the same layer.\n'
+                        f'The preceeding definition prevails. The user variable {user_variable.name} defined in layer {current_layer_name} is skipped. '
+                    )
+                else:
+                    user_variables_in_current_layer.append(user_variable)
+
+        condition_in_current_layer: Union[
+            MutableMapping,
+            None] = current_layer['_condition'] if '_condition' in current_layer else None
+        commands_in_current_layer: Union[
+            MutableMapping,
+            None] = current_layer['_commands'] if '_commands' in current_layer else None
+
+        for index, case_name in enumerate(current_layer['_samples']['_names']):
+            case_name = remove_quotes(case_name)
+
+            case_parameters: MutableSequence[Parameter] = [
+                parameter for parameter in base_case.parameters if parameter.name
+            ]
+            case_parameters.extend(
+                Parameter(parameter_name, samples_in_current_layer[parameter_name][index])
+                for parameter_name in parameter_names_in_current_layer
             )
+            case_parameters.extend(user_variables_in_current_layer)
 
             case = Case(
-                layer=layer_name,
+                case=case_name,
+                layer=current_layer_name,
                 level=level,
-                no_of_samples=no_of_samples,
+                no_of_samples=no_of_samples_in_current_layer,
                 index=index,
-                path=base_case.path / name,
-                case=name,
-                is_leaf=is_leaf,
-                condition=condition,
-                parameter_names=param_names,
-                parameter_values=param_values,
-                command_sets=commands,
+                path=base_case.path / case_name,
+                is_leaf=current_layer_is_leaf,
+                condition=condition_in_current_layer,
+                parameters=case_parameters,
+                command_sets=commands_in_current_layer,
             )
 
-            if case.is_valid:
-                case.add_uservars(layer)
+            if not valid_only or case.is_valid:
                 cases.append(case)
                 if not case.is_leaf:            # Recursion for next level cases
                     create_next_level_cases(
@@ -553,114 +556,56 @@ def register_cases(
 
     leaf_cases = [case for case in cases if case.is_leaf]
 
-    logger.info(
-        f'Successfully listed {len(leaf_cases)} valid case{plural(len(leaf_cases))}. '
-        f'{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} {plural(number_of_invalid_cases, "were")} excluded.'
-    )
+    log_msg = ''
+    if valid_only:
+        log_msg = (
+            f'Successfully listed {len(leaf_cases)} valid case{plural(len(leaf_cases))}. '
+            f'{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} {plural(number_of_invalid_cases, "were")} excluded.'
+        )
+    else:
+        log_msg = (f'Successfully listed {len(leaf_cases)} case{plural(len(leaf_cases))}. ')
+    logger.info(log_msg)
 
     return cases
 
 
-def generate_case_folder_structure(cases: MutableSequence[Case]) -> int:
-    """Generates the case folder structure for the passed in cases.
-
-    Generates the case folder structure based on a list of parameterized cases
-    as generated by e.g. register_cases().
+def create_case_folders(cases: MutableSequence[Case]) -> int:
+    """Creates the case folder structure for the passed in cases.
 
     Parameters
     ----------
     cases : MutableSequence[Case]
-        cases the case folder structure shall be generated for.
+        cases the case folders shall be created for.
 
     Returns
     -------
     int
-        number of case folders generated.
+        number of case folders created.
     """
 
-    logger.info('Generate case folder structure...')
-    number_of_case_folders_generated: int = 0
+    logger.info('Create case folder structure...')
+    number_of_case_folders_created: int = 0
 
     for case in cases:
         logger.debug(f"creating case folder {case.path}")   # 1
         case.path.mkdir(parents=True, exist_ok=True)
-        number_of_case_folders_generated += 1
+        number_of_case_folders_created += 1
 
-    logger.info(f'Successfully generated {number_of_case_folders_generated} case folders.')
+    logger.info(f'Successfully created {number_of_case_folders_created} case folders.')
 
-    return number_of_case_folders_generated
+    return number_of_case_folders_created
 
 
-def generate_case_lists(
-    cases: MutableSequence[Case],
-    target_dir: Union[Path, None] = None,
-    levels: Union[int, Sequence[int], None] = None
-) -> Path:
-    """Generates case list files documenting all case folders per level.
+def create_param_dict_files(cases: MutableSequence[Case]) -> int:
+    """Creates the case specific paramDict files in the case folders of the passed in cases.
 
-    Case list files are generated per level, meaning i.e. the case list file for level 0
-    contains the paths to all case folders on level 0.
-    A case list for level 1 contains the paths to all case folders on level 1, and so on.
-
-    These lists can then be used with i.e. the batchProcess command line script to execute shell commands
-    in all case folders belonging to a specific nest level in the case folder structure.
+    paramDict files contain the case specific parameters, meaning, via the paramDict files the case specific values
+    for all parameters get distributed to and persisted in the case folders.
 
     Parameters
     ----------
     cases : MutableSequence[Case]
-        cases the case list files shall be generated for (as generated i.e. by register_cases())
-    target_dir : Path, optional
-        directory in which the case list files shall be created. If None, current working directory will be used., by default None
-    levels : Union[int, Sequence[int], None], optional
-        list of integers indicating the individual levels for which case list files shall be generated.
-        If None, by default only a case list file for the deepest level (the leaf level) will be generated., by default None
-
-    Returns
-    -------
-    Path
-        [description]
-    """
-
-    _remove_old_case_lists()
-    target_dir = target_dir or Path.cwd()
-    case_list = target_dir / 'caseList'
-    logger.info(f"Generate case list: {case_list}")
-
-    case_lists_generated: MutableSequence[Path] = []
-    max_level: int = 0
-    with case_list.open(mode='w') as f:
-        for case in cases:
-            f.write(f"{case.path.absolute()}\n")
-            max_level = max(max_level, case.level)
-    case_lists_generated.append(case_list)
-
-    levels = levels or max_level
-    levels = [levels] if isinstance(levels, int) else levels
-
-    for level in levels:
-        case_list_for_level = target_dir / f'caseList_level_{level:02d}'
-        logger.info(f"Generate case list for level {level}: {case_list_for_level}")
-        with case_list_for_level.open(mode='w') as f:
-            for case in (case for case in cases if case.level == level):
-                f.write(f"{case.path.absolute()}\n")
-        case_lists_generated.append(case_list_for_level)
-
-    case_lists_log = ''.join('\t' + path.name + '\n' for path in case_lists_generated)
-    case_lists_log = case_lists_log.removesuffix('\n')
-    logger.info(f"Successfully generated following case lists:\n {case_lists_log}")
-
-    return case_list
-
-
-def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int:
-    """Creates the paramDict file in the case folders of the passed in cases.
-
-    The paramDict file contains the case specific parameters.
-
-    Parameters
-    ----------
-    cases : MutableSequence[Case]
-        cases for which the paramDict file shall be created
+        cases the paramDict file shall be created for
 
     Returns
     -------
@@ -668,7 +613,7 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
         number of paramDict files created
     """
 
-    logger.info('Drop case-specific paramDict files in all case folders...')
+    logger.info('Create case-specific paramDict files in all case folders...')
     number_of_param_dicts_created: int = 0
 
     for case in cases:
@@ -676,13 +621,11 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
         target_file = case.path / 'paramDict'
         param_dict = CppDict(target_file)
 
-        if case.parameter_names and case.parameter_values and len(case.parameter_names
-                                                                  ) == len(case.parameter_values):
-            for parameter_name, parameter_value in zip(case.parameter_names, case.parameter_values):
-                if not re.match('^_', parameter_name):
-                    param_dict.update({parameter_name: parameter_value})
+        for parameter in case.parameters or []:
+            if parameter.name and not re.match('^_', parameter.name):
+                param_dict[parameter.name] = parameter.value
 
-        param_dict.update({'_case': case.to_dict()})
+        param_dict['_case'] = case.to_dict()
 
         DictWriter.write(param_dict, target_file, mode='w')
 
@@ -692,7 +635,7 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
     leaf_cases = [case for case in cases if case.is_leaf]
 
     logger.info(
-        f'Successfully dropped {number_of_param_dicts_created} '
+        f'Successfully created {number_of_param_dicts_created} '
         f'paramDict file{plural(number_of_param_dicts_created)} '
         f'in {len(leaf_cases)} case folder{plural(len(leaf_cases))}.'
     )
@@ -700,7 +643,74 @@ def _create_param_dict_file_in_case_folders(cases: MutableSequence[Case]) -> int
     return number_of_param_dicts_created
 
 
-def _execute_command_set_in_case_folders(
+def create_case_list_files(
+    cases: MutableSequence[Case],
+    target_dir: Union[Path, None] = None,
+    levels: Union[int, Sequence[int], None] = None
+) -> list[Path]:
+    """Create case list files for the specified nest levels.
+
+    Case list files are simple text files containing a list of paths to all case folders that share a common nest level within the case folder structure.
+    I.e. a case list file created for level 0 contains the paths to all case folders on level 0.
+    A case list file for level 1 contains the paths to all case folders on level 1, and so on.
+
+    These lists can be used i.e. in a batchProcess to execute shell commands
+    in all case folders of a specific nest level inside the case folder structure.
+
+    Parameters
+    ----------
+    cases : MutableSequence[Case]
+        cases the case list files shall be created for
+    target_dir : Path, optional
+        directory in which the case list files shall be created. If None, current working directory will be used., by default None
+    levels : Union[int, Sequence[int], None], optional
+        list of integers indicating the nest levels for which case list files shall be created.
+        If missing, by default a case list file for the deepest nest level (the leaf level) will becreated., by default None
+
+    Returns
+    -------
+    list[Path]
+        The case list files that have been created (returned as a list of Path objects)
+    """
+
+    _remove_old_case_list_files()
+    target_dir = target_dir or Path.cwd()
+    case_list_file_all_levels = target_dir / 'caseList'
+    logger.info(
+        f"Create case list file '{case_list_file_all_levels}', containing all case folders."
+    )
+
+    case_list_files_created: MutableSequence[Path] = []
+    max_level: int = 0
+    with case_list_file_all_levels.open(mode='w') as f:
+        for case in cases:
+            f.write(f"{case.path.absolute()}\n")
+            max_level = max(max_level, case.level)
+    case_list_files_created.append(case_list_file_all_levels)
+
+    levels = levels or max_level
+    levels = [levels] if isinstance(levels, int) else levels
+
+    for level in levels:
+        case_list_file_for_level = target_dir / f'caseList_level_{level:02d}'
+        logger.info(
+            f"Create case list file '{case_list_file_for_level}', containing the case folders of level {level}."
+        )
+        with case_list_file_for_level.open(mode='w') as f:
+            for case in (case for case in cases if case.level == level):
+                f.write(f"{case.path.absolute()}\n")
+        case_list_files_created.append(case_list_file_for_level)
+
+    case_list_files_created_log = ''.join(
+        '\t' + path.name + '\n' for path in case_list_files_created
+    )
+    case_list_files_created_log = case_list_files_created_log.removesuffix('\n')
+    logger.info(f"Successfully created following case list files:\n {case_list_files_created_log}")
+
+    return case_list_files_created
+
+
+def execute_command_set(
     cases: MutableSequence[Case],
     command_set: str,
     ignore_errors: bool = False,
@@ -857,7 +867,7 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
     return
 
 
-def _remove_old_case_lists():   # sourcery skip: avoid-builtin-shadow
+def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
     """Removes old case list files, if existing.
     """
     logger.info('Remove old case list files...')

@@ -24,9 +24,9 @@ def test_generate():
     os.system(f'python -m farn.cli.farn --generate {sampled_file.name}')
     # Assert
     assert os.path.exists('cases')
-    assert os.path.exists('cases/layer1_000')
-    assert os.path.exists('cases/layer1_001')
-    assert os.path.exists('cases/layer1_002')
+    assert os.path.exists('cases/layer1_0')
+    assert os.path.exists('cases/layer1_1')
+    assert os.path.exists('cases/layer1_2')
 
 
 def test_regenerate():
@@ -39,9 +39,9 @@ def test_regenerate():
     os.system(f'python -m farn.cli.farn --generate {sampled_file.name}')
     # Assert
     assert os.path.exists('cases')
-    assert os.path.exists('cases/layer1_000')
-    assert os.path.exists('cases/layer1_001')
-    assert os.path.exists('cases/layer1_002')
+    assert os.path.exists('cases/layer1_0')
+    assert os.path.exists('cases/layer1_1')
+    assert os.path.exists('cases/layer1_2')
 
 
 # @TODO: There is nothing  actually asserted in this test. -> Frank to check.
@@ -85,7 +85,7 @@ def test_generate_logging_verbosity_default(monkeypatch, capsys):
     main()
     out: str = capsys.readouterr().out.rstrip()
     # Assert
-    assert 'Successfully dropped 10 paramDict files in 10 case folders.' in out
+    assert 'Successfully created 10 paramDict files in 10 case folders.' in out
     assert 'creating case folder' not in out
 
 
@@ -100,7 +100,7 @@ def test_generate_logging_verbosity_verbose(monkeypatch, capsys):
     main()
     out: str = capsys.readouterr().out.rstrip()
     # Assert
-    assert 'Successfully dropped 10 paramDict files in 10 case folders.' in out
+    assert 'Successfully created 10 paramDict files in 10 case folders.' in out
     assert 'creating case folder' in out
 
 
@@ -159,8 +159,8 @@ def test_generate_filtering_one_layer_filter_layer(monkeypatch, capsys):
     # case folder 'layer0_1' must not exist
     assert not os.path.exists('cases_one_layer/layer0_1')
     assert 'Successfully listed 2 valid cases. 1 invalid case was excluded.' in out
-    assert 'Successfully generated 2 case folders.' in out
-    assert 'Successfully dropped 2 paramDict files in 2 case folders.' in out
+    assert 'Successfully created 2 case folders.' in out
+    assert 'Successfully created 2 paramDict files in 2 case folders.' in out
 
 
 def test_sample_filtering_one_layer_filter_param(monkeypatch, capsys):
@@ -187,7 +187,7 @@ def test_generate_filtering_one_layer_filter_param(monkeypatch, capsys):
     out: str = capsys.readouterr().out.rstrip()
     # Assert
     assert os.path.exists('cases_one_layer')
-    assert 'Successfully dropped 2 paramDict files in 2 case folders.' in out
+    assert 'Successfully created 2 paramDict files in 2 case folders.' in out
 
 
 def test_sample_filtering_two_layers_filter_layer(monkeypatch, capsys):
@@ -216,8 +216,8 @@ def test_generate_filtering_two_layers_filter_layer(monkeypatch, capsys):
     # case folder 'layer1_0/layers_0' must not exist
     assert not os.path.exists('cases_two_layers/layer1_0/layers_0')
     assert 'Successfully listed 3 valid cases. 6 invalid cases were excluded.' in out
-    assert 'Successfully generated 6 case folders.' in out
-    assert 'Successfully dropped 3 paramDict files in 3 case folders.' in out
+    assert 'Successfully created 6 case folders.' in out
+    assert 'Successfully created 3 paramDict files in 3 case folders.' in out
 
 
 def test_sample_filtering_two_layers_filter_param(monkeypatch, capsys):
@@ -244,4 +244,4 @@ def test_generate_filtering_two_layers_filter_param(monkeypatch, capsys):
     out: str = capsys.readouterr().out.rstrip()
     # Assert
     assert os.path.exists('cases_two_layers')
-    assert 'Successfully dropped 3 paramDict files in 3 case folders.' in out
+    assert 'Successfully created 3 paramDict files in 3 case folders.' in out

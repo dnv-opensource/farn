@@ -13,16 +13,11 @@ _layers
 {
     layer1
     {
-        _samples
+        _sampling
         {
-            _names
-            (
-                layer1_000      layer1_001      layer1_002
-            );
-            param1
-            (
-                0       1       2
-            );
+            _type fixed;
+            _names (param1);
+            _values ((0 1 2));
         }
         _commands
         {
