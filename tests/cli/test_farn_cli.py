@@ -22,7 +22,6 @@ class CliArgs():
     sample: bool = False
     generate: bool = False
     execute: Union[str, None] = None
-    ignore_errors: bool = False
     test: bool = False
 
 
@@ -51,8 +50,6 @@ class CliArgs():
             CliArgs(execute='command name with spaces')
         ),
         (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--ignore-errors'], CliArgs(ignore_errors=True)),
-        (['test_farnDict', '-i'], ArgumentError),
         (['test_farnDict', '--test'], CliArgs(test=True)),
         (['test_farnDict', '-t'], ArgumentError),
     ]
@@ -131,7 +128,6 @@ def test_logging_configuration(
         sample: bool,
         generate: bool,
         command: Union[str, None],
-        ignore_errors: bool,
         test: bool,
     ):
         pass
@@ -164,7 +160,6 @@ class ApiArgs():
     sample: bool = False
     generate: bool = False
     command: Union[str, None] = None
-    ignore_errors: bool = False
     test: bool = False
 
 
@@ -184,8 +179,6 @@ class ApiArgs():
             ApiArgs(command='command name with spaces')
         ),
         (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--ignore-errors'], ApiArgs(ignore_errors=True)),
-        (['test_farnDict', '-i'], ArgumentError),
         (['test_farnDict', '--test'], ApiArgs(test=True)),
         (['test_farnDict', '-t'], ArgumentError),
     ]
@@ -204,14 +197,12 @@ def test_api_invokation(
         sample: bool = False,
         generate: bool = False,
         command: Union[str, None] = None,
-        ignore_errors: bool = False,
         test: bool = False,
     ):
         args.farn_dict_file = farn_dict_file
         args.sample = sample
         args.generate = generate
         args.command = command
-        args.ignore_errors = ignore_errors
         args.test = test
 
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)

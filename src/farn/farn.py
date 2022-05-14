@@ -25,7 +25,6 @@ def run_farn(
     sample: bool = False,
     generate: bool = False,
     command: Union[str, None] = None,
-    ignore_errors: bool = False,
     test: bool = False,
 ):
     """Runs farn.
@@ -44,8 +43,6 @@ def run_farn(
         if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
     command : Union[str, None], optional
         executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
-    ignore_errors : bool, optional
-        if True, does not halt on errors, by default False
     test : bool, optional
         if True, runs only first case and returns, by default False
     """
@@ -70,7 +67,6 @@ def run_farn(
         f"\t sample: \t\t{sample}\n"
         f"\t generate: \t\t{generate}\n"
         f"\t command: \t\t{command}\n"
-        f"\t ignore_errors: \t{ignore_errors}\n"
         f"\t test: \t\t\t{test}"
     )
 
@@ -94,7 +90,6 @@ def run_farn(
         'sample': sample,
         'generate': generate,
         'execute': command,
-        'ignore-errors': ignore_errors,
         'test': test
     }
     farn_dict.update({'_farnOpts': farn_opts})
@@ -121,7 +116,6 @@ def run_farn(
         execute_command_set(
             cases=cases,
             command_set=command,
-            ignore_errors=ignore_errors,
             test=test,
         )
 
@@ -713,7 +707,6 @@ def create_case_list_files(
 def execute_command_set(
     cases: MutableSequence[Case],
     command_set: str,
-    ignore_errors: bool = False,
     test: bool = False,
 ) -> int:
     """Executes the given command set in the case folders of the passed in cases.
@@ -724,8 +717,6 @@ def execute_command_set(
         cases for which the specified command set shall be executed.
     command_set : str
         name of the command set to be executed, as defined in farnDict
-    ignore_errors : bool, optional
-        if True, does not hold on errors, by default False
     test : bool, optional
         if True, executes command set in only first case folder where command set is defined, by default False
 
@@ -769,7 +760,7 @@ def execute_command_set(
                 current_dir = Path.cwd()
                 os.chdir(case.path)
                 # Execute shell commands
-                _execute_shell_commands(shell_commands, ignore_errors=ignore_errors)
+                _execute_shell_commands(shell_commands)
                 # Change back cwd to current folder
                 os.chdir(current_dir)
 
@@ -883,7 +874,7 @@ def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
     return
 
 
-def _sys_call(shell_commands: MutableSequence, ignore_errors: bool = False):
+def _sys_call(shell_commands: MutableSequence):
     """Fallback function until _execute_command is usable under linux
     """
 
@@ -893,21 +884,19 @@ def _sys_call(shell_commands: MutableSequence, ignore_errors: bool = False):
     return
 
 
-def _execute_shell_commands(shell_commands: MutableSequence, ignore_errors: bool = False):
+def _execute_shell_commands(shell_commands: MutableSequence):
     """Execute a sequence of shell commands using subprocess.
 
     Parameters
     ----------
     shell_commands : MutableSequence
         list with shell commands to be executed
-    ignore_errors : bool, optional
-        if True, does not hold on errors, by default False
     """
 
     # @TODO: until the problem with vanishing '.'s on Linux systems is solved (e.g. in command "ln -s target ."),
     #        reroute the function call to _sys_call instead, as a workaround.
     if platform.system() == 'Linux':
-        _sys_call(shell_commands, ignore_errors=ignore_errors)
+        _sys_call(shell_commands)
         return
 
     for shell_command in shell_commands:

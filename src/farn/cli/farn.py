@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Union
 
-# Remove current directory from Pathon search path.
+# Remove current directory from Python search path.
 # Only through this trick it is possible that the current CLI file 'farn.py'
 # carries the same name as the package 'farn' we import from in the next lines.
 # If we did NOT remove the current directory from the Python search path,
@@ -75,14 +75,6 @@ def _argparser() -> argparse.ArgumentParser:
             'The command set must be defined in the commands section of the applicable layer in farnDict.'
         ),
         default=None,
-        required=False,
-    )
-
-    parser.add_argument(
-        '--ignore-errors',
-        action='store_true',
-        help='do not halt on errors',
-        default=False,
         required=False,
     )
 
@@ -163,7 +155,6 @@ def main():
     sample: bool = args.sample
     generate: bool = args.generate
     command: Union[str, None] = args.execute
-    ignore_errors: bool = args.ignore_errors
     test: bool = args.test
 
     # catch missing arguments {sample, generate, command}
@@ -188,7 +179,6 @@ def main():
         sample=sample,
         generate=generate,
         command=command,
-        ignore_errors=ignore_errors,
         test=test,
     )
 
