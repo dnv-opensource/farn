@@ -33,7 +33,7 @@ farn_files = [
 
 
 @pytest.fixture(autouse=True)
-def default_setup_and_teardown():
+def default_setup_and_teardown(caplog):
     _remove_farn_dirs_and_files()
     yield
     _remove_farn_dirs_and_files()
@@ -46,3 +46,9 @@ def _remove_farn_dirs_and_files():
         for file in glob(pattern):
             file = Path(file)
             file.unlink(missing_ok=True)
+
+
+@pytest.fixture(autouse=True)
+def setup_logging(caplog):
+    caplog.set_level('INFO')
+    caplog.clear()
