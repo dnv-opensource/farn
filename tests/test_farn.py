@@ -7,7 +7,7 @@ from farn.farn import run_farn
 
 def test_sample():
     # Prepare
-    farn_dict_file = Path('test_farnDict')
+    farn_dict_file = Path('test_farnDict_v4')
     sampled_file = Path(f'sampled.{farn_dict_file.name}')
     assert not sampled_file.exists()
     # Execute

@@ -116,7 +116,7 @@ class DiscreteSampling():
 
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -144,7 +144,7 @@ class DiscreteSampling():
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -207,7 +207,7 @@ class DiscreteSampling():
 
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -259,7 +259,7 @@ class DiscreteSampling():
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]

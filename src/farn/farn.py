@@ -358,7 +358,7 @@ def create_samples(farn_dict: CppDict):
 
         # if the layer does not have a _comment element yet: create a default comment
         if '_comment' not in layer:
-            default_comment = f'level {level:d}, layer {layer_name}'
+            default_comment = f'level {level:2d}, layer {layer_name}'
             layer['_comment'] = default_comment
 
         return layer
@@ -445,25 +445,25 @@ def create_cases(
         if '_samples' not in current_layer:
             logger.warning(
                 f"No _samples element found in layer {current_layer['_name']}.\n"
-                f"Creation of cases for level {level:d2} aborted. "
+                f"Creation of cases for level {level:2d} aborted. "
             )
             return
-        if '_names' not in current_layer['_samples']:
+        if '_case_name' not in current_layer['_samples']:
             logger.warning(
-                f"The _samples element in layer {current_layer['_name']} is empty, or does not have a _names element.\n"
-                f"Creation of cases for level {level:d2} aborted. "
+                f"The _samples element in layer {current_layer['_name']} is empty or does not have a _case_name element.\n"
+                f"Creation of cases for level {level:2d} aborted. "
             )
             return
 
         current_layer_name: str = current_layer['_name']
         current_layer_is_leaf: bool = (level == len(layers) - 1)
 
-        no_of_samples_in_current_layer: int = len(current_layer['_samples']['_names'])
+        no_of_samples_in_current_layer: int = len(current_layer['_samples']['_case_name'])
         samples_in_current_layer: MutableMapping[str, MutableSequence[float]] = {
             param_name: param_values
             for param_name,
             param_values in current_layer['_samples'].items()
-            if param_name != '_names'
+            if param_name != '_case_name'
         }
 
         parameter_names_used_in_preceeding_layers: MutableSet[str] = {
@@ -507,7 +507,7 @@ def create_cases(
             MutableMapping,
             None] = current_layer['_commands'] if '_commands' in current_layer else None
 
-        for index, case_name in enumerate(current_layer['_samples']['_names']):
+        for index, case_name in enumerate(current_layer['_samples']['_case_name']):
             case_name = remove_quotes(case_name)
 
             case_parameters: MutableSequence[Parameter] = [
