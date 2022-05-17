@@ -8,9 +8,12 @@ import pytest
 from farn.cli import farn
 from farn.cli.farn import _argparser, main
 
+# *****Test commandline interface (CLI)************************************************************
+
 
 @dataclass()
 class CliArgs():
+    # Expected default values for the CLI arguments when farn gets called via the commandline
     quiet: bool = False
     verbose: bool = False
     log: Union[str, None] = None
@@ -19,7 +22,6 @@ class CliArgs():
     sample: bool = False
     generate: bool = False
     execute: Union[str, None] = None
-    ignore_errors: bool = False
     test: bool = False
 
 
@@ -48,13 +50,11 @@ class CliArgs():
             CliArgs(execute='command name with spaces')
         ),
         (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--ignore-errors'], CliArgs(ignore_errors=True)),
-        (['test_farnDict', '-i'], ArgumentError),
         (['test_farnDict', '--test'], CliArgs(test=True)),
         (['test_farnDict', '-t'], ArgumentError),
     ]
 )
-def test_argparser(
+def test_cli(
     inputs: List[str],
     expected: Union[CliArgs, type],
     monkeypatch,
@@ -64,11 +64,11 @@ def test_argparser(
     parser = _argparser()
     # Execute
     if isinstance(expected, CliArgs):
-        args_assert: CliArgs = expected
+        args_expected: CliArgs = expected
         args = parser.parse_args()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised
@@ -78,9 +78,13 @@ def test_argparser(
         assert False
 
 
+# *****Ensure the CLI correctly configures logging*************************************************
+
+
 @dataclass()
 class ConfigureLoggingArgs():
-    log_level_console: str = 'WARNING'
+    # Values that main() is expected to pass to ConfigureLogging() by default when configuring the logging
+    log_level_console: str = 'INFO'     # this deviates from standard 'WARNING', but was decided intentionally for farn
     log_file: Union[Path, None] = None
     log_level_file: str = 'WARNING'
 
@@ -89,25 +93,19 @@ class ConfigureLoggingArgs():
     "inputs, expected",
     [
         ([], ArgumentError),
-        (['test_farnDict'], ConfigureLoggingArgs(log_level_console='INFO')),
+        (['test_farnDict'], ConfigureLoggingArgs()),
         (['test_farnDict', '-q'], ConfigureLoggingArgs(log_level_console='ERROR')),
         (['test_farnDict', '--quiet'], ConfigureLoggingArgs(log_level_console='ERROR')),
         (['test_farnDict', '-v'], ConfigureLoggingArgs(log_level_console='DEBUG')),
         (['test_farnDict', '--verbose'], ConfigureLoggingArgs(log_level_console='DEBUG')),
         (['test_farnDict', '-qv'], ArgumentError),
-        (
-            ['test_farnDict', '--log', 'logFile'],
-            ConfigureLoggingArgs(log_level_console='INFO', log_file=Path('logFile'))
-        ),
+        (['test_farnDict', '--log', 'logFile'], ConfigureLoggingArgs(log_file=Path('logFile'))),
         (['test_farnDict', '--log'], ArgumentError),
-        (
-            ['test_farnDict', '--log-level', 'INFO'],
-            ConfigureLoggingArgs(log_level_console='INFO', log_level_file='INFO')
-        ),
+        (['test_farnDict', '--log-level', 'INFO'], ConfigureLoggingArgs(log_level_file='INFO')),
         (['test_farnDict', '--log-level'], ArgumentError),
     ]
 )
-def test_configure_logging(
+def test_logging_configuration(
     inputs: List[str],
     expected: Union[ConfigureLoggingArgs, type],
     monkeypatch,
@@ -130,7 +128,6 @@ def test_configure_logging(
         sample: bool,
         generate: bool,
         command: Union[str, None],
-        ignore_errors: bool,
         test: bool,
     ):
         pass
@@ -139,11 +136,11 @@ def test_configure_logging(
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
-        args_assert: ConfigureLoggingArgs = expected
+        args_expected: ConfigureLoggingArgs = expected
         main()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised
@@ -153,13 +150,16 @@ def test_configure_logging(
         assert False
 
 
+# *****Ensure the CLI correctly invokes the API****************************************************
+
+
 @dataclass()
 class ApiArgs():
+    # Values that main() is expected to pass to run_farn() by default when invoking the API
     farn_dict_file: Path = Path('test_farnDict')
     sample: bool = False
     generate: bool = False
     command: Union[str, None] = None
-    ignore_errors: bool = False
     test: bool = False
 
 
@@ -179,13 +179,11 @@ class ApiArgs():
             ApiArgs(command='command name with spaces')
         ),
         (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--ignore-errors'], ApiArgs(ignore_errors=True)),
-        (['test_farnDict', '-i'], ArgumentError),
         (['test_farnDict', '--test'], ApiArgs(test=True)),
         (['test_farnDict', '-t'], ArgumentError),
     ]
 )
-def test_invoke_api(
+def test_api_invokation(
     inputs: List[str],
     expected: Union[ApiArgs, type],
     monkeypatch,
@@ -199,24 +197,22 @@ def test_invoke_api(
         sample: bool = False,
         generate: bool = False,
         command: Union[str, None] = None,
-        ignore_errors: bool = False,
         test: bool = False,
     ):
         args.farn_dict_file = farn_dict_file
         args.sample = sample
         args.generate = generate
         args.command = command
-        args.ignore_errors = ignore_errors
         args.test = test
 
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
-        args_assert: ApiArgs = expected
+        args_expected: ApiArgs = expected
         main()
         # Assert args
-        for key in args_assert.__dataclass_fields__:
-            assert args.__getattribute__(key) == args_assert.__getattribute__(key)
+        for key in args_expected.__dataclass_fields__:
+            assert args.__getattribute__(key) == args_expected.__getattribute__(key)
     elif issubclass(expected, Exception):
         exception: type = expected
         # Assert that expected exception is raised

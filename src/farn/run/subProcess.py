@@ -3,7 +3,7 @@ import re
 import subprocess as sub
 from pathlib import Path
 from threading import Lock
-from typing import Tuple
+from typing import Union
 
 from psutil import Process
 
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600):
+def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: int = 3600):
     """Creates a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
@@ -29,21 +29,16 @@ def execute_in_sub_process(command: str, path: Path = None, timeout: int = 3600)
 
         args = re.split(r'\s+', command.strip())
 
-        sub_process = sub.Popen(
-            args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=r"%s" % path
-        )
+        sub_process = sub.Popen(args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}")
 
         if len(command) > 18:
-            cmd_string = '"' + ''.join(list(command)[:11] ) + '..' + ''.join(list(command)[-3:]) + '"'
+            cmd_string = '"' + ''.join(list(command)[:11]
+                                       ) + '..' + ''.join(list(command)[-3:]) + '"'
         else:
             cmd_string = '"' + command + '"'
 
-        logger.info(
-            "Execute {:18} in {:}".format(cmd_string, path)
-        )
-        logger.debug(
-            f"(timout: {timeout}, pid: %{sub_process.pid})"
-        )
+        logger.info("Execute {:18} in {:}".format(cmd_string, path))
+        logger.debug(f"(timout: {timeout}, pid: %{sub_process.pid})")
 
     # Wait for subprocess to finish
     stdout = bytes()

@@ -19,6 +19,6 @@ sobol-seq-0.2.0
 sobol==0.9
 
 # ../dictIO
-git+https://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@github.com/dnv-opensource/dictIO.git
+dictIO>=0.0.23
 # ../ospx
-git+https://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@github.com/dnv-opensource/ospx.git
+ospx>=0.0.23

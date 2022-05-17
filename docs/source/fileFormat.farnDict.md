@@ -174,7 +174,7 @@ Correspondingly, a case is considered _invalid_ if either of the two complementi
 The following case attributes can be used in filter expressions. They are made available as variables by farn during runtime.
 | Case Attribute            | Description                                     |
 | ------------------------- | ----------------------------------------------- |
-| `case_name` | Name of the case |
+| `case` | Name of the case |
 | `layer` | Name of the layer |
 | `level` | Level (integer, zero-based) |
 | `index` | Index (integer, zero-based) |

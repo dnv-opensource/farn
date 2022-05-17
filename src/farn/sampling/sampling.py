@@ -5,10 +5,11 @@
 # all about sampling an distributions
 # we will see for what it is good for
 
-from typing import MutableMapping
-import numpy as np
-import math
 import logging
+import math
+from typing import MutableMapping, Union
+
+import numpy as np
 
 
 logger = logging.getLogger(__name__)
@@ -57,7 +58,9 @@ class DiscreteSampling():
         else:
             logger.error(f'sampling type {sampling_type} not implemented yet')
 
-    def set_sampling_parameters(self, base_name: str = 'unnamed', kwargs: MutableMapping = None):
+    def set_sampling_parameters(
+        self, base_name: str = 'unnamed', kwargs: Union[MutableMapping, None] = None
+    ):
         '''
         Validates the provided arguments.
         On successful validation, the configured sampling type is parameterized using the provided arguments.
@@ -81,7 +84,7 @@ class DiscreteSampling():
         # determine the dimension (=number of fields)
         self.number_of_fields = len(self.fields)
 
-    def generate(self):
+    def generate(self) -> dict:
         '''
         '''
         return_dict = {}
@@ -113,7 +116,7 @@ class DiscreteSampling():
 
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -141,7 +144,7 @@ class DiscreteSampling():
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -167,6 +170,7 @@ class DiscreteSampling():
             '''
             import itertools
             from typing import Sequence
+
             from SALib.sample import latin
 
             def flatten(iterable: Sequence):
@@ -203,7 +207,7 @@ class DiscreteSampling():
 
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]
@@ -255,7 +259,7 @@ class DiscreteSampling():
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             return_dict.update(
                 {
-                    '_names': [
+                    '_case_name': [
                         '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
                         for i in range(self.number_of_samples)
                     ]

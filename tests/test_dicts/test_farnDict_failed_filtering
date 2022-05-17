@@ -27,6 +27,8 @@ _layers
                 )
             );
         }
+        // test_farnDict_failed_filtering contains a common mistake:
+        // A filter expression references a variable that has not been defined yet (in this case param1)
         _condition
         {
             _filter           'abs(param0 * param1) >= 1';

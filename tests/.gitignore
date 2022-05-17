@@ -1,5 +1,5 @@
-/cases_assert/
-/cases_assert/*
+/cases_expected/
+/cases_expected/*
 /cases/
 /cases/*
 /logs/

@@ -1,5 +1,5 @@
 # farn
-farn is an n-dimensional case generator.
+[farn][farn_docs] is an n-dimensional case generator.
 
 Its primary design goal is to parameterize and execute simulation cases.
 However, at its core, farn is use-case agnostic and can support a wide spectrum of applications.
@@ -17,7 +17,7 @@ farn
 
 ## Installation
 ```sh
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ farn
+pip install farn
 ```
 farn requires the following two (sub-)packages:
 1. [dictIO][dictIO_docs]: foundation package, enabling farn to handle configuration files in dictIO dict file format.
@@ -43,6 +43,15 @@ farn farnDict --sample --generate
 
 _For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
 
+Further, the [farn-demo][farn_demo_repo] repository on GitHub is an excellent place for a jumpstart into farn.
+Simply clone the [farn-demo][farn_demo_repo] repository to your local machine and click through the demos and related READMEs, by recommendation in the following sequence:
+
+    README in root folder -> guides you through installation of farn
+    \ospCaseBuilder Demo (see README in ospCaseBuilder folder)
+    \farn Demo (see README in farn folder)
+    \importSystemStructure  Demo (see README in importSystemStructure folder)
+
+
 ## File Format
 A farnDict is a file in dictIO dict file format used with farn.
 
@@ -52,38 +61,49 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 
 ## Development Setup
 
-1. Install [Python 3.10](https://www.python.org/downloads/release/python-3102/)
+1. Install Python 3.9 or higher, i.e. [Python 3.9](https://www.python.org/downloads/release/python-3912/) or [Python 3.10](https://www.python.org/downloads/release/python-3104/)
 
-2. git clone the farn repository into your local development directory:
+2. Update pip and setuptools:
 
-~~~sh
-git clone git://github.com/dnv-opensource/farn.git path/to/your/dev/farn
-~~~
+    ~~~sh
+    $ python -m pip install --upgrade pip setuptools
+    ~~~
 
-3. In the farn root folder:
+3. git clone the farn repository into your local development directory:
 
-Create a Python virtual environment:
-~~~sh
-python -m venv .venv
-~~~
-Activate the virtual environment:
-~~~sh
-.venv\Scripts\activate
-~~~
-Update pip and setuptools:
-~~~sh
-python -m pip install --upgrade pip setuptools
-~~~
-Install farn's dependencies:
-~~~sh
-pip install -r requirements.txt
-~~~
+    ~~~sh
+    git clone https://github.com/dnv-opensource/farn path/to/your/dev/farn
+    ~~~
+
+4. In the farn root folder:
+
+    Create a Python virtual environment:
+    ~~~sh
+    $ python -m venv .venv
+    ~~~
+    Activate the virtual environment: <br>
+    ..on Windows:
+    ~~~sh
+    > .venv\Scripts\activate.bat
+    ~~~
+    ..on Linux:
+    ~~~sh
+    $ source .venv/bin/activate
+    ~~~
+    Update pip and setuptools:
+    ~~~sh
+    $ python -m pip install --upgrade pip setuptools
+    ~~~
+    Install farn's dependencies:
+    ~~~sh
+    $ pip install -r requirements.txt
+    ~~~
 
 
 ## Release History
 
-* 0.1.0
-    * First release
+* 0.0.23
+    * Pre-release
 
 ## Meta
 
@@ -102,14 +122,15 @@ Distributed under the MIT license. See [LICENSE](LICENSE.md) for more informatio
 ## Contributing
 
 1. Fork it (<https://github.com/dnv-opensource/farn/fork>)
-2. Create your branch (`git checkout -b fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin fooBar`)
+2. Create your branch (`git checkout -b myBranchName`)
+3. Commit your changes (`git commit -am 'place your commit message here'`)
+4. Push to the branch (`git push origin myBranchName`)
 5. Create a new Pull Request
 
 For your contribution, please make sure you follow the [STYLEGUIDE](STYLEGUIDE.md) before creating the Pull Request.
 
 <!-- Markdown link & img dfn's -->
-[dictIO_docs]: https://turbo-adventure-f218cdea.pages.github.io
-[ospx_docs]: https://literate-guacamole-9daa57bc.pages.github.io
-[farn_docs]: https://crispy-tribble-285142b5.pages.github.io
+[dictIO_docs]: https://dnv-opensource.github.io/dictIO/
+[ospx_docs]: https://dnv-opensource.github.io/ospx/
+[farn_docs]: https://dnv-opensource.github.io/farn/
+[farn_demo_repo]: https://github.com/dnv-opensource/farn-demo
