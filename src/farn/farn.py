@@ -364,15 +364,21 @@ def create_samples(farn_dict: CppDict):
         return layer
 
     logger.info(f'Run sampling of {farn_dict.name}...')
+
+    layers = {}
     for index, (key, value) in enumerate(farn_dict['_layers'].items()):
-        create_samples_in_layer(
-            level=index,
-            layer_name=key,
-            layer=value,
+        layers.update(
+            {'layer_%02i'%index:
+                create_samples_in_layer(
+                    level=index,
+                    layer_name=key,
+                    layer=value,
+                )
+            }
         )
     logger.info(f'Successfully ran sampling of {farn_dict.name}.')
 
-    return
+    return layers
 
 
 def create_cases(

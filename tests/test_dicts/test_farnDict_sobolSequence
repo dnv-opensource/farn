@@ -1,0 +1,39 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+/*
+Test sobol sequence and lhs
+for sample set dimensioning
+*/
+_layers {
+
+    sobolseq
+    {
+        _sampling {
+            _type sobol;
+            _names (param0 param1 param2);
+            _ranges ((-20 20) (-3 10) (0.5 0.6));
+            _includeBoundingBox True;            // [optional] defines whether the lower and upper boundary values of each parameter name shall be added as additional samples. If missing, defaults to False.
+            _numberOfSamples 50;                 // number of samples to be generated. The given number of samples will be generated within range (=between lower and upper boundary), excluding the boundaries themselves.
+            _onset 10;                           // skip first _onset sobol points and start here because first points are always the same: the higher the number the better the unique-ness
+        }
+    }
+    lhsvar
+    {
+        _sampling {
+            _type uniformLhs;
+            _names (param3 param4 param5);
+            _ranges ((-20 20) (-3 10) (0.5 0.6));
+            _includeBoundingBox True;
+            _numberOfSamples 50;
+        }
+    }
+}
