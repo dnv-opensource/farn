@@ -11,9 +11,12 @@ furo
 
 lxml>=4.6.4
 numpy>=1.21.4
+scipy==1.7.0
 Pillow>=8.4.0
 psutil>=5.8.0
 SALib>=1.4.5
+sobol-seq-0.2.0
+sobol==0.9
 
 # ../dictIO
 git+https://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@github.com/dnv-opensource/dictIO.git
