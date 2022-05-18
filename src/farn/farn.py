@@ -61,15 +61,6 @@ def run_farn(
     # Set up farn environment
     farn_dirs: MutableMapping = _set_up_farn_environment(farn_dict_file)
 
-    logger.info(
-        f"Start farn with following arguments:\n"
-        f"\t farn_dict_file: \t{farn_dict_file}\n"
-        f"\t sample: \t\t{sample}\n"
-        f"\t generate: \t\t{generate}\n"
-        f"\t command: \t\t{command}\n"
-        f"\t test: \t\t\t{test}"
-    )
-
     # Read farn dict
     farn_dict = DictReader.read(farn_dict_file, comments=False)
 
