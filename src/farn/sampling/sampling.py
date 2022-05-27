@@ -45,36 +45,25 @@ class DiscreteSampling():
                     '_names',
                     '_ranges',
                     '_numberOfSamples',
-                    '_distributionName',        #uniform|normal|exp... better to have a dedicated name in known_sampling_types
-                    '_distributionParameters',  #mu|sigma|skew|camber not applicsble for uniform
-                    '_includeBoundingBox'       #required
+                    '_distributionName',                                                            # uniform|normal|exp... better to have a dedicated name in known_sampling_types
+                    '_distributionParameters',                                                      # mu|sigma|skew|camber not applicsble for uniform
+                    '_includeBoundingBox'                                                           # required
                 ]
             },
             'uniformLhs': {
-                'required_args': [
-                    '_names',
-                    '_ranges',
-                    '_numberOfSamples',
-                    '_includeBoundingBox'
-                ]
+                'required_args': ['_names', '_ranges', '_numberOfSamples', '_includeBoundingBox']
             },
             'normalLhs': {
-                'required_args': [
-                    '_names',
-                    '_ranges',
-                    '_numberOfSamples',
-                    '_mu',
-                    '_sigma',
-                    '_includeBoundingBox'
-                ]
+                'required_args':
+                ['_names', '_ranges', '_numberOfSamples', '_mu', '_sigma', '_includeBoundingBox']
             },
             'randNormal': {
                 'required_args': [
                     '_names',
                     '_ranges',
                     '_numberOfSamples',
-                    '_mu',                  # 1rst order
-                    '_sigma',               # 2nd order
+                    '_mu',                                                                          # 1rst order
+                    '_sigma',                                                                       # 2nd order
                     '_includeBoundingBox'
                 ]
             },
@@ -82,8 +71,8 @@ class DiscreteSampling():
                 'required_args': [
                     '_names',
                     '_ranges',
-                    '_numberOfSamples',     #determines overall sobol set (+ _onset)
-                    '_onset',               #skik first sobol points and start at _onset number
+                    '_numberOfSamples',                                                             # determines overall sobol set (+ _onset)
+                    '_onset',                                                                       # skip first sobol points and start at _onset number
                     '_includeBoundingBox'
                 ]
             }
@@ -94,7 +83,6 @@ class DiscreteSampling():
         else:
             logger.error(f'sampling type {sampling_type} not implemented yet')
             exit(1)
-
 
     def set_sampling_parameters(
         self, base_name: str = 'unnamed', kwargs: Union[MutableMapping, None] = None
@@ -121,7 +109,6 @@ class DiscreteSampling():
 
         # determine the dimension (=number of fields)
         self.number_of_fields = len(self.fields)
-
 
     def generate(self) -> dict:
         '''
@@ -253,7 +240,6 @@ class DiscreteSampling():
             for index, item in enumerate(self.fields):
                 return_dict.update({self.fields[index]: self.variables[index].tolist()})
 
-
         if self.sampling_type == 'arbitrary':
             '''
             Purpose: To perform a sampling based on the pre-drawn sample.
@@ -297,7 +283,7 @@ class DiscreteSampling():
 
                 eval_command = f'scipy.stats.{self.distribution_name[index]}'
 
-                dist = eval(eval_command) #check this need!
+                dist = eval(eval_command)   # check this need!
 
                 return_dict.update(
                     {
@@ -309,7 +295,6 @@ class DiscreteSampling():
                 )
 
             # requires if self.kwargs['_includeBoundingBox'] is True: as well
-
 
         if self.sampling_type == 'sobol':
             '''
@@ -362,7 +347,6 @@ class DiscreteSampling():
 
         return return_dict
 
-
     def flatten(self, iterable: Sequence):
         '''flattens sequence... happens why?
         '''
@@ -372,7 +356,6 @@ class DiscreteSampling():
             else:
                 yield element
 
-
     def min_max_scale(self, field: np.ndarray, range: MutableMapping):
         '''might belong to different class in future
         from sklearn.preporcessing import minmax_scale
@@ -380,7 +363,6 @@ class DiscreteSampling():
         scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))
 
         return scale * field + range[0] - field.min(axis=0) * scale
-
 
     def generate_lhs(self):
         '''
@@ -395,15 +377,21 @@ class DiscreteSampling():
 
         return latin.sample(problem, self.number_of_samples).T
 
-
+    # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
+    #        https://scipy.github.io/devdocs/reference/generated/scipy.stats.qmc.Sobol.html#scipy-stats-qmc-sobol
+    #        This to substitute the sobol-seq package, which is no longer aintained.
+    #        (See https://github.com/naught101/sobol_seq)
+    #        CLAROS, 2022-05-27
     def generate_sobol(self):
         '''
         '''
         import sobol_seq
 
-        sequence = sobol_seq.i4_sobol_generate(self.number_of_fields, self.number_of_samples+self.onset)
+        sequence = sobol_seq.i4_sobol_generate(
+            self.number_of_fields, self.number_of_samples + self.onset
+        )
 
-        sample_set = sequence[self.onset:self.onset+self.number_of_samples].T
+        sample_set = sequence[self.onset:self.onset + self.number_of_samples].T
 
         for index, item in enumerate(sample_set):
             sample_set[index] = self.min_max_scale(item, self.bounds[index])

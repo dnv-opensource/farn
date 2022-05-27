@@ -29,7 +29,7 @@ def run_farn(
 ):
     """Runs farn.
 
-    Runs the sampling for all layers as configured in farnDict,
+    Runs the sampling for all layers as configured in farn dict,
     generates the corresponding case folder structure and
     executes user-defined shell command sets in all case folders.
 
@@ -359,7 +359,8 @@ def create_samples(farn_dict: CppDict):
     layers = {}
     for index, (key, value) in enumerate(farn_dict['_layers'].items()):
         layers.update(
-            {'layer_%02i'%index:
+            {
+                'layer_%02i' % index:
                 create_samples_in_layer(
                     level=index,
                     layer_name=key,
