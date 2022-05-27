@@ -7,6 +7,16 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ### Changed
 
+* Simplified imports from namespace farn. Example:
+    * Old (<= v0.0.22):
+        ~~~py
+        from farn.farn import run_farn
+        ~~~
+    * New:
+        ~~~py
+        from farn import run_farn
+        ~~~
+
 * farn.py
     * Renamed following functions:
         * run_sampling() -> create_samples()

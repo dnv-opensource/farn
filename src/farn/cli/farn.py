@@ -16,7 +16,7 @@ from typing import Union
 # instead of the package 'farn' (and the import statements fail).
 # sys.path = sys.path[1:]
 sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
-from farn.farn import run_farn                      # noqa E402
+from farn import run_farn                           # noqa E402
 from farn.utils.logging import configure_logging    # noqa E402
 
 

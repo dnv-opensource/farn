@@ -31,7 +31,7 @@ farn provides both an API for use inside Python as well as a CLI for shell execu
 
 Reading a farnDict file and creating the corresponding case folder structure:
 ~~~py
-from farn.farn import run_farn
+from farn import run_farn
 
 run_farn('farnDict', sample=True, generate=True)
 ~~~

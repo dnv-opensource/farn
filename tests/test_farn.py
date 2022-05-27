@@ -2,7 +2,7 @@ import os
 import platform
 from pathlib import Path
 
-from farn.farn import run_farn
+from farn import run_farn
 
 
 def test_sample():
