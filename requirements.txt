@@ -17,6 +17,6 @@ SALib>=1.4.5
 sobol-seq>=0.2.0
 
 # ../dictIO
-dictIO>=0.0.23
+dictIO>=0.1.0
 # ../ospx
-ospx>=0.0.23
+ospx>=0.1.0
