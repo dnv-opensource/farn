@@ -99,12 +99,6 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
     $ pip install -r requirements.txt
     ~~~
 
-
-## Release History
-
-* 0.0.23
-    * Pre-release
-
 ## Meta
 
 Copyright (c) 2022 [DNV](https://www.dnv.com) [open source](https://github.com/dnv-opensource)
