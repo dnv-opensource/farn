@@ -16,6 +16,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
         ~~~py
         from farn import run_farn
         ~~~
+* Use new simplified imports from namespace dictIO (using updated version of dictIO package)
 
 * farn.py
     * Renamed following functions:

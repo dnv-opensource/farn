@@ -7,9 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import MutableMapping, MutableSequence, MutableSet, Sequence, Union
 
-from dictIO.cppDict import CppDict
-from dictIO.dictReader import DictReader
-from dictIO.dictWriter import DictWriter, create_target_file_name
+from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
 from farn.run.subProcess import execute_in_sub_process
