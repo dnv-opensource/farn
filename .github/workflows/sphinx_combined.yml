@@ -31,6 +31,8 @@ jobs:
       - name: prepare farn
         run: |
           cp -v -f README.md docs/source/README_farn.md
+          cp -v -f CHANGELOG.md docs/source/CHANGELOG_farn.md
+          sed '1 s/CHANGELOG/farn/' docs/source/CHANGELOG_farn.md
 
       # Create temporary subfolders to hold the checked out sub-packages
       - name: Create subfolders
@@ -52,6 +54,8 @@ jobs:
         run: |
           rm -rf dictIO/.git/
           cp -v -f dictIO/README.md dictIO/docs/source/README_dictIO.md
+          cp -v -f dictIO/CHANGELOG.md dictIO/docs/source/CHANGELOG_dictIO.md
+          sed '1 s/CHANGELOG/dictIO/' dictIO/docs/source/CHANGELOG_dictIO.md
 
       # Checkout ospx (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
@@ -67,6 +71,8 @@ jobs:
         run: |
           rm -rf ospx/.git/
           cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
+          cp -v -f ospx/CHANGELOG.md ospx/docs/source/CHANGELOG_ospx.md
+          sed '1 s/CHANGELOG/ospx/' dictIO/docs/source/CHANGELOG_ospx.md
 
       # merge sub-packages into root
       - name: merge sub-packages

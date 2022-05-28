@@ -10,6 +10,7 @@ Welcome to farn's documentation!
    README_farn
    README_ospx
    README_dictIO
+   changelogs
    LICENSE
    api
    cli
