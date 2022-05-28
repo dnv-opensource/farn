@@ -72,7 +72,7 @@ jobs:
           rm -rf ospx/.git/
           cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
           cp -v -f ospx/CHANGELOG.md ospx/docs/source/CHANGELOG_ospx.md
-          sed '1 s/CHANGELOG/ospx/' dictIO/docs/source/CHANGELOG_ospx.md
+          sed '1 s/CHANGELOG/ospx/' ospx/docs/source/CHANGELOG_ospx.md
 
       # merge sub-packages into root
       - name: merge sub-packages
