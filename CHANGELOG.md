@@ -7,6 +7,13 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 * -
 
+## [0.1.1] - 2022-05-30
+
+### Changed
+
+* Sphinx documentation: Added Changelogs (for combined documentation)
+* updated dependency ospx to version >=0.1.1
+
 ## [0.1.0] - 2022-05-28
 
 ### Changed
@@ -52,7 +59,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/dnv-opensource/farn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/dnv-opensource/farn/compare/v0.0.22...v0.1.0
 [0.0.22]: https://github.com/dnv-opensource/farn/compare/v0.0.17...v0.0.22
 [0.0.17]: https://github.com/dnv-opensource/farn/releases/tag/v0.0.17

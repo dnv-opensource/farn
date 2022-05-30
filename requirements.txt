@@ -19,4 +19,4 @@ sobol-seq>=0.2.0
 # ../dictIO
 dictIO>=0.1.0
 # ../ospx
-ospx>=0.1.0
+ospx>=0.1.1
