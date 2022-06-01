@@ -54,12 +54,17 @@ def run_farn(
         executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
     test : bool, optional
         if True, runs only first case and returns, by default False
+
+    Raises
+    ------
+    FileNotFoundError
+        if farn_dict_file does not exist
     """
 
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
     farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
     if not farn_dict_file.exists():
-        logger.error(f"DictParser: File {farn_dict_file} not found.")
+        logger.error(f"run_farn: File {farn_dict_file} not found.")
         raise FileNotFoundError(farn_dict_file)
 
     # Check whether farn dict file exists
@@ -361,25 +366,20 @@ def create_samples(farn_dict: CppDict):
             default_comment = f'level {level:2d}, layer {layer_name}'
             layer['_comment'] = default_comment
 
-        return layer
+        return
 
     logger.info(f'Run sampling of {farn_dict.name}...')
 
-    layers = {}
     for index, (key, value) in enumerate(farn_dict['_layers'].items()):
-        layers.update(
-            {
-                'layer_%02i' % index:
-                create_samples_in_layer(
-                    level=index,
-                    layer_name=key,
-                    layer=value,
-                )
-            }
+        create_samples_in_layer(
+            level=index,
+            layer_name=key,
+            layer=value,
         )
+
     logger.info(f'Successfully ran sampling of {farn_dict.name}.')
 
-    return layers
+    return
 
 
 def create_cases(

@@ -5,7 +5,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
-* -
+### Changed
+
+* farn.create_samples(): Removed undocumented return value 'layers'. This was simply wrong. create_samples() is not meant to return anything.
 
 ## [0.1.1] - 2022-05-30
 
