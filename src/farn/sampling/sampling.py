@@ -118,6 +118,10 @@ class DiscreteSampling():
         # determine the dimension (=number of fields)
         self.number_of_fields = len(self.fields)
 
+        # extra bounding box samples are not treated by lhs algorithm, however part of the lists
+        self.number_of_samples = 0
+        self.number_of_bb_samples = 0
+
 
     def generate(self) -> dict:
         '''
@@ -212,9 +216,12 @@ class DiscreteSampling():
             '''
             self.number_of_samples = int(self.kwargs['_numberOfSamples'])
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
+            self.case_names = ['%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros)) for i in range(self.number_of_samples)]
+            return_dict.update({'_case_name': self.case_names})
+
             self.mean = self.kwargs['_mu']
 
-            if isinstance(self.kwargs['_sigma'], MutableSequence) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
+            if isinstance(self.kwargs['_sigma'], list) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
                 logger.error('lists _names and _sigma: lenght of entries do not match')
             self.std = self.kwargs['_sigma']
 
@@ -243,15 +250,6 @@ class DiscreteSampling():
 
                 self.variables = clipped
 
-            # output
-            return_dict.update(
-                {
-                    '_case_name': [
-                        '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
-                        for i in range(self.number_of_samples)
-                    ]
-                }
-            )
             for index, item in enumerate(self.fields):
                 return_dict.update({self.fields[index]: self.variables[index].tolist()})
 
@@ -259,12 +257,16 @@ class DiscreteSampling():
             '''lhs uniform
             later implementations may change thie section
             '''
+            #first dimension n samples
             self.number_of_samples = int(self.kwargs['_numberOfSamples'])
+            if self.kwargs['_includeBoundingBox'] is True:
+                self.number_of_bb_samples = int(2**self.number_of_fields)
+            self.number_of_samples += self.number_of_bb_samples
+
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             self.bounds = self.kwargs['_ranges']
-
-            if self.kwargs['_includeBoundingBox'] is True:
-                self.number_of_samples += int(2**self.number_of_fields)
+            self.case_names = ['%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros)) for i in range(self.number_of_samples)]
+            return_dict.update({'_case_name': self.case_names})
 
             # check length of nested lists
             if not len(self.kwargs['_names']) == len(self.kwargs['_ranges']):
@@ -277,32 +279,20 @@ class DiscreteSampling():
 
             self.variables = self.generate_uniform_lhs()
 
-            # output
-            return_dict.update(
-                {
-                    '_case_name': [
-                        '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
-                        for i in range(self.number_of_samples)
-                    ]
-                }
-            )
-
             if self.kwargs['_includeBoundingBox'] is True:
                 # permutate boundaries
                 tmp = list(itertools.product(self.kwargs['_ranges'][0], self.kwargs['_ranges'][1]))
-                for field_index in range(1, self.number_of_fields - 1):
-                    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
 
                 self.boundingBox = []
                 for item in tmp:
                     self.boundingBox.append(list(self.flatten(item)))
 
-                self.variables = np.concatenate(
-                    (np.array(self.boundingBox).T, self.variables), axis=1
-                )
+                self.variables = np.concatenate((np.array(self.boundingBox).T, self.variables), axis=1)
 
             for index, item in enumerate(self.fields):
                 return_dict.update({self.fields[index]: self.variables[index].tolist()})
+
+
 
         if self.sampling_type == 'arbitrary':
             '''
@@ -363,14 +353,17 @@ class DiscreteSampling():
         if self.sampling_type == 'sobol':
             '''
             '''
-
+            #first dimension n samples
             self.number_of_samples = int(self.kwargs['_numberOfSamples'])
+            if self.kwargs['_includeBoundingBox'] is True:
+                self.number_of_bb_samples = int(2**self.number_of_fields)
+            self.number_of_samples += self.number_of_bb_samples
+
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             self.onset = int(self.kwargs['_onset'])
             self.bounds = self.kwargs['_ranges']
-
-            if self.kwargs['_includeBoundingBox'] is True:
-                self.number_of_samples += int(2**self.number_of_fields)
+            self.case_names = ['%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros)) for i in range(self.number_of_samples)]
+            return_dict.update({'_case_name': self.case_names})
 
             # check length of nested lists
             if not len(self.kwargs['_names']) == len(self.kwargs['_ranges']):
@@ -383,20 +376,11 @@ class DiscreteSampling():
 
             self.variables = self.generate_sobol()
 
-            return_dict.update(
-                {
-                    '_case_name': [
-                        '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
-                        for i in range(self.number_of_samples)
-                    ]
-                }
-            )
-
             if self.kwargs['_includeBoundingBox'] is True:
                 # permutate boundaries
                 tmp = list(itertools.product(self.kwargs['_ranges'][0], self.kwargs['_ranges'][1]))
-                for field_index in range(1, self.number_of_fields - 1):
-                    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
+                #for field_index in range(1, self.number_of_fields - 1):
+                #    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
 
                 self.boundingBox = []
                 for item in tmp:
@@ -443,7 +427,7 @@ class DiscreteSampling():
             'bounds': self.bounds,
         }
 
-        return latin.sample(problem, self.number_of_samples).T
+        return latin.sample(problem, self.number_of_samples - self.number_of_bb_samples).T
 
 
     # ToDo: implementation of cov (spacial rotation)
@@ -453,8 +437,8 @@ class DiscreteSampling():
         from pyDOE import lhs
         from scipy.stats import norm #qmc, truncnorm
 
-        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples, criterion="m")
-        #lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples)
+        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="m")
+        #lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples - self.number_of_bb_samples)
 
         # transpose to be aligned with uniformLhs output
         return norm(loc=self.mean, scale=self.std).ppf(lhs_distribution).T
@@ -471,10 +455,10 @@ class DiscreteSampling():
         import sobol_seq
 
         sequence = sobol_seq.i4_sobol_generate(
-            self.number_of_fields, self.number_of_samples + self.onset
+            self.number_of_fields, self.number_of_samples - self.number_of_bb_samples + self.onset
         )
 
-        sample_set = sequence[self.onset:self.onset + self.number_of_samples].T
+        sample_set = sequence[self.onset:self.onset + self.number_of_samples - self.number_of_bb_samples].T
 
         for index, item in enumerate(sample_set):
             sample_set[index] = self.min_max_scale(item, self.bounds[index])
