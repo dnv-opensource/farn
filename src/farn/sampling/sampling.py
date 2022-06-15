@@ -214,7 +214,7 @@ class DiscreteSampling():
             self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
             self.mean = self.kwargs['_mu']
 
-            if isinstance(self.kwargs['_sigma'], MutableMapping) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
+            if isinstance(self.kwargs['_sigma'], MutableSequence) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
                 logger.error('lists _names and _sigma: lenght of entries do not match')
             self.std = self.kwargs['_sigma']
 
