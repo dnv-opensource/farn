@@ -54,8 +54,16 @@ class DiscreteSampling():
                 'required_args': ['_names', '_ranges', '_numberOfSamples', '_includeBoundingBox']
             },
             'normalLhs': {
-                'required_args':
-                ['_names', '_ranges', '_numberOfSamples', '_mu', '_sigma', '_includeBoundingBox']
+                'required_args': [
+                    '_names',
+                    '_numberOfSamples',
+                    '_mu',
+                    '_sigma'
+                ],
+                'optional_args': [
+                    '_ranges',
+                    '_cov'
+                ]
             },
             'randNormal': {
                 'required_args': [
@@ -109,6 +117,7 @@ class DiscreteSampling():
 
         # determine the dimension (=number of fields)
         self.number_of_fields = len(self.fields)
+
 
     def generate(self) -> dict:
         '''
@@ -191,6 +200,61 @@ class DiscreteSampling():
                     }
                 )
 
+        if self.sampling_type == 'normalLhs':
+            '''lhs using gaussian normal dstributions
+            required input arguments:
+            * _names: required names template
+            * _numberOfSamples: required how many samples
+            * _mu: required absolute location vector of distribution center point (origin)
+            * _sigma: variation (vector), or required scalar, optional vector, optional cov
+            or
+            * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples)
+            '''
+            self.number_of_samples = int(self.kwargs['_numberOfSamples'])
+            self.leading_zeros = int(math.log10(self.number_of_samples) - 1.e-06) + 1
+            self.mean = self.kwargs['_mu']
+
+            if isinstance(self.kwargs['_sigma'], MutableMapping) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
+                logger.error('lists _names and _sigma: lenght of entries do not match')
+            self.std = self.kwargs['_sigma']
+
+            # check dimension of nested lists / vectors
+            if not len(self.kwargs['_names']) == len(self.kwargs['_mu']):
+                logger.error('lists _names and _mu: lenght of entries do not match')
+
+            self.variables = self.generate_normal_lhs()
+
+            # optional clipping cube
+            # ToDo:
+            # clipping is implemented, resets the value to range value
+            # if this is unaffordable, purgign should be considered, requiring a decrementation of number_of_samples
+            if '_ranges' in self.kwargs:
+                # check equality of nested lists
+                for item in self.kwargs['_ranges']:
+                    if not len(item) == 2:
+                        logger.error('ranges: lists in list of lists do not contain min and max')
+
+                self.bounds = self.kwargs['_ranges']
+
+                clipped = np.zeros(self.variables.shape)
+
+                for index, field in enumerate(self.variables):
+                    clipped[index] = np.clip(field, self.bounds[index][0],  self.bounds[index][1])
+
+                self.variables = clipped
+
+            # output
+            return_dict.update(
+                {
+                    '_case_name': [
+                        '%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros))
+                        for i in range(self.number_of_samples)
+                    ]
+                }
+            )
+            for index, item in enumerate(self.fields):
+                return_dict.update({self.fields[index]: self.variables[index].tolist()})
+
         if self.sampling_type == 'uniformLhs':
             '''lhs uniform
             later implementations may change thie section
@@ -204,14 +268,14 @@ class DiscreteSampling():
 
             # check length of nested lists
             if not len(self.kwargs['_names']) == len(self.kwargs['_ranges']):
-                logger.error('lists: lenght of entries do not match')
+                logger.error('lists _names and _ranges: lenght of entries do not match')
 
             # check equality of nested lists
             for item in self.kwargs['_ranges']:
                 if not len(item) == 2:
                     logger.error('ranges: lists in list of lists do not contain min and max')
 
-            self.variables = self.generate_lhs()
+            self.variables = self.generate_uniform_lhs()
 
             # output
             return_dict.update(
@@ -364,8 +428,12 @@ class DiscreteSampling():
 
         return scale * field + range[0] - field.min(axis=0) * scale
 
-    def generate_lhs(self):
+    def generate_uniform_lhs(self):
         '''
+        alternative
+        from pyDOE import lhs
+        lhs(n, [samples, criterion, iterations])
+        criterion: center|maximin|centermaximin|correlation
         '''
         from SALib.sample import latin
 
@@ -377,9 +445,24 @@ class DiscreteSampling():
 
         return latin.sample(problem, self.number_of_samples).T
 
+
+    # ToDo: implementation of cov (spacial rotation)
+    def generate_normal_lhs(self):
+        '''gaussnormal lhs
+        '''
+        from pyDOE import lhs
+        from scipy.stats import norm #qmc, truncnorm
+
+        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples, criterion="m")
+        #lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples)
+
+        # transpose to be aligned with uniformLhs output
+        return norm(loc=self.mean, scale=self.std).ppf(lhs_distribution).T
+
+
     # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
     #        https://scipy.github.io/devdocs/reference/generated/scipy.stats.qmc.Sobol.html#scipy-stats-qmc-sobol
-    #        This to substitute the sobol-seq package, which is no longer aintained.
+    #        This to substitute the sobol-seq package, which is no longer maintained.
     #        (See https://github.com/naught101/sobol_seq)
     #        CLAROS, 2022-05-27
     def generate_sobol(self):
