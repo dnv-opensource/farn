@@ -219,15 +219,13 @@ class DiscreteSampling():
             self.case_names = ['%s_%s' % (self.base_name, format(i, '0%i' % self.leading_zeros)) for i in range(self.number_of_samples)]
             return_dict.update({'_case_name': self.case_names})
 
-            self.mean = self.kwargs['_mu']
-
-            if isinstance(self.kwargs['_sigma'], list) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
-                logger.error('lists _names and _sigma: lenght of entries do not match')
-            self.std = self.kwargs['_sigma']
-
             # check dimension of nested lists / vectors
             if not len(self.kwargs['_names']) == len(self.kwargs['_mu']):
                 logger.error('lists _names and _mu: lenght of entries do not match')
+            self.mean = self.kwargs['_mu']
+            if isinstance(self.kwargs['_sigma'], list) and not len(self.kwargs['_names']) == len(self.kwargs['_sigma']):
+                logger.error('lists _names and _sigma: lenght of entries do not match')
+            self.std = self.kwargs['_sigma']
 
             self.variables = self.generate_normal_lhs()
 
@@ -282,6 +280,8 @@ class DiscreteSampling():
             if self.kwargs['_includeBoundingBox'] is True:
                 # permutate boundaries
                 tmp = list(itertools.product(self.kwargs['_ranges'][0], self.kwargs['_ranges'][1]))
+                for field_index in range(1, self.number_of_fields - 1):
+                    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
 
                 self.boundingBox = []
                 for item in tmp:
@@ -379,8 +379,8 @@ class DiscreteSampling():
             if self.kwargs['_includeBoundingBox'] is True:
                 # permutate boundaries
                 tmp = list(itertools.product(self.kwargs['_ranges'][0], self.kwargs['_ranges'][1]))
-                #for field_index in range(1, self.number_of_fields - 1):
-                #    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
+                for field_index in range(1, self.number_of_fields - 1):
+                    tmp = list(itertools.product(tmp, self.kwargs['_ranges'][field_index + 1]))
 
                 self.boundingBox = []
                 for item in tmp:
@@ -440,8 +440,38 @@ class DiscreteSampling():
         lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="m")
         #lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples - self.number_of_bb_samples)
 
+        # convert to array does a better identification
+        self.std = np.array(self.std)
+        #print (self.std)
+        #self.std = np.dot(self.std, np.array([[5, 0, 0],[0, 1, 0],[0, 0, 1]]))
+        #print (self.std)
+        if self.std.shape == ():
+            # scalar value given
+            sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
+
+        elif self.std.shape == (self.number_of_fields,):
+            # list given
+
+            sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
+
+        elif self.std.shape == (self.number_of_fields, self.number_of_fields):
+            # matrix given
+            # todo:
+            # - estimate correct transform
+            # - derive rotation from local cov
+            # - find out how (if) non-uniform scale and rotate can be done in one operation
+            # scale as normal
+            sample_set = norm(loc=self.mean, scale=np.diag(self.std)).ppf(lhs_distribution)
+            #rotate
+            from scipy.spatial.transform import Rotation as R
+            r = R.from_matrix(self.std)
+            sample_set = np.array([r.apply(x) for x in sample_set])
+
+        else:
+            logger.error('something went wrong: %s' % str(self.std.shape))
+
         # transpose to be aligned with uniformLhs output
-        return norm(loc=self.mean, scale=self.std).ppf(lhs_distribution).T
+        return sample_set.T
 
 
     # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
