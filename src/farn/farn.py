@@ -741,11 +741,6 @@ def execute_command_set(
         )
 
     for case in cases:
-        if not case.is_valid:
-            logger.warning(
-                f'Case {case.case} skipped. (invalid / excluded through filter expression)'
-            )
-            break
         if not case.path.exists():
             logger.warning(
                 f'Path {case.path} does not exist. '
@@ -754,7 +749,7 @@ def execute_command_set(
                 f'If so, first generate the missing cases by calling farn with option --generate once again \n'
                 f'and then retry to execute the command set with option --execute.'
             )
-            break
+            continue
         if case.command_sets:
             if command_set in case.command_sets:
                 shell_commands: MutableSequence[str] = []
@@ -771,9 +766,9 @@ def execute_command_set(
                 if case.is_leaf:
                     number_of_cases_processed += 1
             else:
-                logger.warning(f"Command set '{command_set}' not defined in case {case.case}")
+                logger.debug(f"Command set '{command_set}' not defined in case {case.case}")
         if test and number_of_cases_processed >= 1:                                                 # if test and at least one execution
-            logger.warning(
+            logger.info(
                 f"Test finished. Executed command set '{command_set}' in following case folder:\n"
                 f"\t {case.path}"
             )
@@ -849,16 +844,24 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
     log_dir : Path
         folder in which the log file will be created
     """
+    # Create log file
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / 'farn.log'
+    # Create logging file handler
     file_handler = logging.FileHandler(str(log_file.absolute()), 'a')
+    file_handler.name = str(log_file.absolute())
     file_handler.setLevel(logging.INFO)
     file_formatter = logging.Formatter(
         '%(asctime)s %(levelname)-8s %(message)s', '%Y-%m-%d %H:%M:%S'
     )
     file_handler.setFormatter(file_formatter)
+    # Register file handler at root logger
     root_logger = logging.getLogger()
-    root_logger.addHandler(file_handler)
+    file_handler_already_exists: bool = any(
+        handler.name == file_handler.name for handler in root_logger.handlers
+    )
+    if not file_handler_already_exists:
+        root_logger.addHandler(file_handler)
     return
 
 
