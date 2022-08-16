@@ -15,7 +15,7 @@ class AsyncBatchProcessor():
         self,
         case_list_file: Path,
         command: str,
-        timeout: int = 0,
+        timeout: int = 3600,
         max_number_of_cpus: int = 0,
     ):
         self.case_list_file: Path = case_list_file
