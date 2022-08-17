@@ -79,6 +79,15 @@ def _argparser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        '-b',
+        '--batch',
+        action='store_true',
+        help='Executes the given command set in batch mode, i.e. asynchronously',
+        default=False,
+        required=False,
+    )
+
+    parser.add_argument(
         '--test',
         action='store_true',
         help=
@@ -155,6 +164,7 @@ def main():
     sample: bool = args.sample
     generate: bool = args.generate
     command: Union[str, None] = args.execute
+    batch: bool = args.batch
     test: bool = args.test
 
     # catch missing arguments {sample, generate, command}
@@ -179,6 +189,7 @@ def main():
         f"\t sample: \t\t{sample}\n"
         f"\t generate: \t\t{generate}\n"
         f"\t command: \t\t{command}\n"
+        f"\t batch: \t\t\t{batch}\n"
         f"\t test: \t\t\t{test}"
     )
 
@@ -188,6 +199,7 @@ def main():
         sample=sample,
         generate=generate,
         command=command,
+        batch=batch,
         test=test,
     )
 
