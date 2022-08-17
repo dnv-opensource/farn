@@ -437,14 +437,16 @@ class DiscreteSampling():
         from pyDOE import lhs
         from scipy.stats import norm #qmc, truncnorm
 
-        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="m")
+        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="corr")
+        #criterion:center|c: center the points within the sampling intervals
+        #          maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
+        #          centermaximin|cm: same as “maximin”, but centered within the intervals
+        #          correlation|corr: minimize the maximum correlation coefficient
         #lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples - self.number_of_bb_samples)
 
         # convert to array does a better identification
         self.std = np.array(self.std)
-        #print (self.std)
-        #self.std = np.dot(self.std, np.array([[5, 0, 0],[0, 1, 0],[0, 0, 1]]))
-        #print (self.std)
+
         if self.std.shape == ():
             # scalar value given
             sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
@@ -462,10 +464,11 @@ class DiscreteSampling():
             # - find out how (if) non-uniform scale and rotate can be done in one operation
             # scale as normal
             sample_set = norm(loc=self.mean, scale=np.diag(self.std)).ppf(lhs_distribution)
+
             #rotate
-            from scipy.spatial.transform import Rotation as R
-            r = R.from_matrix(self.std)
-            sample_set = np.array([r.apply(x) for x in sample_set])
+            #from scipy.spatial.transform import Rotation as R # works only in R3
+            #r = R.from_matrix(self.std)
+            #sample_set = np.array([r.apply(x) for x in sample_set])
 
         else:
             logger.error('something went wrong: %s' % str(self.std.shape))
