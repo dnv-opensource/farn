@@ -35,7 +35,7 @@ def run_farn(
     sample: bool = False,
     generate: bool = False,
     command: Union[str, None] = None,
-    batch: bool = True,
+    batch: bool = False,
     test: bool = False,
 ):
     """Runs farn.
@@ -54,6 +54,8 @@ def run_farn(
         if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
     command : Union[str, None], optional
         executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
+    batch : bool, optional
+        if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
         if True, runs only first case and returns, by default False
 
