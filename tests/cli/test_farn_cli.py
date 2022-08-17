@@ -128,6 +128,7 @@ def test_logging_configuration(
         sample: bool,
         generate: bool,
         command: Union[str, None],
+        batch: bool,
         test: bool,
     ):
         pass
@@ -197,12 +198,14 @@ def test_api_invokation(
         sample: bool = False,
         generate: bool = False,
         command: Union[str, None] = None,
+        batch: bool = False,
         test: bool = False,
     ):
         args.farn_dict_file = farn_dict_file
         args.sample = sample
         args.generate = generate
         args.command = command
+        args.batch = batch
         args.test = test
 
     monkeypatch.setattr(farn, 'run_farn', fake_run_farn)

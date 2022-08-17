@@ -47,7 +47,7 @@
             "name": "farn test generate test_farnDict",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
+            "cwd": "${workspaceFolder}\\tests\\test_dicts",
             "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
             "args": [
                 "test_farnDict",

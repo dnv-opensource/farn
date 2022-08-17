@@ -5,12 +5,13 @@ import re
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import MutableMapping, MutableSequence, MutableSet, Sequence, Union
+from typing import Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Union
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
 from farn.run.subProcess import execute_in_sub_process
+from farn.run.batchProcess import AsyncBatchProcessor
 from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
 
@@ -34,6 +35,7 @@ def run_farn(
     sample: bool = False,
     generate: bool = False,
     command: Union[str, None] = None,
+    batch: bool = False,
     test: bool = False,
 ):
     """Runs farn.
@@ -52,6 +54,8 @@ def run_farn(
         if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
     command : Union[str, None], optional
         executes the given command set in all case folders. The command set must be defined in the commands section of the applicable layer in farnDict., by default None
+    batch : bool, optional
+        if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
         if True, runs only first case and returns, by default False
 
@@ -63,14 +67,11 @@ def run_farn(
 
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
     farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
+
+    # Check whether farn dict file exists
     if not farn_dict_file.exists():
         logger.error(f"run_farn: File {farn_dict_file} not found.")
         raise FileNotFoundError(farn_dict_file)
-
-    # Check whether farn dict file exists
-    if not farn_dict_file.is_file():
-        logger.error(f"farn: File {farn_dict_file} not found.")
-        return
 
     # Set up farn environment
     farn_dirs: MutableMapping = _set_up_farn_environment(farn_dict_file)
@@ -121,6 +122,7 @@ def run_farn(
         execute_command_set(
             cases=cases,
             command_set=command,
+            batch=batch,
             test=test,
         )
 
@@ -714,6 +716,7 @@ def create_case_list_files(
 def execute_command_set(
     cases: MutableSequence[Case],
     command_set: str,
+    batch: bool = True,
     test: bool = False,
 ) -> int:
     """Executes the given command set in the case folders of the passed in cases.
@@ -736,19 +739,16 @@ def execute_command_set(
     logger.info(
         f"Execute command set '{command_set}' in all layers where '{command_set}' is defined..."
     )
-    number_of_cases_processed: int = 0
 
+    cases_registered: List[Case] = []
+    number_of_cases_registered: int = 0
+    reached_first_leaf: bool = False
     if test:
         logger.warning(
             f"farn.py called with option --test: Only first case folder where command set '{command_set}' is defined will be executed."
         )
 
     for case in cases:
-        if not case.is_valid:
-            logger.warning(
-                f'Case {case.case} skipped. (invalid / excluded through filter expression)'
-            )
-            break
         if not case.path.exists():
             logger.warning(
                 f'Path {case.path} does not exist. '
@@ -757,10 +757,40 @@ def execute_command_set(
                 f'If so, first generate the missing cases by calling farn with option --generate once again \n'
                 f'and then retry to execute the command set with option --execute.'
             )
-            break
+            continue
         if case.command_sets:
             if command_set in case.command_sets:
-                shell_commands: MutableSequence[str] = []
+                cases_registered.append(case)
+                number_of_cases_registered += 1
+                if case.is_leaf:
+                    reached_first_leaf = True
+            else:
+                logger.debug(f"Command set '{command_set}' not defined in case {case.case}")
+        if test and reached_first_leaf:     # if test and at least one execution
+            break
+
+    number_of_cases_processed: int = 0
+
+    if batch:
+        cases_per_shell_command: Dict[str, List[Case]] = {}
+        for case in cases_registered:
+            if case.command_sets and command_set in case.command_sets:
+                shell_commands: List[str] = case.command_sets[command_set]
+                for shell_command in shell_commands:
+                    if shell_command in cases_per_shell_command:
+                        cases_per_shell_command[shell_command].append(case)
+                    else:
+                        cases_per_shell_command |= {shell_command: [case]}
+        for index, (shell_command, cases) in enumerate(cases_per_shell_command.items()):
+            case_list_file = Path.cwd() / f'caseList_for_command_{index}'
+            with case_list_file.open(mode='w') as f:
+                for case in cases:
+                    f.write(f"{case.path.absolute()}\n")
+            batch_processor = AsyncBatchProcessor(case_list_file, shell_command)
+            batch_processor.run()
+    else:
+        for case in cases_registered:
+            if case.command_sets and command_set in case.command_sets:
                 shell_commands = case.command_sets[command_set]
                 # logger.debug(f"Execute command set '{command_set}' in {case.path}")                # commented out as a similar message gets logged in also subProcess
                 # Temporarily change cwd to case folder, to execute the shell commands from there
@@ -770,25 +800,26 @@ def execute_command_set(
                 _execute_shell_commands(shell_commands)
                 # Change back cwd to current folder
                 os.chdir(current_dir)
+                number_of_cases_processed += 1
 
-                if case.is_leaf:
-                    number_of_cases_processed += 1
-            else:
-                logger.warning(f"Command set '{command_set}' not defined in case {case.case}")
-        if test and number_of_cases_processed >= 1:                                                 # if test and at least one execution
-            logger.warning(
-                f"Test finished. Executed command set '{command_set}' in following case folder:\n"
-                f"\t {case.path}"
-            )
-            break
+    # @TODO: This is only a temporary dummy.
+    #        To be replaced by a smarter algorithm.
+    #        CLAROS, 2022-08-16
+    number_of_cases_processed = number_of_cases_registered
 
     if number_of_cases_processed > 0:
-        logger.info(
-            f"Successfully executed command set '{command_set}' "
-            f"in {number_of_cases_processed} case folder{plural(number_of_cases_processed)}."
-        )
+        if test:
+            logger.info(
+                f"Test finished. Executed command set '{command_set}' in following case folder:\n"
+                f"\t {cases_registered[-1].path}"
+            )
+        else:
+            logger.info(
+                f"Successfully executed command set '{command_set}' "
+                f"in {number_of_cases_registered} case folder{plural(number_of_cases_registered)}."
+            )
 
-    return number_of_cases_processed
+    return number_of_cases_registered
 
 
 def _set_up_farn_environment(farn_dict_file: Path) -> dict:
@@ -852,16 +883,24 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
     log_dir : Path
         folder in which the log file will be created
     """
+    # Create log file
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / 'farn.log'
+    # Create logging file handler
     file_handler = logging.FileHandler(str(log_file.absolute()), 'a')
+    file_handler.name = str(log_file.absolute())
     file_handler.setLevel(logging.INFO)
     file_formatter = logging.Formatter(
         '%(asctime)s %(levelname)-8s %(message)s', '%Y-%m-%d %H:%M:%S'
     )
     file_handler.setFormatter(file_formatter)
+    # Register file handler at root logger
     root_logger = logging.getLogger()
-    root_logger.addHandler(file_handler)
+    file_handler_already_exists: bool = any(
+        handler.name == file_handler.name for handler in root_logger.handlers
+    )
+    if not file_handler_already_exists:
+        root_logger.addHandler(file_handler)
     return
 
 
