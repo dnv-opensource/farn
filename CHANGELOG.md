@@ -5,9 +5,30 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+* -
+
+## [0.1.2] - 2022-08-19
+
 ### Changed
 
-* farn.create_samples(): Removed undocumented return value 'layers'. This was simply wrong. create_samples() is not meant to return anything.
+* farn.py:
+    * create_samples(): Removed undocumented return value 'layers'. This was simply wrong. create_samples() is not meant to return anything.
+
+* subProcess.py:
+    * Changed level of 'per case' log messages from INFO to DEBUG, to reduce cluttering of log.
+
+### Added
+
+* farn CLI (and farn.run_farn() API):
+    * EXPERIMENTAL FEATURE: Added --batch option. Default is False. The batch option lets farn execute commands in batch mode, i.e. asynchroneous instead of sequential.
+
+### Fixed
+
+* sampling.py:
+    * uniformLhs sampling: Corrected the BoundingBox code for the case where Lhs sampling is requested with only one single parameter varied (i.e. 1-dimensional Lhs)
+
+* farn.py:
+    * Additional log file handler for farn gets registered only once. Multiple calls to _configure_additional_logging_handler_exclusively_for_farn() will not create multiple handlers, if the file handler for the log file already exists.
 
 ## [0.1.1] - 2022-05-30
 
@@ -61,7 +82,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/dnv-opensource/farn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/dnv-opensource/farn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/dnv-opensource/farn/compare/v0.0.22...v0.1.0
 [0.0.22]: https://github.com/dnv-opensource/farn/compare/v0.0.17...v0.0.22
