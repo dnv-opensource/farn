@@ -7,6 +7,14 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 * -
 
+## [0.2.0] - 2022-09-28
+
+### Changed
+
+* Dependencies:
+    * upgraded to ospx >= 0.2.0
+    * upgraded to dictIO >= 0.1.2
+
 ## [0.1.2] - 2022-08-19
 
 ### Changed
@@ -82,7 +90,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.1.2...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/dnv-opensource/farn/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/dnv-opensource/farn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/dnv-opensource/farn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/dnv-opensource/farn/compare/v0.0.22...v0.1.0
