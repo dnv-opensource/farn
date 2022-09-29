@@ -5,7 +5,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
-* -
+### Changed
+
+* dependencies:
+    * upgraded to dictIO >= 0.2.0
+
 
 ## [0.2.0] - 2022-09-28
 
