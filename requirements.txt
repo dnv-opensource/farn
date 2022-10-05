@@ -21,4 +21,4 @@ pyDOE>=0.3.8
 # ../dictIO
 dictIO>=0.2.0
 # ../ospx
-ospx>=0.2.2
+ospx>=0.2.3
