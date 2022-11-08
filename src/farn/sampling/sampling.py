@@ -203,6 +203,7 @@ class DiscreteSampling():
             * _mu: required absolute location vector of distribution center point (origin)
             * _sigma: variation (vector), or required scalar, optional vector, optional cov
             or
+            NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE! 
             * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples)
             '''
             self.number_of_samples = int(self.kwargs['_numberOfSamples'])
@@ -426,8 +427,8 @@ class DiscreteSampling():
     def generate_uniform_lhs(self):
         '''
         alternative
-        from pyDOE import lhs
-        lhs(n, [samples, criterion, iterations])
+        from pyDOE2 import lhs
+        lhs_dist = lhs(n, samples=n_samples, criterion='corr', random_state=None)
         criterion: center|maximin|centermaximin|correlation
         '''
         from SALib.sample import latin
@@ -440,51 +441,28 @@ class DiscreteSampling():
 
         return latin.sample(problem, self.number_of_samples - self.number_of_bb_samples).T
 
-    # ToDo: implementation of cov (spacial rotation)
+
     def generate_normal_lhs(self):
         '''gaussnormal lhs
         '''
-        from pyDOE import lhs
+        from pyDOE2 import lhs
         from scipy.stats import norm    # qmc, truncnorm
 
-        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="corr")
+        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="corr", random_state=None)
         #criterion:center|c: center the points within the sampling intervals
         #          maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
         #          centermaximin|cm: same as “maximin”, but centered within the intervals
         #          correlation|corr: minimize the maximum correlation coefficient
         # lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples - self.number_of_bb_samples)
 
-        # convert to array does a better identification
+        # std of type scalar (scale) or vector (stretch, scale), no rotation
         self.std = np.array(self.std)
-
-        if self.std.shape == ():
-            # scalar value given
-            sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
-
-        elif self.std.shape == (self.number_of_fields, ):
-            # list given
-
-            sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
-
-        elif self.std.shape == (self.number_of_fields, self.number_of_fields):
-            # matrix given
-            # todo:
-            # - estimate correct transform
-            # - derive rotation from local cov
-            # - find out how (if) non-uniform scale and rotate can be done in one operation
-            # scale as normal
-            sample_set = norm(loc=self.mean, scale=np.diag(self.std)).ppf(lhs_distribution)
-
-            # rotate
-            #from scipy.spatial.transform import Rotation as R # works only in R3
-            #r = R.from_matrix(self.std)
-            #sample_set = np.array([r.apply(x) for x in sample_set])
-
-        else:
-            logger.error('something went wrong: %s' % str(self.std.shape))
+        
+        sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
 
         # transpose to be aligned with uniformLhs output
         return sample_set.T
+
 
     # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
     #        https://scipy.github.io/devdocs/reference/generated/scipy.stats.qmc.Sobol.html#scipy-stats-qmc-sobol
