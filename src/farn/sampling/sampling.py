@@ -203,7 +203,7 @@ class DiscreteSampling():
             * _mu: required absolute location vector of distribution center point (origin)
             * _sigma: variation (vector), or required scalar, optional vector, optional cov
             or
-            NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE! 
+            NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE!
             * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples)
             '''
             self.number_of_samples = int(self.kwargs['_numberOfSamples'])
@@ -441,15 +441,19 @@ class DiscreteSampling():
 
         return latin.sample(problem, self.number_of_samples - self.number_of_bb_samples).T
 
-
     def generate_normal_lhs(self):
         '''gaussnormal lhs
         '''
         from pyDOE2 import lhs
         from scipy.stats import norm    # qmc, truncnorm
 
-        lhs_distribution = lhs(self.number_of_fields, samples=self.number_of_samples - self.number_of_bb_samples, criterion="corr", random_state=None)
-        #criterion:center|c: center the points within the sampling intervals
+        lhs_distribution = lhs(
+            self.number_of_fields,
+            samples=self.number_of_samples - self.number_of_bb_samples,
+            criterion="corr",
+            random_state=None,
+        )
+        # criterion:center|c: center the points within the sampling intervals
         #          maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
         #          centermaximin|cm: same as “maximin”, but centered within the intervals
         #          correlation|corr: minimize the maximum correlation coefficient
@@ -457,12 +461,11 @@ class DiscreteSampling():
 
         # std of type scalar (scale) or vector (stretch, scale), no rotation
         self.std = np.array(self.std)
-        
+
         sample_set = norm(loc=self.mean, scale=self.std).ppf(lhs_distribution)
 
         # transpose to be aligned with uniformLhs output
         return sample_set.T
-
 
     # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
     #        https://scipy.github.io/devdocs/reference/generated/scipy.stats.qmc.Sobol.html#scipy-stats-qmc-sobol
