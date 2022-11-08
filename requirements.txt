@@ -16,7 +16,7 @@ Pillow>=8.4.0
 psutil>=5.8.0
 SALib>=1.4.5
 sobol-seq>=0.2.0
-pyDOE>=0.3.8
+pyDOE2>=1.3.0
 
 # ../dictIO
 dictIO>=0.2.2
