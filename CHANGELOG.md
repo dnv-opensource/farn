@@ -7,6 +7,24 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 * --
 
+## [0.2.4] - 2022-12-01
+
+### Changed
+
+* Code formatting: Changed from yapf to black
+* STYLEGUIDE.md : Adjusted to match black formatting
+* VS Code settings: Updated to use black as formatter
+* requirements.txt: Updated dependencies to their most recent versions
+* GitHub actions (yml files): Updated following actions to their most recent versions:
+    * checkout@v1 -> checkout@v3
+    * setup-python@v2 -> setup-python@v4
+    * cache@v2 -> cache@v3
+
+### Added
+
+* Added sourcery configuration (.sourcery.yaml)
+* Added py.typed file into the package root folder and included it setup.cfg as package_data
+
 ## [0.2.3] - 2022-11-08
 
 ### Changed
@@ -119,7 +137,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.2.3...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/dnv-opensource/farn/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/dnv-opensource/farn/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/dnv-opensource/farn/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/dnv-opensource/farn/compare/v0.2.0...v0.2.1
