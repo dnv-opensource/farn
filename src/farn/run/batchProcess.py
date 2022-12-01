@@ -9,8 +9,7 @@ from psutil import cpu_count
 logger = logging.getLogger(__name__)
 
 
-class AsyncBatchProcessor():
-
+class AsyncBatchProcessor:
     def __init__(
         self,
         case_list_file: Path,
@@ -27,12 +26,12 @@ class AsyncBatchProcessor():
 
         # Check whether caselist file exists
         if not self.case_list_file.is_file():
-            logger.error(f'AsyncBatchProcessor: File {self.case_list_file} not found.')
+            logger.error(f"AsyncBatchProcessor: File {self.case_list_file} not found.")
             return
 
         # Read the case list and fill job queue
         cases = []
-        with open(self.case_list_file, 'r') as f:
+        with open(self.case_list_file, "r") as f:
             cases = f.readlines()
 
         jobs = JobQueue()
@@ -40,7 +39,7 @@ class AsyncBatchProcessor():
         for index, path in enumerate(cases):
             path = path.strip()
             jobs.put(execute_in_sub_process, self.command, path, self.timeout)
-            logger.info('Job %g queued in %s' % (index, path))  # 1
+            logger.info("Job %g queued in %s" % (index, path))  # 1
 
         number_of_cpus = cpu_count()
         if self.max_number_of_cpus:
@@ -50,7 +49,9 @@ class AsyncBatchProcessor():
         # (threadPool being a simple list of threads, nothing sophisticated)
         thread_pool = [Worker(jobs) for _ in range(number_of_cpus)]
 
-        logger.info(f'AsyncBatchProcessor: started {len(thread_pool):2d} worker threads.')
+        logger.info(
+            f"AsyncBatchProcessor: started {len(thread_pool):2d} worker threads."
+        )
 
         # Wait until all jobs are done
         jobs.join()

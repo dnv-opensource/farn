@@ -1,22 +1,25 @@
-pytest>=6.2.5
-pytest-cov>=3.0.0
-pytest-randomly>=3.11.0
-yapf>=0.31.0
-flake8>=4.0.1
-pep8-naming>=0.12.1
-Sphinx>=4.3.0
-myst-parser>=0.15.2
-sphinx-argparse-cli>=1.8.2
-furo
+pytest>=7.2
+pytest-cov>=4.0
+pytest-randomly>=3.12
+black>=22.10.0
+flake8>=6.0
+pep8-naming>=0.13
+isort>=5.10.1
+Sphinx>=5.3
+sphinx-argparse-cli>=1.10
+myst-parser>=0.18
+furo>=2022.9.29
 
-lxml>=4.6.4
-numpy>=1.21.4
-scipy>=1.7.3
-Pillow>=8.4.0
-psutil>=5.8.0
-SALib>=1.4.5
-sobol-seq>=0.2.0
-pyDOE2>=1.3.0
+lxml>=4.9
+numpy>=1.23
+pandas>=1.5
+scipy>=1.9
+matplotlib>=3.6
+pyDOE2>=1.3
+Pillow>=9.3
+psutil>=5.9
+SALib>=1.4.6
+sobol-seq>=0.2
 
 # ../dictIO
 dictIO>=0.2.2

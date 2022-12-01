@@ -16,8 +16,8 @@ from typing import Union
 # instead of the package 'farn' (and the import statements fail).
 # sys.path = sys.path[1:]
 sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
-from farn import run_farn                           # noqa E402
-from farn.utils.logging import configure_logging    # noqa E402
+from farn import run_farn  # noqa E402
+from farn.utils.logging import configure_logging  # noqa E402
 
 
 logger = logging.getLogger(__name__)
@@ -26,72 +26,70 @@ logger = logging.getLogger(__name__)
 def _argparser() -> argparse.ArgumentParser:
 
     parser = ArgumentParser(
-        prog='farn',
-        usage='%(prog)s farnDict [options [args]]',
-        epilog='_________________farn___________________',
-        prefix_chars='-',
+        prog="farn",
+        usage="%(prog)s farnDict [options [args]]",
+        epilog="_________________farn___________________",
+        prefix_chars="-",
         add_help=True,
         description=(
-            'Run the sampling for all layers as configured in farnDict,'
-            'generate the corresponding case folder structure and'
-            'execute user-defined shell command sets in all case folders.'
-        )
+            "Run the sampling for all layers as configured in farnDict,"
+            "generate the corresponding case folder structure and"
+            "execute user-defined shell command sets in all case folders."
+        ),
     )
 
     parser.add_argument(
-        'farnDict',
-        metavar='farnDict',
+        "farnDict",
+        metavar="farnDict",
         type=str,
-        help='name of the dict file containing the farn configuration.',
+        help="name of the dict file containing the farn configuration.",
     )
 
     parser.add_argument(
-        '-s',
-        '--sample',
-        action='store_true',
-        help=
-        'read farn dict file, run the sampling defined for each layer and save the sampled farnDict file with prefix sampled.',
+        "-s",
+        "--sample",
+        action="store_true",
+        help="read farn dict file, run the sampling defined for each layer and save the sampled farnDict file with prefix sampled.",
         default=False,
         required=False,
     )
 
     parser.add_argument(
-        '-g',
-        '--generate',
-        action='store_true',
-        help='generate the folder structure that spawns all layers and cases defined in farnDict',
+        "-g",
+        "--generate",
+        action="store_true",
+        help="generate the folder structure that spawns all layers and cases defined in farnDict",
         default=False,
         required=False,
     )
 
     parser.add_argument(
-        '-e',
-        '--execute',
-        metavar='command',
-        action='store',
+        "-e",
+        "--execute",
+        metavar="command",
+        action="store",
         type=str,
         help=(
-            'execute the given command set in all case folders.\n'
-            'The command set must be defined in the commands section of the applicable layer in farnDict.'
+            "execute the given command set in all case folders.\n"
+            "The command set must be defined in the commands section of the applicable layer in farnDict."
         ),
         default=None,
         required=False,
     )
 
     parser.add_argument(
-        '-b',
-        '--batch',
-        action='store_true',
-        help='Executes the given command set in batch mode, i.e. asynchronously',
+        "-b",
+        "--batch",
+        action="store_true",
+        help="Executes the given command set in batch mode, i.e. asynchronously",
         default=False,
         required=False,
     )
 
     parser.add_argument(
-        '--test',
-        action='store_true',
-        help=
-        'Run only first case and exit. (note: --test is most useful in combination with --execute)',
+        "--test",
+        action="store_true",
+        help="Run only first case and exit. (note: --test is most useful in combination with --execute)",
         default=False,
         required=False,
     )
@@ -99,37 +97,37 @@ def _argparser() -> argparse.ArgumentParser:
     console_verbosity = parser.add_mutually_exclusive_group(required=False)
 
     console_verbosity.add_argument(
-        '-q',
-        '--quiet',
-        action='store_true',
-        help='console output will be quiet.',
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="console output will be quiet.",
         default=False,
     )
 
     console_verbosity.add_argument(
-        '-v',
-        '--verbose',
-        action='store_true',
-        help='console output will be verbose.',
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="console output will be verbose.",
         default=False,
     )
 
     parser.add_argument(
-        '--log',
-        action='store',
+        "--log",
+        action="store",
         type=str,
-        help='name of log file. If specified, this will activate logging to file.',
+        help="name of log file. If specified, this will activate logging to file.",
         default=None,
         required=False,
     )
 
     parser.add_argument(
-        '--log-level',
-        action='store',
+        "--log-level",
+        action="store",
         type=str,
-        help='log level applied to logging to file.',
-        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-        default='WARNING',
+        help="log level applied to logging to file.",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="WARNING",
         required=False,
     )
 
@@ -151,11 +149,11 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = 'INFO'     # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    log_level_console: str = "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
     if any([args.quiet, args.verbose]):
-        log_level_console = 'ERROR' if args.quiet else log_level_console
-        log_level_console = 'DEBUG' if args.verbose else log_level_console
-                                        # ..to file
+        log_level_console = "ERROR" if args.quiet else log_level_console
+        log_level_console = "DEBUG" if args.verbose else log_level_console
+        # ..to file
     log_file: Union[Path, None] = Path(args.log) if args.log else None
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
@@ -205,7 +203,7 @@ def main():
 
 
 def _generate_barnsley_fern():
-    '''
+    """
     easter egg: Barnsley fern
 
     Barnsley Fern:
@@ -220,7 +218,7 @@ def _generate_barnsley_fern():
     ƒ3	0.20	−0.26	0.23	0.22	0	1.60	0.07	Largest left-hand leaflet
     ƒ4	−0.15	0.28	0.26	0.24	0	0.44	0.07	Largest right-hand leaflet
 
-    '''
+    """
     import tempfile
     import tkinter as tk
 
@@ -229,32 +227,32 @@ def _generate_barnsley_fern():
     from PIL.ImageDraw import ImageDraw
 
     def t1(p):
-        '''
+        """
         1%
-        '''
+        """
         return (0, 0.16 * p[1])
 
     def t2(p):
-        '''
+        """
         85%
-        '''
+        """
         return (0.85 * p[0] + 0.04 * p[1], -0.04 * p[0] + 0.85 * p[1] + 1.6)
 
     def t3(p):
-        '''
+        """
         7%
-        '''
+        """
         return (0.2 * p[0] - 0.26 * p[1], 0.23 * p[0] + 0.22 * p[1] + 1.6)
 
     def t4(p):
-        '''
+        """
         7%
-        '''
+        """
         return (-0.15 * p[0] + 0.28 * p[1], 0.26 * p[0] + 0.24 * p[1] + 0.44)
 
     x_size = 1024
     y_size = 1024
-    im = Image.new('RGBA', (x_size, x_size))
+    im = Image.new("RGBA", (x_size, x_size))
     draw = ImageDraw(im)
 
     p = (0, 0)
@@ -286,7 +284,7 @@ def _generate_barnsley_fern():
         # ImageDraw.Draw(im,)
         draw.point(
             (p[0] * scale + x_offset, p[1] * scale),
-            fill=(int(rgb[0] * rnd3[0]), int(rgb[1] * rnd3[1]), int(rgb[2] * rnd3[2]))
+            fill=(int(rgb[0] * rnd3[0]), int(rgb[1] * rnd3[1]), int(rgb[2] * rnd3[2])),
         )
 
         ii += 1
@@ -295,7 +293,7 @@ def _generate_barnsley_fern():
 
     with tempfile.TemporaryDirectory() as temp_dir:
         # im.save(Path(os.getenv('HOME')) / 'splash.png')
-        temp_file = Path(temp_dir) / 'splash.png'
+        temp_file = Path(temp_dir) / "splash.png"
         im.save(temp_file)
 
         root = tk.Tk()
@@ -303,8 +301,13 @@ def _generate_barnsley_fern():
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         root.geometry(
-            '%dx%d+%d+%d' %
-            (x_size, y_size, screen_width / 2 - x_size / 2, screen_height / 2 - y_size / 2)
+            "%dx%d+%d+%d"
+            % (
+                x_size,
+                y_size,
+                screen_width / 2 - x_size / 2,
+                screen_height / 2 - y_size / 2,
+            )
         )
         # image = tk.PhotoImage(file=Path(os.getenv('HOME')) / 'splash.png')
         image = tk.PhotoImage(file=temp_file)
@@ -317,5 +320,5 @@ def _generate_barnsley_fern():
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

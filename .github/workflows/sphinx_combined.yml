@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  DEFAULT_BRANCH: "release"
+  DEFAULT_BRANCH: 'release'
   #SPHINXOPTS: "-W --keep-going -T"
   # ^-- If these SPHINXOPTS are enabled, then be strict about the builds and fail on any warnings
 
@@ -18,13 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: sphinx_combined
     steps:
-
       # PREPARE
 
       # Checkout active branch (the branch that triggered the workflow)
       # https://github.com/marketplace/actions/checkout
       - name: Checkout active branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
           lfs: true
@@ -43,7 +42,7 @@ jobs:
       # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
       - name: Checkout dictIO
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
@@ -60,7 +59,7 @@ jobs:
       # Checkout ospx (same branch as the one that triggered the workflow here in farn)
       # https://github.com/marketplace/actions/checkout
       - name: Checkout ospx
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
@@ -77,9 +76,8 @@ jobs:
       # merge sub-packages into root
       - name: merge sub-packages
         run: |
-         cp -v -n -r dictIO/* .
-         cp -v -n -r ospx/* .
-
+          cp -v -n -r dictIO/* .
+          cp -v -n -r ospx/* .
 
       # replace TOC files by its combined versions
       - name: replace TOC files
@@ -87,18 +85,17 @@ jobs:
           cp -v -f docs/source/combined/* docs/source
           rm -v -r docs/source/combined
 
-
       # Install Python
       # https://github.com/marketplace/actions/setup-python
       - name: Install Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.10.2
+          python-version: '3.10'
 
       # Cache pip
       # https://docs.github.com/en/actions/guides/building-and-testing-python#caching-dependencies
       - name: Cache pip
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -127,7 +124,6 @@ jobs:
           pip list --not-required
           pip list
 
-
       # BUILD DOCUMENTATION
 
       # Build documentation
@@ -136,7 +132,6 @@ jobs:
         run: |
           cd docs
           make html
-
 
       # COPY DOCUMENTATION to gh-pages branch
 
@@ -194,7 +189,6 @@ jobs:
       - name: nojekyll
         run: |
           touch _gh-pages/.nojekyll
-
 
       # PUBLISH DOCUMENTATION
 

@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: int = 3600):
+def execute_in_sub_process(
+    command: str, path: Union[Path, None] = None, timeout: int = 3600
+):
     """Creates a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
@@ -25,15 +27,22 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
     # Configure and start subprocess in workDir (this part shall be atomic, hence secured by lock)
     with lock:
 
-        command = re.sub(r'(^\'|\'$)', '', command)
+        command = re.sub(r"(^\'|\'$)", "", command)
 
-        args = re.split(r'\s+', command.strip())
+        args = re.split(r"\s+", command.strip())
 
-        sub_process = sub.Popen(args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}")
+        sub_process = sub.Popen(
+            args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}"
+        )
 
         if len(command) > 18:
-            cmd_string = '"' + ''.join(list(command)[:11]
-                                       ) + '..' + ''.join(list(command)[-3:]) + '"'
+            cmd_string = (
+                '"'
+                + "".join(list(command)[:11])
+                + ".."
+                + "".join(list(command)[-3:])
+                + '"'
+            )
         else:
             cmd_string = '"' + command + '"'
 
@@ -46,7 +55,7 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
     try:
         stdout, stderr = sub_process.communicate(timeout=timeout)
     except sub.TimeoutExpired:
-        logger.warning(f'Execution timeout, killing process {sub_process.pid:s}')
+        logger.warning(f"Execution timeout, killing process {sub_process.pid:s}")
         # kill subprocess
         parent = Process(sub_process.pid)
         for child in parent.children(recursive=True):
@@ -60,20 +69,20 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
 
 def _log_subprocess_output(command: str, path: Path, stdout: bytes, stderr: bytes):
 
-    if out := str(stdout, encoding='utf-8'):
+    if out := str(stdout, encoding="utf-8"):
         _log_subprocess_log(command, path, out)
 
-    if err := str(stderr, encoding='utf-8'):
+    if err := str(stderr, encoding="utf-8"):
         _log_subprocess_log(command, path, err)
 
 
 def _log_subprocess_log(command: str, path: Path, log: str):
 
-    if re.search('error', log, re.I):
-        logger.error(f'during execution of {command} in {path}\n{log}')
-    elif re.search('warning', log, re.I):
-        logger.warning(f'from execution of {command} in {path}\n{log}')
-    elif re.search('info', log, re.I):
-        logger.info(f'from execution of {command} in {path}\n{log}')
-    elif re.search('debug', log, re.I):
-        logger.debug(f'from execution of {command} in {path}\n{log}')
+    if re.search("error", log, re.I):
+        logger.error(f"during execution of {command} in {path}\n{log}")
+    elif re.search("warning", log, re.I):
+        logger.warning(f"from execution of {command} in {path}\n{log}")
+    elif re.search("info", log, re.I):
+        logger.info(f"from execution of {command} in {path}\n{log}")
+    elif re.search("debug", log, re.I):
+        logger.debug(f"from execution of {command} in {path}\n{log}")
