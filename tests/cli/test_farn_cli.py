@@ -12,13 +12,13 @@ from farn.cli.farn import _argparser, main
 
 
 @dataclass()
-class CliArgs():
+class CliArgs:
     # Expected default values for the CLI arguments when farn gets called via the commandline
     quiet: bool = False
     verbose: bool = False
     log: Union[str, None] = None
-    log_level: str = 'WARNING'
-    farnDict: Union[str, None] = 'test_farnDict'    # noqa
+    log_level: str = "WARNING"
+    farnDict: Union[str, None] = "test_farnDict"  # noqa
     sample: bool = False
     generate: bool = False
     execute: Union[str, None] = None
@@ -29,30 +29,30 @@ class CliArgs():
     "inputs, expected",
     [
         ([], ArgumentError),
-        (['test_farnDict'], CliArgs()),
-        (['test_farnDict', '-q'], CliArgs(quiet=True)),
-        (['test_farnDict', '--quiet'], CliArgs(quiet=True)),
-        (['test_farnDict', '-v'], CliArgs(verbose=True)),
-        (['test_farnDict', '--verbose'], CliArgs(verbose=True)),
-        (['test_farnDict', '-qv'], ArgumentError),
-        (['test_farnDict', '--log', 'logFile'], CliArgs(log='logFile')),
-        (['test_farnDict', '--log'], ArgumentError),
-        (['test_farnDict', '--log-level', 'INFO'], CliArgs(log_level='INFO')),
-        (['test_farnDict', '--log-level'], ArgumentError),
-        (['test_farnDict', '-s'], CliArgs(sample=True)),
-        (['test_farnDict', '--sample'], CliArgs(sample=True)),
-        (['test_farnDict', '-g'], CliArgs(generate=True)),
-        (['test_farnDict', '--generate'], CliArgs(generate=True)),
-        (['test_farnDict', '-e', 'command'], CliArgs(execute='command')),
-        (['test_farnDict', '--execute', 'command'], CliArgs(execute='command')),
+        (["test_farnDict"], CliArgs()),
+        (["test_farnDict", "-q"], CliArgs(quiet=True)),
+        (["test_farnDict", "--quiet"], CliArgs(quiet=True)),
+        (["test_farnDict", "-v"], CliArgs(verbose=True)),
+        (["test_farnDict", "--verbose"], CliArgs(verbose=True)),
+        (["test_farnDict", "-qv"], ArgumentError),
+        (["test_farnDict", "--log", "logFile"], CliArgs(log="logFile")),
+        (["test_farnDict", "--log"], ArgumentError),
+        (["test_farnDict", "--log-level", "INFO"], CliArgs(log_level="INFO")),
+        (["test_farnDict", "--log-level"], ArgumentError),
+        (["test_farnDict", "-s"], CliArgs(sample=True)),
+        (["test_farnDict", "--sample"], CliArgs(sample=True)),
+        (["test_farnDict", "-g"], CliArgs(generate=True)),
+        (["test_farnDict", "--generate"], CliArgs(generate=True)),
+        (["test_farnDict", "-e", "command"], CliArgs(execute="command")),
+        (["test_farnDict", "--execute", "command"], CliArgs(execute="command")),
         (
-            ['test_farnDict', '--execute', 'command name with spaces'],
-            CliArgs(execute='command name with spaces')
+            ["test_farnDict", "--execute", "command name with spaces"],
+            CliArgs(execute="command name with spaces"),
         ),
-        (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--test'], CliArgs(test=True)),
-        (['test_farnDict', '-t'], ArgumentError),
-    ]
+        (["test_farnDict", "--execute"], ArgumentError),
+        (["test_farnDict", "--test"], CliArgs(test=True)),
+        (["test_farnDict", "-t"], ArgumentError),
+    ],
 )
 def test_cli(
     inputs: List[str],
@@ -82,28 +82,37 @@ def test_cli(
 
 
 @dataclass()
-class ConfigureLoggingArgs():
+class ConfigureLoggingArgs:
     # Values that main() is expected to pass to ConfigureLogging() by default when configuring the logging
-    log_level_console: str = 'INFO'     # this deviates from standard 'WARNING', but was decided intentionally for farn
+    log_level_console: str = "INFO"  # this deviates from standard 'WARNING', but was decided intentionally for farn
     log_file: Union[Path, None] = None
-    log_level_file: str = 'WARNING'
+    log_level_file: str = "WARNING"
 
 
 @pytest.mark.parametrize(
     "inputs, expected",
     [
         ([], ArgumentError),
-        (['test_farnDict'], ConfigureLoggingArgs()),
-        (['test_farnDict', '-q'], ConfigureLoggingArgs(log_level_console='ERROR')),
-        (['test_farnDict', '--quiet'], ConfigureLoggingArgs(log_level_console='ERROR')),
-        (['test_farnDict', '-v'], ConfigureLoggingArgs(log_level_console='DEBUG')),
-        (['test_farnDict', '--verbose'], ConfigureLoggingArgs(log_level_console='DEBUG')),
-        (['test_farnDict', '-qv'], ArgumentError),
-        (['test_farnDict', '--log', 'logFile'], ConfigureLoggingArgs(log_file=Path('logFile'))),
-        (['test_farnDict', '--log'], ArgumentError),
-        (['test_farnDict', '--log-level', 'INFO'], ConfigureLoggingArgs(log_level_file='INFO')),
-        (['test_farnDict', '--log-level'], ArgumentError),
-    ]
+        (["test_farnDict"], ConfigureLoggingArgs()),
+        (["test_farnDict", "-q"], ConfigureLoggingArgs(log_level_console="ERROR")),
+        (["test_farnDict", "--quiet"], ConfigureLoggingArgs(log_level_console="ERROR")),
+        (["test_farnDict", "-v"], ConfigureLoggingArgs(log_level_console="DEBUG")),
+        (
+            ["test_farnDict", "--verbose"],
+            ConfigureLoggingArgs(log_level_console="DEBUG"),
+        ),
+        (["test_farnDict", "-qv"], ArgumentError),
+        (
+            ["test_farnDict", "--log", "logFile"],
+            ConfigureLoggingArgs(log_file=Path("logFile")),
+        ),
+        (["test_farnDict", "--log"], ArgumentError),
+        (
+            ["test_farnDict", "--log-level", "INFO"],
+            ConfigureLoggingArgs(log_level_file="INFO"),
+        ),
+        (["test_farnDict", "--log-level"], ArgumentError),
+    ],
 )
 def test_logging_configuration(
     inputs: List[str],
@@ -111,7 +120,7 @@ def test_logging_configuration(
     monkeypatch,
 ):
     # Prepare
-    monkeypatch.setattr(sys, 'argv', ['farn'] + inputs)
+    monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
     args: ConfigureLoggingArgs = ConfigureLoggingArgs()
 
     def fake_configure_logging(
@@ -133,8 +142,8 @@ def test_logging_configuration(
     ):
         pass
 
-    monkeypatch.setattr(farn, 'configure_logging', fake_configure_logging)
-    monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
+    monkeypatch.setattr(farn, "configure_logging", fake_configure_logging)
+    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
         args_expected: ConfigureLoggingArgs = expected
@@ -155,9 +164,9 @@ def test_logging_configuration(
 
 
 @dataclass()
-class ApiArgs():
+class ApiArgs:
     # Values that main() is expected to pass to run_farn() by default when invoking the API
-    farn_dict_file: Path = Path('test_farnDict')
+    farn_dict_file: Path = Path("test_farnDict")
     sample: bool = False
     generate: bool = False
     command: Union[str, None] = None
@@ -168,21 +177,21 @@ class ApiArgs():
     "inputs, expected",
     [
         ([], ArgumentError),
-        (['test_farnDict'], ApiArgs()),
-        (['test_farnDict', '-s'], ApiArgs(sample=True)),
-        (['test_farnDict', '--sample'], ApiArgs(sample=True)),
-        (['test_farnDict', '-g'], ApiArgs(generate=True)),
-        (['test_farnDict', '--generate'], ApiArgs(generate=True)),
-        (['test_farnDict', '-e', 'command'], ApiArgs(command='command')),
-        (['test_farnDict', '--execute', 'command'], ApiArgs(command='command')),
+        (["test_farnDict"], ApiArgs()),
+        (["test_farnDict", "-s"], ApiArgs(sample=True)),
+        (["test_farnDict", "--sample"], ApiArgs(sample=True)),
+        (["test_farnDict", "-g"], ApiArgs(generate=True)),
+        (["test_farnDict", "--generate"], ApiArgs(generate=True)),
+        (["test_farnDict", "-e", "command"], ApiArgs(command="command")),
+        (["test_farnDict", "--execute", "command"], ApiArgs(command="command")),
         (
-            ['test_farnDict', '--execute', 'command name with spaces'],
-            ApiArgs(command='command name with spaces')
+            ["test_farnDict", "--execute", "command name with spaces"],
+            ApiArgs(command="command name with spaces"),
         ),
-        (['test_farnDict', '--execute'], ArgumentError),
-        (['test_farnDict', '--test'], ApiArgs(test=True)),
-        (['test_farnDict', '-t'], ArgumentError),
-    ]
+        (["test_farnDict", "--execute"], ArgumentError),
+        (["test_farnDict", "--test"], ApiArgs(test=True)),
+        (["test_farnDict", "-t"], ArgumentError),
+    ],
 )
 def test_api_invokation(
     inputs: List[str],
@@ -190,7 +199,7 @@ def test_api_invokation(
     monkeypatch,
 ):
     # Prepare
-    monkeypatch.setattr(sys, 'argv', ['farn'] + inputs)
+    monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
     args: ApiArgs = ApiArgs()
 
     def fake_run_farn(
@@ -208,7 +217,7 @@ def test_api_invokation(
         args.batch = batch
         args.test = test
 
-    monkeypatch.setattr(farn, 'run_farn', fake_run_farn)
+    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
         args_expected: ApiArgs = expected
