@@ -7,10 +7,9 @@
 
 import logging
 import math
-from typing import Iterable, MutableMapping, Union, Sequence
+from typing import Iterable, MutableMapping, Sequence, Union
 
 import numpy as np
-
 
 logger = logging.getLogger(__name__)
 
@@ -508,9 +507,9 @@ class DiscreteSampling:
             self.number_of_samples - self.number_of_bb_samples + self.onset,
         )
 
-        sample_set = sequence[
-            self.onset : self.onset + self.number_of_samples - self.number_of_bb_samples
-        ].T
+        start: int = self.onset
+        end: int = self.onset + self.number_of_samples - self.number_of_bb_samples
+        sample_set = sequence[start:end].T
 
         for index, item in enumerate(sample_set):
             sample_set[index] = self.min_max_scale(item, self.bounds[index])
