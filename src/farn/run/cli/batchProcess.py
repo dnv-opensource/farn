@@ -10,7 +10,6 @@ from typing import Union
 from farn.run.batchProcess import AsyncBatchProcessor
 from farn.utils.logging import configure_logging
 
-
 logger = logging.getLogger(__name__)
 
 

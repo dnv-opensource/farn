@@ -19,7 +19,6 @@ sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
 from farn import run_farn  # noqa E402
 from farn.utils.logging import configure_logging  # noqa E402
 
-
 logger = logging.getLogger(__name__)
 
 

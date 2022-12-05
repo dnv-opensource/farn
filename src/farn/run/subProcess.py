@@ -7,7 +7,6 @@ from typing import Union
 
 from psutil import Process
 
-
 logger = logging.getLogger(__name__)
 
 # Lock for operations that are not intrinsically thread safe

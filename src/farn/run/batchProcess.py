@@ -1,10 +1,10 @@
 import logging
 from pathlib import Path
 
-from farn.run.subProcess import execute_in_sub_process
-from farn.run.utils.threading import JobQueue, Worker
 from psutil import cpu_count
 
+from farn.run.subProcess import execute_in_sub_process
+from farn.run.utils.threading import JobQueue, Worker
 
 logger = logging.getLogger(__name__)
 

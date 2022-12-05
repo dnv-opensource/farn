@@ -18,11 +18,10 @@ from typing import (
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
-from farn.run.subProcess import execute_in_sub_process
 from farn.run.batchProcess import AsyncBatchProcessor
+from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
-
 
 __ALL__ = [
     "run_farn",

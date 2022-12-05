@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Union
 
 import pytest
+
 from farn.cli import farn
 from farn.cli.farn import _argparser, main
 
