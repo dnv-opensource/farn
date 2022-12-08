@@ -6,12 +6,14 @@ from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import (
+    Any,
     Dict,
     List,
     MutableMapping,
     MutableSequence,
     MutableSet,
     Sequence,
+    Set,
     Union,
 )
 
@@ -83,7 +85,7 @@ def run_farn(
         raise FileNotFoundError(farn_dict_file)
 
     # Set up farn environment
-    farn_dirs: MutableMapping = _set_up_farn_environment(farn_dict_file)
+    farn_dirs: Dict[str, Path] = _set_up_farn_environment(farn_dict_file)
 
     # Read farn dict
     farn_dict = DictReader.read(farn_dict_file, comments=False)
@@ -120,16 +122,16 @@ def run_farn(
     # Generate case folder structure
     # and create a case-specific paramDict file in each case folder
     if generate:
-        create_case_folders(cases)
-        create_param_dict_files(cases)
-        create_case_list_files(
+        _ = create_case_folders(cases)
+        _ = create_param_dict_files(cases)
+        _ = create_case_list_files(
             cases=cases,
             target_dir=farn_dirs["ROOTDIR"],
         )
 
     # Execute a given command set in all case folders
     if command:
-        execute_command_set(
+        _ = execute_command_set(
             cases=cases,
             command_set=command,
             batch=batch,
@@ -165,9 +167,9 @@ class Case:
     index: int = 0
     path: Path = Path.cwd()
     is_leaf: bool = False
-    condition: Union[MutableMapping, None] = None
+    condition: Union[MutableMapping[str, str], None] = None
     parameters: Union[MutableSequence[Parameter], None] = None
-    command_sets: Union[MutableMapping, None] = None
+    command_sets: Union[MutableMapping[str, List[str]], None] = None
 
     @property
     def is_valid(self) -> bool:
@@ -182,7 +184,7 @@ class Case:
         """
 
         # Check whether the '_condition' element is defined.  Without it, case is in any case considered valid.
-        if not self.condition or not isinstance(self.condition, MutableMapping):
+        if not self.condition:
             return True
 
         # Check whether filter expression is defined.
@@ -231,7 +233,7 @@ class Case:
                 return False
 
         # transfer a white list of case properties to locals() for subsequent filtering
-        available_vars = set()
+        available_vars: Set[str] = set()
         for attribute in dir(self):
             try:
                 if attribute in [
@@ -310,12 +312,12 @@ class Case:
 
         return True
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict[str, Any]:
         """Returns a dict with all case attributes
 
         Returns
         -------
-        dict
+        Dict[str, Any]
             dict with all case attributes
         """
         return {
@@ -353,7 +355,11 @@ def create_samples(farn_dict: CppDict):
         )
         return
 
-    def create_samples_in_layer(level: int, layer_name: str, layer: MutableMapping):
+    def create_samples_in_layer(
+        level: int,
+        layer_name: str,
+        layer: MutableMapping[str, Any],
+    ):
         """
         runs sampling and generates the samples in the passed in layer
         """
@@ -368,7 +374,8 @@ def create_samples(farn_dict: CppDict):
         sampling = DiscreteSampling()
         sampling.set_sampling_type(sampling_type=layer["_sampling"]["_type"])
         sampling.set_sampling_parameters(
-            base_name=layer_name, kwargs=layer["_sampling"]
+            sampling_parameters=layer["_sampling"],
+            layer_name=layer_name,
         )
 
         # in case a _samples element already exists (e.g. from a former run) -> delete it
@@ -376,7 +383,7 @@ def create_samples(farn_dict: CppDict):
             del layer["_samples"]
 
         # generate the samples and write them into the _samples element of the layer
-        samples = sampling.generate()
+        samples: Dict[str, List[Any]] = sampling.generate_samples()
         layer["_samples"] = samples
 
         # if the layer does not have a _comment element yet: create a default comment
@@ -401,7 +408,7 @@ def create_samples(farn_dict: CppDict):
 
 
 def create_cases(
-    farn_dict: MutableMapping,
+    farn_dict: MutableMapping[Any, Any],
     case_dir: Path,
     valid_only: bool = False,
 ) -> list[Case]:
@@ -448,9 +455,9 @@ def create_cases(
 
     # Create a local layers list that carries also the layers' name
     # to ease sequential and indexed access to individual layers in create_next_level_cases()
-    layers: MutableSequence[MutableMapping] = []
+    layers: List[Dict[str, Any]] = []
     for layer_name, layer in farn_dict["_layers"].items():
-        layer_copy = deepcopy(layer)
+        layer_copy: Dict[str, Any] = deepcopy(layer)
         layer_copy["_name"] = layer_name
         layers.append(layer_copy)
 
@@ -465,7 +472,7 @@ def create_cases(
         base_case = base_case or Case(path=Path.cwd())
         base_case.parameters = base_case.parameters or []
 
-        current_layer: MutableMapping = layers[level]
+        current_layer: Dict[str, Any] = layers[level]
         # validity checks for current layer
         if "_samples" not in current_layer:
             logger.warning(
@@ -480,7 +487,7 @@ def create_cases(
             )
             return
 
-        current_layer_name: str = current_layer["_name"]
+        current_layer_name: str = str(current_layer["_name"])
         current_layer_is_leaf: bool = level == len(layers) - 1
 
         no_of_samples_in_current_layer: int = len(
@@ -524,10 +531,10 @@ def create_cases(
                 else:
                     user_variables_in_current_layer.append(user_variable)
 
-        condition_in_current_layer: Union[MutableMapping, None] = (
+        condition_in_current_layer: Union[MutableMapping[str, str], None] = (
             current_layer["_condition"] if "_condition" in current_layer else None
         )
-        commands_in_current_layer: Union[MutableMapping, None] = (
+        commands_in_current_layer: Union[MutableMapping[str, List[str]], None] = (
             current_layer["_commands"] if "_commands" in current_layer else None
         )
 
@@ -706,7 +713,7 @@ def create_case_list_files(
     max_level: int = 0
     with case_list_file_all_levels.open(mode="w") as f:
         for case in cases:
-            f.write(f"{case.path.absolute()}\n")
+            _ = f.write(f"{case.path.absolute()}\n")
             max_level = max(max_level, case.level)
     case_list_files_created.append(case_list_file_all_levels)
 
@@ -720,7 +727,7 @@ def create_case_list_files(
         )
         with case_list_file_for_level.open(mode="w") as f:
             for case in (case for case in cases if case.level == level):
-                f.write(f"{case.path.absolute()}\n")
+                _ = f.write(f"{case.path.absolute()}\n")
         case_list_files_created.append(case_list_file_for_level)
 
     case_list_files_created_log = "".join(
@@ -808,7 +815,7 @@ def execute_command_set(
             case_list_file = Path.cwd() / f"caseList_for_command_{index}"
             with case_list_file.open(mode="w") as f:
                 for case in cases:
-                    f.write(f"{case.path.absolute()}\n")
+                    _ = f.write(f"{case.path.absolute()}\n")
             batch_processor = AsyncBatchProcessor(case_list_file, shell_command)
             batch_processor.run()
     else:
@@ -845,7 +852,7 @@ def execute_command_set(
     return number_of_cases_registered
 
 
-def _set_up_farn_environment(farn_dict_file: Path) -> dict:
+def _set_up_farn_environment(farn_dict_file: Path) -> Dict[str, Path]:
     """Reads the '_environment' section from farn dict and sets up the farn environment accordingly.
 
     Reads the '_environment' section from farnDict and sets up the farn environment directories as configured therein.
@@ -858,7 +865,7 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
 
     Returns
     -------
-    dict
+    Dict[str, str]
         dict containing the environment directories set up for farn (matching the _environment section in farnDict)
     """
 
@@ -867,7 +874,7 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
     # Set up farn environment.
     # 1: Define default values for environment
     # sourcery skip: merge-dict-assign
-    environment: dict = {}
+    environment: Dict[str, str] = {}
     environment["CASEDIR"] = "cases"
     environment["DUMPDIR"] = "dump"
     environment["LOGDIR"] = "logs"
@@ -884,9 +891,9 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict:
         )
 
     # Read farn directories from environment
-    farn_dirs: MutableMapping[str, Path] = {}
-    farn_dirs.update({k: Path.joinpath(Path.cwd(), v) for k, v in environment.items()})
-    farn_dirs.update({"ROOTDIR": Path.cwd()})
+    farn_dirs: Dict[str, Path]
+    farn_dirs = {k: Path.joinpath(Path.cwd(), v) for k, v in environment.items()}
+    farn_dirs["ROOTDIR"] = Path.cwd()
     # Configure logging handler to write the farn log (use an additional handler, exclusively for farn)
     _configure_additional_logging_handler_exclusively_for_farn(farn_dirs["LOGDIR"])
 
@@ -948,16 +955,16 @@ def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
     return
 
 
-def _sys_call(shell_commands: MutableSequence):
+def _sys_call(shell_commands: MutableSequence[str]):
     """Fallback function until _execute_command is usable under linux"""
 
     for shell_command in shell_commands:
-        os.system(shell_command)
+        _ = os.system(shell_command)
 
     return
 
 
-def _execute_shell_commands(shell_commands: MutableSequence):
+def _execute_shell_commands(shell_commands: MutableSequence[str]):
     """Execute a sequence of shell commands using subprocess.
 
     Parameters
@@ -973,6 +980,6 @@ def _execute_shell_commands(shell_commands: MutableSequence):
         return
 
     for shell_command in shell_commands:
-        execute_in_sub_process(shell_command)
+        _ = execute_in_sub_process(shell_command)
 
     return

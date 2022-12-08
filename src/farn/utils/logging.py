@@ -12,7 +12,7 @@ def configure_logging(
     log_level_console: str = "WARNING",
     log_file: Union[Path, None] = None,
     log_level_file: str = "WARNING",
-):  # sourcery skip: extract-duplicate-method
+):  # sourcery skip: extract-duplicate-method, extract-method
 
     log_level_console_numeric = getattr(logging, log_level_console.upper(), None)
     if not isinstance(log_level_console_numeric, int):

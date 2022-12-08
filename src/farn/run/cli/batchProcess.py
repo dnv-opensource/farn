@@ -26,14 +26,14 @@ def _argparser() -> argparse.ArgumentParser:
         ),
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "caseList",
         metavar="caseList",
         type=str,
         help="name of the text file containing all paths of the cases to be processed.",
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-e",
         "--execute",
         metavar="CMD",
@@ -47,7 +47,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=True,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-t",
         "--timeout",
         action="store",
@@ -57,7 +57,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-c",
         "--cpu",
         action="store",
@@ -69,7 +69,7 @@ def _argparser() -> argparse.ArgumentParser:
 
     console_verbosity = parser.add_mutually_exclusive_group(required=False)
 
-    console_verbosity.add_argument(
+    _ = console_verbosity.add_argument(
         "-q",
         "--quiet",
         action="store_true",
@@ -77,7 +77,7 @@ def _argparser() -> argparse.ArgumentParser:
         default=False,
     )
 
-    console_verbosity.add_argument(
+    _ = console_verbosity.add_argument(
         "-v",
         "--verbose",
         action="store_true",
@@ -85,7 +85,7 @@ def _argparser() -> argparse.ArgumentParser:
         default=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "--log",
         action="store",
         type=str,
@@ -94,7 +94,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "--log-level",
         action="store",
         type=str,
