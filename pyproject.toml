@@ -15,7 +15,7 @@ exclude = [
     "dist",
     "**/__pycache__",
     "./docs/source/conf.py",
-    "**/test_*",
+    "tests",
 ]
 extraPaths = ["./src"]
 typeCheckingMode = "basic"
@@ -48,5 +48,5 @@ reportUntypedBaseClass = "error"
 reportUntypedNamedTuple = "warning"
 # Activate the following rules only locally and temporary, i.e. for a QA session.
 # (For server side CI they are considered too strict.)
-reportImportCycles = "warning"
+# reportImportCycles = "warning"
 # reportImplicitStringConcatenation = "warning"
