@@ -96,7 +96,7 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
     ~~~
     Install farn's dependencies:
     ~~~sh
-    $ pip install -r requirements.txt
+    $ pip install -r requirements-dev.txt
     ~~~
 
 ## Meta
