@@ -26,6 +26,5 @@ jobs:
           python -m pip install tox tox-gh-actions
       - name: Run tox
         run: tox
-        continue-on-error: true
         env:
           PLATFORM: ${{ matrix.platform }}
