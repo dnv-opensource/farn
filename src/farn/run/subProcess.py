@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(
-    command: str, path: Union[Path, None] = None, timeout: int = 3600
-):
+def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: int = 3600):
     """Creates a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
@@ -30,18 +28,10 @@ def execute_in_sub_process(
 
         args = re.split(r"\s+", command.strip())
 
-        sub_process = sub.Popen(
-            args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}"
-        )
+        sub_process = sub.Popen(args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}")
 
         if len(command) > 18:
-            cmd_string = (
-                '"'
-                + "".join(list(command)[:11])
-                + ".."
-                + "".join(list(command)[-3:])
-                + '"'
-            )
+            cmd_string = '"' + "".join(list(command)[:11]) + ".." + "".join(list(command)[-3:]) + '"'
         else:
             cmd_string = '"' + command + '"'
 

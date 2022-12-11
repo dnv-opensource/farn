@@ -21,9 +21,7 @@ def _argparser() -> argparse.ArgumentParser:
         epilog="_________________batchProcess___________________",
         prefix_chars="-",
         add_help=True,
-        description=(
-            "Batch processes a list of cases, executing the specified shell command in all case folders."
-        ),
+        description=("Batch processes a list of cases, executing the specified shell command in all case folders."),
     )
 
     _ = parser.add_argument(

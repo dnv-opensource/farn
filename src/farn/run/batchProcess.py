@@ -49,9 +49,7 @@ class AsyncBatchProcessor:
         # (threadPool being a simple list of threads, nothing sophisticated)
         thread_pool = [Worker(jobs) for _ in range(number_of_cpus)]
 
-        logger.info(
-            f"AsyncBatchProcessor: started {len(thread_pool):2d} worker threads."
-        )
+        logger.info(f"AsyncBatchProcessor: started {len(thread_pool):2d} worker threads.")
 
         # Wait until all jobs are done
         jobs.join()

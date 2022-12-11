@@ -76,7 +76,7 @@ def test_cli(
         with pytest.raises((exception, SystemExit)):
             args = parser.parse_args()
     else:
-        assert False
+        raise AssertionError()
 
 
 # *****Ensure the CLI correctly configures logging*************************************************
@@ -158,7 +158,7 @@ def test_logging_configuration(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        assert False
+        raise AssertionError()
 
 
 # *****Ensure the CLI correctly invokes the API****************************************************
@@ -232,4 +232,4 @@ def test_api_invokation(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        assert False
+        raise AssertionError()

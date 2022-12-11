@@ -164,9 +164,7 @@ class DiscreteSampling:
                 self.number_of_samples = len(item)
                 break
             except Exception:
-                logger.exception(
-                    "values: list(dim names) of lists(dim _samples) required as input"
-                )
+                logger.exception("values: list(dim names) of lists(dim _samples) required as input")
 
         # check equality of nested lists
         for item in self.sampling_parameters["_values"]:
@@ -197,7 +195,7 @@ class DiscreteSampling:
         self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
         self._generate_case_names(samples)
 
-        for index, item in enumerate(self.fields):
+        for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = list(
                 np.linspace(
                     self.minVals[index],
@@ -224,11 +222,9 @@ class DiscreteSampling:
 
         if self.sampling_parameters["_includeBoundingBox"] is True:
             self._create_bounding_box()
-            values = np.concatenate(  # type: ignore
-                (np.array(self.boundingBox).T, values), axis=1
-            )
+            values = np.concatenate((np.array(self.boundingBox).T, values), axis=1)  # type: ignore
 
-        for index, item in enumerate(self.fields):
+        for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = values[index].tolist()
 
         return samples
@@ -264,12 +260,10 @@ class DiscreteSampling:
         if self.ranges:
             clipped: ndarray[Any, Any] = np.zeros(values.shape)
             for index, field in enumerate(values):
-                clipped[index] = np.clip(  # type: ignore
-                    field, self.ranges[index][0], self.ranges[index][1]
-                )
+                clipped[index] = np.clip(field, self.ranges[index][0], self.ranges[index][1])  # type: ignore
             values = clipped
 
-        for index, item in enumerate(self.fields):
+        for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = values[index].tolist()
 
         return samples
@@ -284,11 +278,9 @@ class DiscreteSampling:
 
         if self.sampling_parameters["_includeBoundingBox"] is True:
             self._create_bounding_box()
-            values = np.concatenate(  # type: ignore
-                (np.array(self.boundingBox).T, values), axis=1
-            )
+            values = np.concatenate((np.array(self.boundingBox).T, values), axis=1)  # type: ignore
 
-        for index, item in enumerate(self.fields):
+        for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = values[index].tolist()
 
         return samples
@@ -319,11 +311,9 @@ class DiscreteSampling:
 
         distribution_name: Sequence[str]
         distribution_parameters: Sequence[Any]
-        for index, item in enumerate(self.fields):
+        for index, _ in enumerate(self.fields):
             distribution_name = self.sampling_parameters["_distributionName"]
-            distribution_parameters = self.sampling_parameters[
-                "_distributionParameters"
-            ]
+            distribution_parameters = self.sampling_parameters["_distributionParameters"]
 
             eval_command = f"scipy.stats.{distribution_name[index]}"
 
@@ -379,9 +369,7 @@ class DiscreteSampling:
         # std of type scalar (scale) or vector (stretch, scale), no rotation
         _std: ndarray[Any, Any] = np.array(self.std)
 
-        sample_set: ndarray[Any, Any] = norm(  # type: ignore
-            loc=self.mean, scale=_std
-        ).ppf(lhs_distribution)
+        sample_set: ndarray[Any, Any] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # type: ignore
 
         # transpose to be aligned with uniformLhs output
         return sample_set.T
@@ -413,8 +401,7 @@ class DiscreteSampling:
         samples: Dict[str, List[Any]],
     ):
         self.case_names = [
-            f'{self.layer_name}_{format(i, "0%i" % self.leading_zeros)}'
-            for i in range(self.number_of_samples)
+            f'{self.layer_name}_{format(i, "0%i" % self.leading_zeros)}' for i in range(self.number_of_samples)
         ]
         samples["_case_name"] = self.case_names
 
@@ -423,12 +410,8 @@ class DiscreteSampling:
         parameter_name: str,
     ) -> bool:
         # check that size of a list/ vector equals the size of _names
-        if len(self.sampling_parameters["_names"]) != len(
-            self.sampling_parameters[parameter_name]
-        ):
-            msg: str = (
-                f"lists _names and {parameter_name}: lengths of entries do not match"
-            )
+        if len(self.sampling_parameters["_names"]) != len(self.sampling_parameters[parameter_name]):
+            msg: str = f"lists _names and {parameter_name}: lengths of entries do not match"
             logger.error(msg)
             return False
         return True
@@ -436,9 +419,7 @@ class DiscreteSampling:
     def _check_consistency_of_ranges(self, ranges: Sequence[Sequence[Any]]) -> bool:
         for item in ranges:
             if len(item) != 2:
-                logger.error(
-                    "The structure of min and max values in _ranges is inconsistent."
-                )
+                logger.error("The structure of min and max values in _ranges is inconsistent.")
                 return False
         return self._check_size_of_parameter_matches_number_of_names("_ranges")
 
@@ -458,11 +439,7 @@ class DiscreteSampling:
                 )
             )
             for field_index in range(1, self.number_of_fields - 1):
-                tmp = list(
-                    itertools.product(
-                        tmp, self.sampling_parameters["_ranges"][field_index + 1]
-                    )
-                )
+                tmp = list(itertools.product(tmp, self.sampling_parameters["_ranges"][field_index + 1]))
         self.boundingBox = []
         for item in tmp:
             if isinstance(item, Iterable):
@@ -479,13 +456,9 @@ class DiscreteSampling:
             else:
                 yield element
 
-    def min_max_scale(
-        self, field: ndarray[Any, Any], range: Sequence[float]
-    ) -> ndarray[Any, Any]:
+    def min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
         """might belong to different class in future
         from sklearn.preprocessing import minmax_scale
         """
-        scale = (range[1] - range[0]) / (
-            field.max(axis=0) - field.min(axis=0)  # type: ignore
-        )
+        scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))  # type: ignore
         return scale * field + range[0] - field.min(axis=0) * scale  # type: ignore
