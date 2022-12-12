@@ -1,15 +1,3 @@
-pytest>=7.2
-pytest-cov>=4.0
-pytest-randomly>=3.12
-black>=22.10.0
-flake8>=6.0
-pep8-naming>=0.13
-isort>=5.10.1
-Sphinx>=5.3
-sphinx-argparse-cli>=1.10
-myst-parser>=0.18
-furo>=2022.9.29
-
 lxml>=4.9
 numpy>=1.23
 pandas>=1.5
@@ -21,7 +9,7 @@ psutil>=5.9
 SALib>=1.4.6
 sobol-seq>=0.2
 
+dictIO>=0.2.4
 # ../dictIO
-dictIO>=0.2.3
-# ../ospx
 ospx>=0.2.5
+# ../ospx

@@ -6,7 +6,7 @@ import logging
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Union
+from typing import Tuple, Union
 
 # Remove current directory from Python search path.
 # Only through this trick it is possible that the current CLI file 'farn.py'
@@ -18,7 +18,6 @@ from typing import Union
 sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
 from farn import run_farn  # noqa E402
 from farn.utils.logging import configure_logging  # noqa E402
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,14 +37,14 @@ def _argparser() -> argparse.ArgumentParser:
         ),
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "farnDict",
         metavar="farnDict",
         type=str,
         help="name of the dict file containing the farn configuration.",
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-s",
         "--sample",
         action="store_true",
@@ -54,7 +53,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-g",
         "--generate",
         action="store_true",
@@ -63,7 +62,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-e",
         "--execute",
         metavar="command",
@@ -77,7 +76,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "-b",
         "--batch",
         action="store_true",
@@ -86,7 +85,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "--test",
         action="store_true",
         help="Run only first case and exit. (note: --test is most useful in combination with --execute)",
@@ -96,7 +95,7 @@ def _argparser() -> argparse.ArgumentParser:
 
     console_verbosity = parser.add_mutually_exclusive_group(required=False)
 
-    console_verbosity.add_argument(
+    _ = console_verbosity.add_argument(
         "-q",
         "--quiet",
         action="store_true",
@@ -104,7 +103,7 @@ def _argparser() -> argparse.ArgumentParser:
         default=False,
     )
 
-    console_verbosity.add_argument(
+    _ = console_verbosity.add_argument(
         "-v",
         "--verbose",
         action="store_true",
@@ -112,7 +111,7 @@ def _argparser() -> argparse.ArgumentParser:
         default=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "--log",
         action="store",
         type=str,
@@ -121,7 +120,7 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
-    parser.add_argument(
+    _ = parser.add_argument(
         "--log-level",
         action="store",
         type=str,
@@ -149,7 +148,9 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    log_level_console: str = (
+        "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    )
     if any([args.quiet, args.verbose]):
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console
@@ -170,9 +171,7 @@ def main():
     # as one of them IS required
     if not sample and not generate and command is None:
         parser.print_help()
-        logger.error(
-            "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
-        )
+        logger.error("farn: none of the required options given: '--sample' or '--generate' or '--execute'")
 
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
@@ -226,25 +225,25 @@ def _generate_barnsley_fern():
     from PIL import Image
     from PIL.ImageDraw import ImageDraw
 
-    def t1(p):
+    def t1(p: Tuple[float, float]) -> Tuple[float, float]:
         """
         1%
         """
-        return (0, 0.16 * p[1])
+        return (0.0, 0.16 * p[1])
 
-    def t2(p):
+    def t2(p: Tuple[float, float]) -> Tuple[float, float]:
         """
         85%
         """
         return (0.85 * p[0] + 0.04 * p[1], -0.04 * p[0] + 0.85 * p[1] + 1.6)
 
-    def t3(p):
+    def t3(p: Tuple[float, float]) -> Tuple[float, float]:
         """
         7%
         """
         return (0.2 * p[0] - 0.26 * p[1], 0.23 * p[0] + 0.22 * p[1] + 1.6)
 
-    def t4(p):
+    def t4(p: Tuple[float, float]) -> Tuple[float, float]:
         """
         7%
         """
@@ -255,7 +254,7 @@ def _generate_barnsley_fern():
     im = Image.new("RGBA", (x_size, x_size))
     draw = ImageDraw(im)
 
-    p = (0, 0)
+    p: Tuple[float, float] = (0, 0)
     end = 20000
     ii = 0
     scale = 100
@@ -312,9 +311,9 @@ def _generate_barnsley_fern():
         # image = tk.PhotoImage(file=Path(os.getenv('HOME')) / 'splash.png')
         image = tk.PhotoImage(file=temp_file)
         canvas = tk.Canvas(root, height=y_size, width=x_size, bg="dark slate gray")
-        canvas.create_image(x_size / 2, y_size / 2, image=image)
+        _ = canvas.create_image(x_size / 2, y_size / 2, image=image)  # type: ignore
         canvas.pack()
-        root.after(3000, root.destroy)
+        _ = root.after(3000, root.destroy)
         root.mainloop()
 
     return

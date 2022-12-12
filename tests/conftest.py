@@ -4,6 +4,7 @@ from pathlib import Path
 from shutil import rmtree
 
 import pytest
+from pytest import LogCaptureFixture
 
 
 @pytest.fixture(scope="package", autouse=True)
@@ -33,7 +34,7 @@ farn_files = [
 
 
 @pytest.fixture(autouse=True)
-def default_setup_and_teardown(caplog):
+def default_setup_and_teardown(caplog: LogCaptureFixture):
     _remove_farn_dirs_and_files()
     yield
     _remove_farn_dirs_and_files()
@@ -49,6 +50,6 @@ def _remove_farn_dirs_and_files():
 
 
 @pytest.fixture(autouse=True)
-def setup_logging(caplog):
+def setup_logging(caplog: LogCaptureFixture):
     caplog.set_level("INFO")
     caplog.clear()
