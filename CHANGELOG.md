@@ -8,6 +8,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * --
 
 
+## [0.2.6] - 2022-12-12
+
+### Dependencies
+
+* updated to ospx>=0.2.6
+
 ## [0.2.5] - 2022-12-12
 
 ### Changed
