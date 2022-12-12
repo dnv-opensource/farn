@@ -11,5 +11,5 @@ sobol-seq>=0.2
 
 dictIO>=0.2.4
 # ../dictIO
-ospx>=0.2.5
+ospx>=0.2.6
 # ../ospx
