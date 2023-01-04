@@ -1,7 +1,7 @@
 .. combined documentation master file
 
-Welcome to farn's documentation!
-================================
+farn Documentation
+==================
 
 .. toctree::
    :maxdepth: 5

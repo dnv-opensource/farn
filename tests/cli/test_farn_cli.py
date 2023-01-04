@@ -1,3 +1,4 @@
+# pyright: reportPrivateUsage=false
 import sys
 from argparse import ArgumentError
 from dataclasses import dataclass
@@ -5,6 +6,7 @@ from pathlib import Path
 from typing import List, Union
 
 import pytest
+from pytest import MonkeyPatch
 
 from farn.cli import farn
 from farn.cli.farn import _argparser, main
@@ -58,7 +60,7 @@ class CliArgs:
 def test_cli(
     inputs: List[str],
     expected: Union[CliArgs, type],
-    monkeypatch,
+    monkeypatch: MonkeyPatch,
 ):
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
@@ -118,7 +120,7 @@ class ConfigureLoggingArgs:
 def test_logging_configuration(
     inputs: List[str],
     expected: Union[ConfigureLoggingArgs, type],
-    monkeypatch,
+    monkeypatch: MonkeyPatch,
 ):
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
@@ -171,6 +173,7 @@ class ApiArgs:
     sample: bool = False
     generate: bool = False
     command: Union[str, None] = None
+    batch: bool = False
     test: bool = False
 
 
@@ -190,6 +193,8 @@ class ApiArgs:
             ApiArgs(command="command name with spaces"),
         ),
         (["test_farnDict", "--execute"], ArgumentError),
+        (["test_farnDict", "-b"], ApiArgs(batch=True)),
+        (["test_farnDict", "--batch"], ApiArgs(batch=True)),
         (["test_farnDict", "--test"], ApiArgs(test=True)),
         (["test_farnDict", "-t"], ArgumentError),
     ],
@@ -197,7 +202,7 @@ class ApiArgs:
 def test_api_invokation(
     inputs: List[str],
     expected: Union[ApiArgs, type],
-    monkeypatch,
+    monkeypatch: MonkeyPatch,
 ):
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)

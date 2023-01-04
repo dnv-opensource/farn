@@ -238,7 +238,7 @@ class DiscreteSampling:
         * _sigma: variation (vector), or required scalar, optional vector, optional cov
         or
         NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE!
-        * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples)
+        * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples).
         """
         samples: Dict[str, List[Any]] = {}
         self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
@@ -333,7 +333,7 @@ class DiscreteSampling:
         alternative
         from pyDOE2 import lhs
         lhs_dist = lhs(n, samples=n_samples, criterion='corr', random_state=None)
-        criterion: center|maximin|centermaximin|correlation
+        criterion: center|maximin|centermaximin|correlation.
         """
         from SALib.sample import latin
 
@@ -350,7 +350,7 @@ class DiscreteSampling:
         return sample_set.T
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
-        """gaussnormal lhs"""
+        """gaussnormal lhs."""
         from pyDOE2 import lhs
         from scipy.stats import norm  # qmc, truncnorm
 
@@ -449,7 +449,7 @@ class DiscreteSampling:
         return
 
     def flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
-        """flattens sequence... happens why?"""
+        """flattens sequence... happens why?."""
         for element in iterable:
             if isinstance(element, Sequence) and not isinstance(element, (str, bytes)):
                 yield from self.flatten(element)
@@ -458,7 +458,7 @@ class DiscreteSampling:
 
     def min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
         """might belong to different class in future
-        from sklearn.preprocessing import minmax_scale
+        from sklearn.preprocessing import minmax_scale.
         """
         scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))  # type: ignore
         return scale * field + range[0] - field.min(axis=0) * scale  # type: ignore
