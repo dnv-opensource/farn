@@ -2,8 +2,9 @@ import os
 import platform
 from pathlib import Path
 
-from farn import run_farn
 from pytest import LogCaptureFixture
+
+from farn import run_farn
 
 
 def test_sample():

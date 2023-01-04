@@ -5,17 +5,7 @@ import re
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import (
-    Any,
-    Dict,
-    List,
-    MutableMapping,
-    MutableSequence,
-    MutableSet,
-    Sequence,
-    Set,
-    Union,
-)
+from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Set, Union
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
@@ -139,7 +129,7 @@ def run_farn(
 
 @dataclass
 class Parameter:
-    """Dataclass holding the parameter attributes 'name' and 'value'"""
+    """Dataclass holding the parameter attributes 'name' and 'value'."""
 
     name: Union[str, None] = None
     value: Union[float, None] = None
@@ -147,7 +137,7 @@ class Parameter:
 
 @dataclass
 class Case:
-    """Dataclass holding case attributes
+    """Dataclass holding case attributes.
 
     The dataclass 'Case' holds all relevant case attributes needed by farn to process cases, e.g.
         - condition
@@ -307,7 +297,7 @@ class Case:
         return True
 
     def to_dict(self) -> Dict[str, Any]:
-        """Returns a dict with all case attributes
+        """Returns a dict with all case attributes.
 
         Returns
         -------
@@ -350,9 +340,7 @@ def create_samples(farn_dict: CppDict):
         layer_name: str,
         layer: MutableMapping[str, Any],
     ):
-        """
-        runs sampling and generates the samples in the passed in layer
-        """
+        """Runs sampling and generates the samples in the passed in layer."""
         if "_sampling" not in layer:
             logger.error("no '_sampling' element in layer")
             return
@@ -733,6 +721,8 @@ def execute_command_set(
         cases for which the specified command set shall be executed.
     command_set : str
         name of the command set to be executed, as defined in farnDict
+    batch : bool, optional
+        if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
         if True, executes command set in only first case folder where command set is defined, by default False
 
@@ -920,7 +910,7 @@ def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
 
 
 def _sys_call(shell_commands: MutableSequence[str]):
-    """Fallback function until _execute_command is usable under linux"""
+    """Fallback function until _execute_command is usable under linux."""
 
     for shell_command in shell_commands:
         _ = os.system(shell_command)

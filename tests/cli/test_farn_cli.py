@@ -6,9 +6,10 @@ from pathlib import Path
 from typing import List, Union
 
 import pytest
+from pytest import MonkeyPatch
+
 from farn.cli import farn
 from farn.cli.farn import _argparser, main
-from pytest import MonkeyPatch
 
 # *****Test commandline interface (CLI)************************************************************
 

@@ -134,7 +134,7 @@ def _argparser() -> argparse.ArgumentParser:
 
 
 def main():
-    """Entry point for console script as configured in setup.cfg
+    """Entry point for console script as configured in setup.cfg.
 
     Runs the command line interface and parses arguments and options entered on the console.
     """
@@ -203,7 +203,7 @@ def main():
 
 def _generate_barnsley_fern():
     """
-    easter egg: Barnsley fern
+    easter egg: Barnsley fern.
 
     Barnsley Fern:
             ┌     ┐ ┌   ┐   ┌   ┐
@@ -226,27 +226,19 @@ def _generate_barnsley_fern():
     from PIL.ImageDraw import ImageDraw
 
     def t1(p: Tuple[float, float]) -> Tuple[float, float]:
-        """
-        1%
-        """
+        """1%."""
         return (0.0, 0.16 * p[1])
 
     def t2(p: Tuple[float, float]) -> Tuple[float, float]:
-        """
-        85%
-        """
+        """85%."""
         return (0.85 * p[0] + 0.04 * p[1], -0.04 * p[0] + 0.85 * p[1] + 1.6)
 
     def t3(p: Tuple[float, float]) -> Tuple[float, float]:
-        """
-        7%
-        """
+        """7%."""
         return (0.2 * p[0] - 0.26 * p[1], 0.23 * p[0] + 0.22 * p[1] + 1.6)
 
     def t4(p: Tuple[float, float]) -> Tuple[float, float]:
-        """
-        7%
-        """
+        """7%."""
         return (-0.15 * p[0] + 0.28 * p[1], 0.26 * p[0] + 0.24 * p[1] + 0.44)
 
     x_size = 1024
