@@ -44,7 +44,7 @@ def configure_logging(
 
 
 def plural(count: int, string: str = "") -> str:
-    """conditionally returns the singular or plural form of the passed in string.
+    """Conditionally returns the singular or plural form of the passed in string.
 
     Parameters
     ----------
