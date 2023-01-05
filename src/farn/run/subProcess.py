@@ -33,7 +33,7 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
         if len(command) > 18:
             cmd_string = '"' + "".join(list(command)[:11]) + ".." + "".join(list(command)[-3:]) + '"'
         else:
-            cmd_string = '"' + command + '"'
+            cmd_string = f'"{command}"'
 
         logger.info("Execute {:18} in {:}".format(cmd_string, path))
         logger.debug(f"(timout: {timeout}, pid: %{sub_process.pid})")

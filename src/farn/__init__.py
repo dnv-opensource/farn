@@ -1,6 +1,7 @@
-from .farn import (  # noqa: F401
-    Case as Case,
-    Parameter as Parameter,
+# from farn.core import Case as Case
+# from farn.core import Parameter as Parameter
+
+from .farn import (
     create_case_folders as create_case_folders,
     create_case_list_files as create_case_list_files,
     create_param_dict_files as create_param_dict_files,
