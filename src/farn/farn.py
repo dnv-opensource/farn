@@ -9,7 +9,7 @@ from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet,
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
-from farn.core import Case, Parameter
+from farn.core import Case, Cases, Parameter
 from farn.run.batchProcess import AsyncBatchProcessor
 from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
@@ -196,7 +196,7 @@ def create_cases(
     farn_dict: MutableMapping[Any, Any],
     case_dir: Path,
     valid_only: bool = False,
-) -> list[Case]:
+) -> Cases:
     """Creates cases based on the layers, filter expressions and samples defined in the passed farn dict.
 
     Creates case objects for all cases derived by recursive permutation of layers and the case specific samples defined per layer.
@@ -223,7 +223,7 @@ def create_cases(
 
     Returns
     -------
-    list[Case]
+    Cases
         list of case objects representing all created cases.
     """
     log_msg: str = "List all valid cases.." if valid_only else "List all cases.."
@@ -235,7 +235,7 @@ def create_cases(
         return []
 
     # Initialize cases list
-    cases: list[Case] = []
+    cases: Cases = Cases()
     number_of_invalid_cases: int = 0
 
     # Create a local layers list that carries also the layers' name
