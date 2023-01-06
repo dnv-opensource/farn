@@ -1,12 +1,15 @@
 # pyright: reportUnknownMemberType=false
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, List, Tuple
 
 import numpy as np
+from dictIO import CppDict, DictReader
 from dictIO.utils.path import relative_path
 from numpy import ndarray
 from pandas import DataFrame
 
+from farn import create_cases, create_samples
 from farn.core import Case, Cases, Parameter
 
 
@@ -169,3 +172,165 @@ def _create_ndarray() -> ndarray[Any, Any]:
         ]
     )
     return array
+
+
+def test_filter_all():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_all_assert: Cases = deepcopy(cases)
+    # Execute
+    cases_all: Cases = cases.filter([0, 1], valid_only=False)
+    # Assert
+    assert isinstance(cases_all, Cases)
+    assert len(cases_all) == len(cases_all_assert)
+    assert cases_all == cases_all_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_0():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 0])
+    # Execute
+    cases_filtered: Cases = cases.filter(0, valid_only=False)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_1():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 1])
+    # Execute
+    cases_filtered: Cases = cases.filter(1, valid_only=False)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_minus_1():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.is_leaf])
+    # Execute
+    cases_filtered: Cases = cases.filter(-1, valid_only=False)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_all_valid_only():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_all_assert: Cases = Cases([case for case in cases if case.is_valid])
+    # Execute
+    cases_all: Cases = cases.filter([0, 1], valid_only=True)
+    # Assert
+    assert isinstance(cases_all, Cases)
+    assert len(cases_all) == len(cases_all_assert)
+    assert cases_all == cases_all_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_0_valid_only():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 0 and case.is_valid])
+    # Execute
+    cases_filtered: Cases = cases.filter(0, valid_only=True)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_1_valid_only():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 1 and case.is_valid])
+    # Execute
+    cases_filtered: Cases = cases.filter(1, valid_only=True)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_level_minus_1_valid_only():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.is_leaf and case.is_valid])
+    # Execute
+    cases_filtered: Cases = cases.filter(-1, valid_only=True)
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert
+
+
+def test_filter_default_arguments():
+    # Prepare
+    farn_dict_file = Path("test_farnDict_exclude_filtering")
+    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    create_samples(farn_dict)
+    case_dir: Path = Path.cwd()
+    cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
+    cases_not_modified_assert: Cases = deepcopy(cases)
+    cases_filtered_assert: Cases = Cases([case for case in cases if case.is_leaf and case.is_valid])
+    # Execute
+    cases_filtered: Cases = cases.filter()
+    # Assert
+    assert isinstance(cases_filtered, Cases)
+    assert len(cases_filtered) == len(cases_filtered_assert)
+    assert cases_filtered == cases_filtered_assert
+    assert cases == cases_not_modified_assert

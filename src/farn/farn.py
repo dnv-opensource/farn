@@ -18,6 +18,7 @@ from farn.utils.os import append_system_variable
 __ALL__ = [
     "run_farn",
     "create_samples",
+    "create_cases",
     "create_case_folders",
     "create_param_dict_files",
     "create_case_list_files",
@@ -34,7 +35,7 @@ def run_farn(
     command: Union[str, None] = None,
     batch: bool = False,
     test: bool = False,
-):
+) -> Cases:
     """Runs farn.
 
     Runs the sampling for all layers as configured in farn dict,
@@ -55,6 +56,11 @@ def run_farn(
         if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
         if True, runs only first case and returns, by default False
+
+    Returns
+    -------
+    Cases
+        List containing all valid leaf cases.
 
     Raises
     ------
@@ -122,7 +128,11 @@ def run_farn(
             test=test,
         )
 
+    valid_leaf_cases: Cases = cases.filter(levels=-1, valid_only=True)
+
     logger.info("Successfully finished farn.\n")
+
+    return valid_leaf_cases
 
 
 def create_samples(farn_dict: CppDict):
@@ -232,7 +242,7 @@ def create_cases(
     # Check arguments.
     if "_layers" not in farn_dict:
         logger.error("create_cases: No '_layers' element contained in farn dict.")
-        return []
+        return Cases()
 
     # Initialize cases list
     cases: Cases = Cases()

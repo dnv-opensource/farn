@@ -3,7 +3,7 @@ import logging
 import re
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, Set, Union
+from typing import Any, Dict, List, MutableMapping, MutableSequence, Sequence, Set, Union
 
 import numpy as np
 from dictIO.utils.path import relative_path
@@ -202,17 +202,23 @@ class Case:
             dict with all case attributes
         """
         return {
-            "_case": self.case,
-            "_layer": self.layer,
-            "_level": self.level,
-            "_index": self.index,
-            "_path": self.path,
-            "_is_leaf": self.is_leaf,
-            "_no_of_samples": self.no_of_samples,
-            "_condition": self.condition,
-            "_parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
-            "_commands": self.command_sets,
+            "case": self.case,
+            "layer": self.layer,
+            "level": self.level,
+            "index": self.index,
+            "path": self.path,
+            "is_leaf": self.is_leaf,
+            "no_of_samples": self.no_of_samples,
+            "condition": self.condition,
+            "parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
+            "commands": self.command_sets,
         }
+
+    def __str__(self):
+        return str(self.to_dict())
+
+    def __eq__(self, __o: object) -> bool:
+        return str(self) == str(__o)
 
 
 class Cases(List[Case]):
@@ -273,3 +279,18 @@ class Cases(List[Case]):
         df_X: DataFrame = self.to_pandas(parameters_only=True)  # noqa: N806
         array: ndarray[Any, Any] = df_X.to_numpy()
         return array
+
+    def filter(
+        self,
+        levels: Union[int, Sequence[int]] = -1,
+        valid_only: bool = True,
+    ) -> "Cases":
+
+        _levels: List[int] = [levels] if isinstance(levels, int) else list(levels)
+        filtered_cases: List[Case]
+        filtered_cases = [case for case in self if case.level in _levels or (case.is_leaf and -1 in _levels)]
+
+        if valid_only:
+            filtered_cases = [case for case in filtered_cases if case.is_valid]
+
+        return Cases(filtered_cases)
