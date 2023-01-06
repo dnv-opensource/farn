@@ -2,6 +2,7 @@
 import logging
 import re
 from copy import deepcopy
+from enum import IntEnum
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, MutableSequence, Sequence, Set, Union
 
@@ -13,11 +14,20 @@ from pandas import DataFrame, Series
 from farn.core import Parameter
 
 __ALL__ = [
+    "CaseStatus",
     "Case",
     "Cases",
 ]
 
 logger = logging.getLogger(__name__)
+
+
+class CaseStatus(IntEnum):
+    NONE = 0
+    PREPARED = 10
+    RUNNING = 20
+    FAILURE = 30
+    SUCCESS = 40
 
 
 class Case:
@@ -53,6 +63,7 @@ class Case:
         self.condition: MutableMapping[str, str] = condition or {}
         self.parameters: MutableSequence[Parameter] = parameters or []
         self.command_sets: MutableMapping[str, List[str]] = command_sets or {}
+        self.status: CaseStatus = CaseStatus.NONE
 
     @property
     def is_valid(self) -> bool:
@@ -212,6 +223,7 @@ class Case:
             "condition": self.condition,
             "parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
             "commands": self.command_sets,
+            "status": self.status,
         }
 
     def __str__(self):
@@ -222,9 +234,9 @@ class Case:
 
 
 class Cases(List[Case]):
-    """Container for Cases.
+    """Container Class for Cases.
 
-    Inherits from list[Case] and can hence be transparently used as a Python list type.
+    Inherits from List[Case] and can hence be transparently used as a Python list type.
     However, Cases extends its list base class by two convenience methods:
     to_pandas() and to_numpy(), which turn the list of Case objects
     into a pandas DataFrame or numpy ndarray, respectively.
@@ -258,9 +270,9 @@ class Cases(List[Case]):
             series["path"].loc[_index] = str(case.path)
             if case.parameters:
                 for parameter in case.parameters:
+                    if parameter.name not in series:
+                        series[parameter.name] = Series(data=None, dtype=parameter.dtype, name=parameter.name)
                     if parameter.value is not None:
-                        if parameter.name not in series:
-                            series[parameter.name] = Series(data=None, dtype=parameter.dtype, name=parameter.name)
                         series[parameter.name].loc[_index] = parameter.value
 
         if parameters_only:
