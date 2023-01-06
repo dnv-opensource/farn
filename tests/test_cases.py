@@ -62,7 +62,7 @@ def test_to_pandas_range_index():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=False)
+    df_assert: DataFrame = _create_dataframe(use_path_as_index=False, parameters_only=False)
     # Execute
     df: DataFrame = cases.to_pandas(use_path_as_index=False)
     # Assert
@@ -71,16 +71,42 @@ def test_to_pandas_range_index():
     assert df.equals(df_assert)
 
 
+def test_to_pandas_range_index_parameters_only():
+    # Prepare
+    case_1, case_2, case_3 = _create_cases()
+    cases: Cases = Cases([case_1, case_2, case_3])
+    df_assert: DataFrame = _create_dataframe(use_path_as_index=False, parameters_only=True)
+    # Execute
+    df: DataFrame = cases.to_pandas(use_path_as_index=False, parameters_only=True)
+    # Assert
+    assert df.shape == df_assert.shape
+    assert df.shape == (3, 3)
+    assert df.equals(df_assert)
+
+
 def test_to_pandas_path_index():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=True)
+    df_assert: DataFrame = _create_dataframe(use_path_as_index=True, parameters_only=False)
     # Execute
     df: DataFrame = cases.to_pandas()
     # Assert
     assert df.shape == df_assert.shape
     assert df.shape == (3, 4)
+    assert df.equals(df_assert)
+
+
+def test_to_pandas_path_index_parameters_only():
+    # Prepare
+    case_1, case_2, case_3 = _create_cases()
+    cases: Cases = Cases([case_1, case_2, case_3])
+    df_assert: DataFrame = _create_dataframe(use_path_as_index=True, parameters_only=True)
+    # Execute
+    df: DataFrame = cases.to_pandas(parameters_only=True)
+    # Assert
+    assert df.shape == df_assert.shape
+    assert df.shape == (3, 3)
     assert df.equals(df_assert)
 
 
@@ -113,7 +139,7 @@ def _create_cases() -> Tuple[Case, Case, Case]:
     return (case_1, case_2, case_3)
 
 
-def _create_dataframe(use_path_as_index: bool) -> DataFrame:
+def _create_dataframe(use_path_as_index: bool, parameters_only: bool) -> DataFrame:
     cwd: Path = Path.cwd()
     path: str = str(relative_path(cwd, cwd))
     index: List[int] = [0, 1, 2]
@@ -125,7 +151,10 @@ def _create_dataframe(use_path_as_index: bool) -> DataFrame:
         ["case_3", path, 31.1, 32.2, 33.3],
     ]
     df: DataFrame = DataFrame(data=values, index=index, columns=columns)
-    # df = df.convert_dtypes()
+    if parameters_only:
+        df.drop(["case"], axis=1, inplace=True)
+        if not use_path_as_index:
+            df.drop(["path"], axis=1, inplace=True)
     if use_path_as_index:
         df.set_index("path", inplace=True)
     return df

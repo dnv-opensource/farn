@@ -14,6 +14,7 @@ from farn.core import Parameter
 
 __ALL__ = [
     "Case",
+    "Cases",
 ]
 
 logger = logging.getLogger(__name__)
@@ -223,7 +224,11 @@ class Cases(List[Case]):
     into a pandas DataFrame or numpy ndarray, respectively.
     """
 
-    def to_pandas(self, use_path_as_index: bool = True) -> DataFrame:
+    def to_pandas(
+        self,
+        use_path_as_index: bool = True,
+        parameters_only: bool = False,
+    ) -> DataFrame:
 
         indices: List[int] = []
 
@@ -237,8 +242,8 @@ class Cases(List[Case]):
                         parameter.name = "NA"
 
         series: Dict[str, Series] = {  # pyright: ignore
-            "case": Series(data=None, dtype=str, name="case"),
-            "path": Series(data=None, dtype=str, name="path"),
+            "case": Series(data=None, dtype=np.dtype(str), name="case"),
+            "path": Series(data=None, dtype=np.dtype(str), name="path"),
         }
 
         for _index, case in enumerate(_cases):
@@ -249,8 +254,13 @@ class Cases(List[Case]):
                 for parameter in case.parameters:
                     if parameter.value is not None:
                         if parameter.name not in series:
-                            series[parameter.name] = Series(data=None, dtype=type(parameter.value), name=parameter.name)
+                            series[parameter.name] = Series(data=None, dtype=parameter.dtype, name=parameter.name)
                         series[parameter.name].loc[_index] = parameter.value
+
+        if parameters_only:
+            _ = series.pop("case")
+            if not use_path_as_index:
+                _ = series.pop("path")
 
         df_X = DataFrame(data=series)  # noqa: N806
 
@@ -260,7 +270,6 @@ class Cases(List[Case]):
         return df_X
 
     def to_numpy(self) -> ndarray[Any, Any]:
-        df_X: DataFrame = self.to_pandas(use_path_as_index=False)  # noqa: N806
-        df_X.drop(["case", "path"], axis=1, inplace=True)
-        array: ndarray[Any, Any] = df_X.to_numpy(copy=True, na_value=np.nan)
+        df_X: DataFrame = self.to_pandas(parameters_only=True)  # noqa: N806
+        array: ndarray[Any, Any] = df_X.to_numpy()
         return array
