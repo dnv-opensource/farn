@@ -247,7 +247,22 @@ class Cases(List[Case]):
         use_path_as_index: bool = True,
         parameters_only: bool = False,
     ) -> DataFrame:
+        """Returns cases as a pandas Dataframe.
 
+        Returns a DataFrame with case properties and case specific parameter values of all cases.
+
+        Parameters
+        ----------
+        use_path_as_index : bool, optional
+            turn path column into index column, by default True
+        parameters_only : bool, optional
+            reduce DataFrame to contain only the case's parameter values, by default False
+
+        Returns
+        -------
+        DataFrame
+            DataFrame with case properties and case specific parameter values of all cases.
+        """
         indices: List[int] = []
 
         _cases: List[Case] = deepcopy(self)
@@ -288,6 +303,13 @@ class Cases(List[Case]):
         return df_X
 
     def to_numpy(self) -> ndarray[Any, Any]:
+        """Returns parameter values of all cases as a 2-dimensional numpy array.
+
+        Returns
+        -------
+        ndarray[Any, Any]
+            2-dimensional numpy array with case specific parameter values of all cases.
+        """
         df_X: DataFrame = self.to_pandas(parameters_only=True)  # noqa: N806
         array: ndarray[Any, Any] = df_X.to_numpy()
         return array
@@ -297,7 +319,22 @@ class Cases(List[Case]):
         levels: Union[int, Sequence[int]] = -1,
         valid_only: bool = True,
     ) -> "Cases":
+        """Returns a sub-set of cases according to the passed selection criteria.
 
+        Parameters
+        ----------
+        levels : Union[int, Sequence[int]], optional
+            return all cases of a distinct level, or a sequence of levels.
+            level=-1 returns the last level (the leaf cases), by default -1
+        valid_only : bool, optional
+            return only valid cases, i.e cases which pass a filter expression
+            defined for the case's layer, by default True
+
+        Returns
+        -------
+        Cases
+            Cases object containing all cases that match the selection criteria.
+        """
         _levels: List[int] = [levels] if isinstance(levels, int) else list(levels)
         filtered_cases: List[Case]
         filtered_cases = [case for case in self if case.level in _levels or (case.is_leaf and -1 in _levels)]
