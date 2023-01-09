@@ -8,7 +8,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
-## [0.3.0] - 2023-01-xx
+## [0.3.0] - 2023-01-09
 
 v0.3.0 is a major update comprising one breaking change (see below).
 Users are encouraged to update to this version.
