@@ -8,6 +8,36 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.0] - 2023-01-xx
+
+v0.3.0 is a major update comprising one breaking change (see below).
+Users are encouraged to update to this version.
+
+### Breaking Change
+
+* Moved classes 'Case' and 'Parameter' from farn.farn to farn.core <br>
+  As a consequence, if you imported these classes in your code, you need to
+  adapt the respective  import statements. I.e. <br>
+  old
+  ~~~py
+  from farn.farn import Case, Parameter
+  ~~~
+  new
+  ~~~py
+  from farn.core import Case, Parameter
+  ~~~
+
+### Added
+
+* Added a 'Cases' class, acting as a container for Case instances.
+  Cases inherits from List[Case] and can hence transparently be used as a Python list type.
+  However, Cases provides additional convenience methods to export the attributes of all contained Case instances to a pandas DataFrame (Cases.to_pandas()) or to a numpy ndarray (Cases.to_numpy()) <br><br>
+  Cases is located in the farn.core sub-package and can be imported from there, i.e:
+  ~~~py
+  from farn.core import Case, Cases, Parameter
+  ~~~
+
+
 ## [0.2.7] - 2023-01-04
 
 ### Changed
@@ -189,7 +219,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.2.7...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/dnv-opensource/farn/compare/v0.2.7...v0.3.0
 [0.2.7]: https://github.com/dnv-opensource/farn/compare/v0.2.6...v0.2.7
 [0.2.6]: https://github.com/dnv-opensource/farn/compare/v0.2.5...v0.2.6
 [0.2.5]: https://github.com/dnv-opensource/farn/compare/v0.2.4...v0.2.5
