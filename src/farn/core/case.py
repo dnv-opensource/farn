@@ -24,10 +24,10 @@ logger = logging.getLogger(__name__)
 
 class CaseStatus(IntEnum):
     NONE = 0
+    FAILURE = 1
     PREPARED = 10
     RUNNING = 20
-    FAILURE = 30
-    SUCCESS = 40
+    SUCCESS = 30
 
 
 class Case:
