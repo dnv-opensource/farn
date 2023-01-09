@@ -12,6 +12,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   farn.core
    farn.run
    farn.sampling
 

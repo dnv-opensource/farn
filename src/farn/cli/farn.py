@@ -191,7 +191,7 @@ def main():
     )
 
     # Invoke API
-    run_farn(
+    _ = run_farn(
         farn_dict_file=farn_dict_file,
         sample=sample,
         generate=generate,

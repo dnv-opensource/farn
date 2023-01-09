@@ -3,13 +3,13 @@ import os
 import platform
 import re
 from copy import deepcopy
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Set, Union
+from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Union
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
+from farn.core import Case, Cases, Parameter
 from farn.run.batchProcess import AsyncBatchProcessor
 from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
@@ -17,9 +17,8 @@ from farn.utils.os import append_system_variable
 
 __ALL__ = [
     "run_farn",
-    "Parameter",
-    "Case",
     "create_samples",
+    "create_cases",
     "create_case_folders",
     "create_param_dict_files",
     "create_case_list_files",
@@ -36,7 +35,7 @@ def run_farn(
     command: Union[str, None] = None,
     batch: bool = False,
     test: bool = False,
-):
+) -> Cases:
     """Runs farn.
 
     Runs the sampling for all layers as configured in farn dict,
@@ -57,6 +56,11 @@ def run_farn(
         if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
         if True, runs only first case and returns, by default False
+
+    Returns
+    -------
+    Cases
+        List containing all valid leaf cases.
 
     Raises
     ------
@@ -124,198 +128,11 @@ def run_farn(
             test=test,
         )
 
+    valid_leaf_cases: Cases = cases.filter(levels=-1, valid_only=True)
+
     logger.info("Successfully finished farn.\n")
 
-
-@dataclass
-class Parameter:
-    """Dataclass holding the parameter attributes 'name' and 'value'."""
-
-    name: Union[str, None] = None
-    value: Union[float, None] = None
-
-
-@dataclass
-class Case:
-    """Dataclass holding case attributes.
-
-    The dataclass 'Case' holds all relevant case attributes needed by farn to process cases, e.g.
-        - condition
-        - parameter names and associated values
-        - commands
-        - ..
-    """
-
-    case: Union[str, None] = None
-    layer: Union[str, None] = None
-    level: int = 0
-    no_of_samples: int = 0
-    index: int = 0
-    path: Path = Path.cwd()
-    is_leaf: bool = False
-    condition: Union[MutableMapping[str, str], None] = None
-    parameters: Union[MutableSequence[Parameter], None] = None
-    command_sets: Union[MutableMapping[str, List[str]], None] = None
-
-    @property
-    def is_valid(self) -> bool:
-        """Evaluates whether the case matches the configured filter expression.
-
-        A case is considered valid if it fulfils the filter citeria configured in farnDict for the respective layer.
-
-        Returns
-        -------
-        bool
-            result of validity check. True indicates the case is valid, False not valid.
-        """
-
-        # Check whether the '_condition' element is defined.  Without it, case is in any case considered valid.
-        if not self.condition:
-            return True
-
-        # Check whether filter expression is defined.
-        # If filter expression is missing, condition cannot be evaluated but case is, by default, still considered valid.
-        filter_expression = self.condition["_filter"] if "_filter" in self.condition else None
-        if not filter_expression:
-            logger.warning(
-                f"Layer {self.layer}: _condition element found but no _filter element defined therein. "
-                f"As the filter expression is missing, the condition cannot be evalued. Case {self.case} is hence considered valid. "
-            )
-            return True
-
-        # Check whether optional argument '_action' is defined. Use default action, if not.
-        action = self.condition["_action"] if "_action" in self.condition else None
-        if not action:
-            logger.warning(
-                f"Layer {self.layer}: No _action defined in _condition element. Default action 'exclude' is used. "
-            )
-            action = "exclude"
-
-        # Check for formal errors that lead to invalidity
-        if not self.parameters:
-            logger.warning(
-                f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                f"A filter expression {filter_expression} is defined, but no parameters exist. "
-            )
-            return False
-        for parameter in self.parameters:
-            if not parameter.name:
-                logger.warning(
-                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                    f"A filter expression {filter_expression} is defined, "
-                    f"but at least one parameter name is missing. "
-                )
-                return False
-            if not parameter.value:
-                logger.warning(
-                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                    f"A filter expression {filter_expression} is defined and parameter names exist, "
-                    f"but parameter values are missing. "
-                    f"Parameter name: {parameter.name} "
-                    f"Parameter value: None "
-                )
-                return False
-
-        # transfer a white list of case properties to locals() for subsequent filtering
-        available_vars: Set[str] = set()
-        for attribute in dir(self):
-            try:
-                if attribute in [
-                    "case",
-                    "layer",
-                    "level",
-                    "index",
-                    "path" "is_leaf",
-                    "no_of_samples",
-                    "condition",
-                    "command_sets",
-                ]:
-                    locals()[attribute] = eval(f"self.{attribute}")
-                    available_vars.add(attribute)
-            except Exception:
-                logger.exception(
-                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                    f"Reading case property '{attribute}' failed."
-                )
-                return False
-
-        # Read all parameter names and their associated values defined in current case, and assign them to local in-memory variables
-        for parameter in self.parameters:
-            if parameter.name and not re.match("^_", parameter.name):
-                try:
-                    exec(f"{parameter.name} = {parameter.value}")
-                    available_vars.add(parameter.name)
-                except Exception:
-                    logger.exception(
-                        f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
-                        f"Reading parameter {parameter.name} with value {parameter.value} failed. "
-                    )
-                    return False
-
-        logger.debug(
-            f"Layer {self.layer}, available filter variables in current scope: {'{'+', '.join(available_vars)+'}'}"
-        )
-
-        # Evaluate filter expression
-        filter_expression_evaluates_to_true = False
-        try:
-            filter_expression_evaluates_to_true = eval(filter_expression)
-        except Exception:
-            # In case evaluation of the filter expression fails, processing will not stop.
-            # However, a warning will be logged and the respective case will be considered valid.
-            logger.warning(
-                f"Layer {self.layer}, case {self.case} evaluation of the filter expression failed:\n"
-                f"\tOne or more of the variables used in the filter expression are not defined or not accessible in the current layer.\n"
-                f"\t\tLayer: {self.layer}\n"
-                f"\t\tLevel: {self.level}\n"
-                f"\t\tCase: {self.case}\n"
-                f"\t\tFilter expression: {filter_expression}\n"
-                f"\t\tParameter names: {[parameter.name for parameter in self.parameters]}\n"
-                f"\t\tParameter values: {[parameter.value for parameter in self.parameters]} "
-            )
-
-        # Finally: Determine case validity based on filter expression and action
-        if action == "exclude":
-            if filter_expression_evaluates_to_true:
-                logger.debug(
-                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid:\n"
-                    f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
-                    f"\tAction '{action}' performed. Case {self.case} excluded."
-                )
-                return False
-            return True
-        if action == "include":
-            if filter_expression_evaluates_to_true:
-                logger.debug(
-                    f"Layer {self.layer}, case {self.case} validity check: case {self.case} is valid:\n"
-                    f"\tThe filter expression '{filter_expression}' evaluated to True.\n"
-                    f"\tAction '{action}' performed. Case {self.case} included."
-                )
-                return True
-            return False
-
-        return True
-
-    def to_dict(self) -> Dict[str, Any]:
-        """Returns a dict with all case attributes.
-
-        Returns
-        -------
-        Dict[str, Any]
-            dict with all case attributes
-        """
-        return {
-            "_case": self.case,
-            "_layer": self.layer,
-            "_level": self.level,
-            "_index": self.index,
-            "_path": self.path,
-            "_is_leaf": self.is_leaf,
-            "_no_of_samples": self.no_of_samples,
-            "_condition": self.condition,
-            "_parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
-            "_commands": self.command_sets,
-        }
+    return valid_leaf_cases
 
 
 def create_samples(farn_dict: CppDict):
@@ -389,7 +206,7 @@ def create_cases(
     farn_dict: MutableMapping[Any, Any],
     case_dir: Path,
     valid_only: bool = False,
-) -> list[Case]:
+) -> Cases:
     """Creates cases based on the layers, filter expressions and samples defined in the passed farn dict.
 
     Creates case objects for all cases derived by recursive permutation of layers and the case specific samples defined per layer.
@@ -416,7 +233,7 @@ def create_cases(
 
     Returns
     -------
-    list[Case]
+    Cases
         list of case objects representing all created cases.
     """
     log_msg: str = "List all valid cases.." if valid_only else "List all cases.."
@@ -425,10 +242,10 @@ def create_cases(
     # Check arguments.
     if "_layers" not in farn_dict:
         logger.error("create_cases: No '_layers' element contained in farn dict.")
-        return []
+        return Cases()
 
     # Initialize cases list
-    cases: list[Case] = []
+    cases: Cases = Cases()
     number_of_invalid_cases: int = 0
 
     # Create a local layers list that carries also the layers' name
