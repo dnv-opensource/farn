@@ -7,6 +7,18 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 * -/-
 
+### Changed
+
+* Added missing DocStrings for public classes, methods and functions
+* Changed links to package documentation to open README.html, not the default index page
+* data classes: changed initialisation of mutable types to use default_factory
+* ruff: added rule-set "B" (flake8-bugbear)
+
+### Dependencies
+
+* updated to dictIO>=0.2.6 and ospx>=0.2.8
+
+
 
 ## [0.3.0] - 2023-01-09
 
