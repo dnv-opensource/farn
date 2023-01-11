@@ -9,7 +9,7 @@ psutil>=5.9
 SALib>=1.4.6
 sobol-seq>=0.2
 
-dictIO>=0.2.5
+dictIO>=0.2.6
 # ../dictIO
-ospx>=0.2.7
+ospx>=0.2.8
 # ../ospx
