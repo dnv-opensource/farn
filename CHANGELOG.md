@@ -8,6 +8,20 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.1] - 2023-01-11
+
+### Changed
+
+* Added missing DocStrings for public classes, methods and functions
+* Changed links to package documentation to open README.html, not the default index page
+* data classes: changed initialisation of mutable types to use default_factory
+* ruff: added rule-set "B" (flake8-bugbear)
+
+### Dependencies
+
+* updated to dictIO>=0.2.6 and ospx>=0.2.8
+
+
 ## [0.3.0] - 2023-01-09
 
 v0.3.0 is a major update comprising one breaking change (see below).
@@ -219,7 +233,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/dnv-opensource/farn/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/dnv-opensource/farn/compare/v0.2.7...v0.3.0
 [0.2.7]: https://github.com/dnv-opensource/farn/compare/v0.2.6...v0.2.7
 [0.2.6]: https://github.com/dnv-opensource/farn/compare/v0.2.5...v0.2.6

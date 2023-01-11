@@ -1,7 +1,7 @@
 # pyright: reportPrivateUsage=false
 import sys
 from argparse import ArgumentError
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Union
 
@@ -20,8 +20,8 @@ class CliArgs:
     quiet: bool = False
     verbose: bool = False
     log: Union[str, None] = None
-    log_level: str = "WARNING"
-    farnDict: Union[str, None] = "test_farnDict"  # noqa
+    log_level: str = field(default_factory=lambda: "WARNING")
+    farnDict: Union[str, None] = field(default_factory=lambda: "test_farnDict")  # noqa: N815
     sample: bool = False
     generate: bool = False
     execute: Union[str, None] = None
@@ -87,9 +87,10 @@ def test_cli(
 @dataclass()
 class ConfigureLoggingArgs:
     # Values that main() is expected to pass to ConfigureLogging() by default when configuring the logging
-    log_level_console: str = "INFO"  # this deviates from standard 'WARNING', but was decided intentionally for farn
+    # Note: 'INFO' deviates from standard 'WARNING', but was decided intentionally for farn
+    log_level_console: str = field(default_factory=lambda: "INFO")
     log_file: Union[Path, None] = None
-    log_level_file: str = "WARNING"
+    log_level_file: str = field(default_factory=lambda: "WARNING")
 
 
 @pytest.mark.parametrize(
@@ -169,7 +170,7 @@ def test_logging_configuration(
 @dataclass()
 class ApiArgs:
     # Values that main() is expected to pass to run_farn() by default when invoking the API
-    farn_dict_file: Path = Path("test_farnDict")
+    farn_dict_file: Path = field(default_factory=lambda: Path("test_farnDict"))
     sample: bool = False
     generate: bool = False
     command: Union[str, None] = None

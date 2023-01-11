@@ -9,6 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class DiscreteSampling:
+    """Class providing methods to run a discrete sampling of a specific layer,
+    i.e. of all variables defined in the given layer.
+    """
+
     def __init__(self):
 
         self.layer_name: str = ""
@@ -37,16 +41,6 @@ class DiscreteSampling:
         self.known_sampling_types = {
             "fixed": {"required_args": ["_names", "_values"]},
             "linSpace": {"required_args": ["_names", "_ranges", "_numberOfSamples"]},
-            "arbitrary": {
-                "required_args": [
-                    "_names",
-                    "_ranges",
-                    "_numberOfSamples",
-                    "_distributionName",  # uniform|normal|exp... better to have a dedicated name in known_sampling_types
-                    "_distributionParameters",  # mu|sigma|skew|camber not applicsble for uniform
-                    "_includeBoundingBox",  # required
-                ]
-            },
             "uniformLhs": {
                 "required_args": [
                     "_names",
@@ -59,16 +53,6 @@ class DiscreteSampling:
                 "required_args": ["_names", "_numberOfSamples", "_mu", "_sigma"],
                 "optional_args": ["_ranges", "_cov"],
             },
-            "randNormal": {
-                "required_args": [
-                    "_names",
-                    "_ranges",
-                    "_numberOfSamples",
-                    "_mu",  # 1rst order
-                    "_sigma",  # 2nd order
-                    "_includeBoundingBox",
-                ]
-            },
             "sobol": {
                 "required_args": [
                     "_names",
@@ -78,13 +62,38 @@ class DiscreteSampling:
                     "_includeBoundingBox",
                 ]
             },
+            "arbitrary": {
+                "required_args": [
+                    "_names",
+                    "_ranges",
+                    "_numberOfSamples",
+                    "_distributionName",  # uniform|normal|exp... better to have a dedicated name in known_sampling_types
+                    "_distributionParameters",  # mu|sigma|skew|camber not applicsble for uniform
+                    "_includeBoundingBox",  # required
+                ]
+            },
+            # "randNormal": {
+            #     "required_args": [
+            #         "_names",
+            #         "_ranges",
+            #         "_numberOfSamples",
+            #         "_mu",  # 1rst order
+            #         "_sigma",  # 2nd order
+            #         "_includeBoundingBox",
+            #     ]
+            # },
         }
 
     def set_sampling_type(self, sampling_type: str):
-        """
-        sets the sampling type.
+        """Sets the sampling type.
 
-        sampling_type must match one of the known sampling types as defined in _set_up_known_sampling_types().
+        Valid values:
+            "fixed"
+            "linSpace"
+            "uniformLhs"
+            "normalLhs"
+            "sobol"
+            "arbitrary"
         """
         if sampling_type in self.known_sampling_types:
             self.sampling_type = sampling_type
@@ -97,10 +106,12 @@ class DiscreteSampling:
         sampling_parameters: Mapping[str, Any],
         layer_name: str = "",
     ):
+        """Sets the sampling parameters.
+
+        The passed-in sampling parameters will be validated.
+        Upon successful validation, the sampling is configured using the provided parameters.
         """
-        Validates the provided arguments.
-        On successful validation, the configured sampling type is parameterized using the provided arguments.
-        """
+
         self.layer_name = layer_name
         self.sampling_parameters = sampling_parameters
 
@@ -132,6 +143,21 @@ class DiscreteSampling:
         self.number_of_bb_samples = 0
 
     def generate_samples(self) -> Dict[str, List[Any]]:
+        """Returns a dict with all generated samples for the layer this sampling is run on.
+
+        The first element in the returned dict contains the case names generated.
+        All following elements (second to last) contain the values sampled for each variable defined in the layer this sampling is run on.
+        I.e.
+        "names": (case_name_1, case_name_2, .., case_name_n)
+        "variable_1": (value_1, value_2, .., value_n)
+        ...
+        "variable_m": (value_1, value_2, .., value_n)
+
+        Returns
+        -------
+        Dict[str, List[Any]]
+            the dict with all generated samples
+        """
 
         samples: Dict[str, List[Any]] = {}
 
@@ -392,7 +418,7 @@ class DiscreteSampling:
         sample_set: ndarray[Any, Any] = sequence[start:end].T
 
         for index, item in enumerate(sample_set):
-            sample_set[index] = self.min_max_scale(item, self.ranges[index])
+            sample_set[index] = self._min_max_scale(item, self.ranges[index])
 
         return sample_set
 
@@ -443,20 +469,20 @@ class DiscreteSampling:
         self.boundingBox = []
         for item in tmp:
             if isinstance(item, Iterable):
-                self.boundingBox.append(list(self.flatten(item)))
+                self.boundingBox.append(list(self._flatten(item)))
             else:
                 self.boundingBox.append([item])
         return
 
-    def flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
+    def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
         """flattens sequence... happens why?."""
         for element in iterable:
             if isinstance(element, Sequence) and not isinstance(element, (str, bytes)):
-                yield from self.flatten(element)
+                yield from self._flatten(element)
             else:
                 yield element
 
-    def min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
+    def _min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
         """might belong to different class in future
         from sklearn.preprocessing import minmax_scale.
         """

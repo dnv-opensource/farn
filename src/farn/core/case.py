@@ -23,6 +23,10 @@ logger = logging.getLogger(__name__)
 
 
 class CaseStatus(IntEnum):
+    """Enumeration class allowing an algorithm that processes cases, i.e. a simulator or case processor,
+    to indicate the state a case iscurrently in.
+    """
+
     NONE = 0
     FAILURE = 1
     PREPARED = 10
