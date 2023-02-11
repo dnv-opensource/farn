@@ -209,7 +209,7 @@ class Case:
         return True
 
     def to_dict(self) -> Dict[str, Any]:
-        """Returns a dict with all case attributes.
+        """Return a dict with all case attributes.
 
         Returns
         -------
@@ -251,7 +251,7 @@ class Cases(List[Case]):
         use_path_as_index: bool = True,
         parameters_only: bool = False,
     ) -> DataFrame:
-        """Returns cases as a pandas Dataframe.
+        """Return cases as a pandas Dataframe.
 
         Returns a DataFrame with case properties and case specific parameter values of all cases.
 
@@ -307,7 +307,7 @@ class Cases(List[Case]):
         return df_X
 
     def to_numpy(self) -> ndarray[Any, Any]:
-        """Returns parameter values of all cases as a 2-dimensional numpy array.
+        """Return parameter values of all cases as a 2-dimensional numpy array.
 
         Returns
         -------
@@ -323,7 +323,7 @@ class Cases(List[Case]):
         levels: Union[int, Sequence[int]] = -1,
         valid_only: bool = True,
     ) -> "Cases":
-        """Returns a sub-set of cases according to the passed selection criteria.
+        """Return a sub-set of cases according to the passed in selection criteria.
 
         Parameters
         ----------

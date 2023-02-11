@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 def _argparser() -> argparse.ArgumentParser:
-
     parser = ArgumentParser(
         prog="batchProcess",
         usage="%(prog)s caseList [options [args]]",

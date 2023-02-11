@@ -14,7 +14,6 @@ class DiscreteSampling:
     """
 
     def __init__(self):
-
         self.layer_name: str = ""
         self.sampling_parameters: Mapping[str, Any] = {}
         self.fields: List[str] = []
@@ -85,7 +84,7 @@ class DiscreteSampling:
         }
 
     def set_sampling_type(self, sampling_type: str):
-        """Sets the sampling type.
+        """Set the sampling type.
 
         Valid values:
             "fixed"
@@ -106,7 +105,7 @@ class DiscreteSampling:
         sampling_parameters: Mapping[str, Any],
         layer_name: str = "",
     ):
-        """Sets the sampling parameters.
+        """Set the sampling parameters.
 
         The passed-in sampling parameters will be validated.
         Upon successful validation, the sampling is configured using the provided parameters.
@@ -143,7 +142,7 @@ class DiscreteSampling:
         self.number_of_bb_samples = 0
 
     def generate_samples(self) -> Dict[str, List[Any]]:
-        """Returns a dict with all generated samples for the layer this sampling is run on.
+        """Return a dict with all generated samples for the layer this sampling is run on.
 
         The first element in the returned dict contains the case names generated.
         All following elements (second to last) contain the values sampled for each variable defined in the layer this sampling is run on.
