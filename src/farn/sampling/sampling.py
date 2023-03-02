@@ -255,7 +255,7 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_normal_lhs_sampling(self) -> Dict[str, List[Any]]:
-        """lhs using gaussian normal dstributions
+        """LHS using gaussian normal dstributions
         required input arguments:
         * _names: required names template
         * _numberOfSamples: required how many samples
@@ -375,7 +375,7 @@ class DiscreteSampling:
         return sample_set.T
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
-        """gaussnormal lhs."""
+        """Gaussnormal LHS."""
         from pyDOE2 import lhs
         from scipy.stats import norm  # qmc, truncnorm
 
@@ -474,7 +474,7 @@ class DiscreteSampling:
         return
 
     def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
-        """flattens sequence... happens why?."""
+        """Flattens sequence... happens why?."""
         for element in iterable:
             if isinstance(element, Sequence) and not isinstance(element, (str, bytes)):
                 yield from self._flatten(element)
@@ -482,7 +482,7 @@ class DiscreteSampling:
                 yield element
 
     def _min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
-        """might belong to different class in future
+        """Might belong to different class in future
         from sklearn.preprocessing import minmax_scale.
         """
         scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))  # type: ignore
