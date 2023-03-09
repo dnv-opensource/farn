@@ -7,3 +7,4 @@ API Documentation
    farn
    ospx
    dictIO
+   farn_example
