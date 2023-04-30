@@ -67,7 +67,7 @@ def run_farn(
     FileNotFoundError
         if farn_dict_file does not exist
     """
-
+    
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
     farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
 
@@ -239,6 +239,12 @@ def create_cases(
     log_msg: str = "List all valid cases.." if valid_only else "List all cases.."
     logger.info(log_msg)
 
+    # Check default distributions
+    default_distribution: Dict[str, Any] = {}
+
+    if "_distribute" in farn_dict:
+        default_distribution = farn_dict['_distribute']
+
     # Check arguments.
     if "_layers" not in farn_dict:
         logger.error("create_cases: No '_layers' element contained in farn dict.")
@@ -307,6 +313,11 @@ def create_cases(
                 parameter_names_in_current_layer.append(parameter_name)
 
         user_variables_in_current_layer: MutableSequence[Parameter] = []
+        for key, item in default_distribution.items():
+            if not key.startswith("_"):
+                default_variable = Parameter(name=key, value=item)
+                user_variables_in_current_layer.append(default_variable)
+        
         for key, item in current_layer.items():
             if not key.startswith("_"):
                 user_variable = Parameter(name=key, value=item)
