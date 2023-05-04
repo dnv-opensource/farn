@@ -36,7 +36,7 @@ def run_farn(
     batch: bool = False,
     test: bool = False,
 ) -> Cases:
-    """Runs farn.
+    """Run farn.
 
     Runs the sampling for all layers as configured in farn dict,
     generates the corresponding case folder structure and
@@ -157,7 +157,7 @@ def create_samples(farn_dict: CppDict):
         layer_name: str,
         layer: MutableMapping[str, Any],
     ):
-        """Runs sampling and generates the samples in the passed in layer."""
+        """Run sampling and generate the samples in the passed in layer."""
         if "_sampling" not in layer:
             logger.error("no '_sampling' element in layer")
             return
@@ -207,7 +207,7 @@ def create_cases(
     case_dir: Path,
     valid_only: bool = False,
 ) -> Cases:
-    """Creates cases based on the layers, filter expressions and samples defined in the passed farn dict.
+    """Create cases based on the layers, filter expressions and samples defined in the passed farn dict.
 
     Creates case objects for all cases derived by recursive permutation of layers and the case specific samples defined per layer.
     create_cases() creates one distinct case object for each case, holding all case attributes (parameters) set to their case specific values.
@@ -388,7 +388,7 @@ def create_cases(
 
 
 def create_case_folders(cases: MutableSequence[Case]) -> int:
-    """Creates the case folder structure for the passed in cases.
+    """Create the case folder structure for the passed in cases.
 
     Parameters
     ----------
@@ -415,7 +415,7 @@ def create_case_folders(cases: MutableSequence[Case]) -> int:
 
 
 def create_param_dict_files(cases: MutableSequence[Case]) -> int:
-    """Creates the case specific paramDict files in the case folders of the passed in cases.
+    """Create the case specific paramDict files in the case folders of the passed in cases.
 
     paramDict files contain the case specific parameters, meaning, via the paramDict files the case specific values
     for all parameters get distributed to and persisted in the case folders.
@@ -530,7 +530,7 @@ def execute_command_set(
     batch: bool = True,
     test: bool = False,
 ) -> int:
-    """Executes the given command set in the case folders of the passed in cases.
+    """Execute the given command set in the case folders of the passed in cases.
 
     Parameters
     ----------
@@ -634,7 +634,7 @@ def execute_command_set(
 
 
 def _set_up_farn_environment(farn_dict_file: Path) -> Dict[str, Path]:
-    """Reads the '_environment' section from farn dict and sets up the farn environment accordingly.
+    """Read the '_environment' section from farn dict and sets up the farn environment accordingly.
 
     Reads the '_environment' section from farnDict and sets up the farn environment directories as configured therein.
     If the '_environment' section or certain entries therein are missing in farn dict, default values will be used.
@@ -687,7 +687,7 @@ def _set_up_farn_environment(farn_dict_file: Path) -> Dict[str, Path]:
 
 
 def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
-    """Creates an additional logging handler exclusively for the farn log.
+    """Create an additional logging handler exclusively for the farn log.
 
     Parameters
     ----------
@@ -712,7 +712,7 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
 
 
 def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
-    """Removes old case list files, if existing."""
+    """Remove old case list files, if existing."""
     logger.info("Remove old case list files...")
 
     lists = [list for list in Path.cwd().rglob("*") if re.search("(path|queue)List", str(list))]

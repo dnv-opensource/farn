@@ -14,7 +14,8 @@ lock = Lock()
 
 
 def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: int = 3600):
-    """Creates a subprocess with cwd = path and executes the given shell command.
+    """Create a subprocess with cwd = path and execute the given shell command.
+
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
     """
@@ -23,7 +24,6 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
 
     # Configure and start subprocess in workDir (this part shall be atomic, hence secured by lock)
     with lock:
-
         command = re.sub(r"(^\'|\'$)", "", command)
 
         args = re.split(r"\s+", command.strip())
@@ -57,7 +57,6 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
 
 
 def _log_subprocess_output(command: str, path: Path, stdout: bytes, stderr: bytes):
-
     if out := str(stdout, encoding="utf-8"):
         _log_subprocess_log(command, path, out)
 
@@ -66,7 +65,6 @@ def _log_subprocess_output(command: str, path: Path, stdout: bytes, stderr: byte
 
 
 def _log_subprocess_log(command: str, path: Path, log: str):
-
     if re.search("error", log, re.I):
         logger.error(f"during execution of {command} in {path}\n{log}")
     elif re.search("warning", log, re.I):

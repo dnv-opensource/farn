@@ -8,6 +8,13 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.2] - 2023-05-04
+
+### Changed
+
+* dependencies: updated dependencies to latest versions
+
+
 ## [0.3.1] - 2023-01-11
 
 ### Changed
@@ -233,7 +240,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.1...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/dnv-opensource/farn/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/dnv-opensource/farn/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/dnv-opensource/farn/compare/v0.2.7...v0.3.0
 [0.2.7]: https://github.com/dnv-opensource/farn/compare/v0.2.6...v0.2.7

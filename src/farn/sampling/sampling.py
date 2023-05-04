@@ -14,7 +14,6 @@ class DiscreteSampling:
     """
 
     def __init__(self):
-
         self.layer_name: str = ""
         self.sampling_parameters: Mapping[str, Any] = {}
         self.fields: List[str] = []
@@ -85,7 +84,7 @@ class DiscreteSampling:
         }
 
     def set_sampling_type(self, sampling_type: str):
-        """Sets the sampling type.
+        """Set the sampling type.
 
         Valid values:
             "fixed"
@@ -106,7 +105,7 @@ class DiscreteSampling:
         sampling_parameters: Mapping[str, Any],
         layer_name: str = "",
     ):
-        """Sets the sampling parameters.
+        """Set the sampling parameters.
 
         The passed-in sampling parameters will be validated.
         Upon successful validation, the sampling is configured using the provided parameters.
@@ -143,7 +142,7 @@ class DiscreteSampling:
         self.number_of_bb_samples = 0
 
     def generate_samples(self) -> Dict[str, List[Any]]:
-        """Returns a dict with all generated samples for the layer this sampling is run on.
+        """Return a dict with all generated samples for the layer this sampling is run on.
 
         The first element in the returned dict contains the case names generated.
         All following elements (second to last) contain the values sampled for each variable defined in the layer this sampling is run on.
@@ -256,7 +255,7 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_normal_lhs_sampling(self) -> Dict[str, List[Any]]:
-        """lhs using gaussian normal dstributions
+        """LHS using gaussian normal dstributions
         required input arguments:
         * _names: required names template
         * _numberOfSamples: required how many samples
@@ -373,10 +372,10 @@ class DiscreteSampling:
             problem, self.number_of_samples - self.number_of_bb_samples
         )
 
-        return sample_set.T
+        return sample_set.T  # pyright: ignore
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
-        """gaussnormal lhs."""
+        """Gaussnormal LHS."""
         from pyDOE2 import lhs
         from scipy.stats import norm  # qmc, truncnorm
 
@@ -398,7 +397,7 @@ class DiscreteSampling:
         sample_set: ndarray[Any, Any] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # type: ignore
 
         # transpose to be aligned with uniformLhs output
-        return sample_set.T
+        return sample_set.T  # pyright: ignore
 
     def _generate_values_using_sobol_sampling(self) -> ndarray[Any, Any]:
         # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
@@ -475,7 +474,7 @@ class DiscreteSampling:
         return
 
     def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
-        """flattens sequence... happens why?."""
+        """Flattens sequence... happens why?."""
         for element in iterable:
             if isinstance(element, Sequence) and not isinstance(element, (str, bytes)):
                 yield from self._flatten(element)
@@ -483,7 +482,7 @@ class DiscreteSampling:
                 yield element
 
     def _min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
-        """might belong to different class in future
+        """Might belong to different class in future
         from sklearn.preprocessing import minmax_scale.
         """
         scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))  # type: ignore

@@ -10,7 +10,7 @@ class JobQueue(Queue[Tuple[Any, Sequence[Any], Mapping[str, Any]]]):
     """JobQueue extends threading.Queue, overriding its 'put' method to accept a generic list of arguments."""
 
     def put(self, func: Any, *args: Any, **kwargs: Any):  # pyright: ignore
-        """Puts a callable object (function) in the JobQueue.
+        """Put a callable object (function) in the JobQueue.
 
         Additional positional and keyword arguments provided with *args and *kwargs
         will be passed forward to the called function.
@@ -28,7 +28,7 @@ class Worker(Thread):
 
     # Override constructor of Thread class
     def __init__(self, job_queue: JobQueue):
-        """Instantiates a Worker and binds it to the passed in JobQueue instance.
+        """Instantiate a Worker and bind it to the passed in JobQueue instance.
 
         Parameters
         ----------
@@ -42,7 +42,7 @@ class Worker(Thread):
 
     # Override run() method of Thread class
     def run(self):
-        """Runs the next job from the JobQueue this Worker is bound to."""
+        """Run the next job from the JobQueue this Worker is bound to."""
         while True:
             try:
                 func, args, kwargs = self.job_queue.get()

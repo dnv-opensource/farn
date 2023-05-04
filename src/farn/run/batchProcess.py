@@ -19,7 +19,7 @@ class AsyncBatchProcessor:
         timeout: int = 3600,
         max_number_of_cpus: int = 0,
     ):
-        """Instantiates an asynchroneous batch processor
+        """Instantiate an asynchroneous batch processor
         to execute a shell command in multiple case folders.
 
         Parameters
@@ -39,7 +39,7 @@ class AsyncBatchProcessor:
         self.max_number_of_cpus: int = max_number_of_cpus
 
     def run(self):
-        """Runs the shell command in all case folders."""
+        """Run the shell command in all case folders."""
 
         # Check whether caselist file exists
         if not self.case_list_file.is_file():
