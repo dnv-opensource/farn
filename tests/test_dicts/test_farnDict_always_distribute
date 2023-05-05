@@ -13,7 +13,7 @@ _environment
 Test farn dict for testing default parameter distribution.
 default parameters wont generate a dedicated layer but will appear in paramDicts
 */
-_distribute
+_always
 {
 param0              0.;
 param1              1.;

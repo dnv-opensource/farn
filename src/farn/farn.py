@@ -242,8 +242,8 @@ def create_cases(
     # Check default distributions
     default_distribution: Dict[str, Any] = {}
 
-    if "_distribute" in farn_dict:
-        default_distribution = farn_dict["_distribute"]
+    if "_always" in farn_dict:
+        default_distribution = farn_dict["_always"]
 
     # Check arguments.
     if "_layers" not in farn_dict:

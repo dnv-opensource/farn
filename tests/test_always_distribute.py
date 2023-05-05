@@ -6,9 +6,9 @@ from dictIO import CppDict, DictReader
 from farn import run_farn
 
 
-def test_distribute_default_parameters():
+def test_always_distribute_parameters():
     # Prepare
-    farn_dict_file = Path("test_farnDict_distribute")
+    farn_dict_file = Path("test_farnDict_always_distribute")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
     _ = run_farn(farn_dict_file, sample=True)
     # Execute
