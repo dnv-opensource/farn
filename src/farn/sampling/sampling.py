@@ -71,16 +71,6 @@ class DiscreteSampling:
                     "_includeBoundingBox",  # required
                 ]
             },
-            # "randNormal": {
-            #     "required_args": [
-            #         "_names",
-            #         "_ranges",
-            #         "_numberOfSamples",
-            #         "_mu",  # 1rst order
-            #         "_sigma",  # 2nd order
-            #         "_includeBoundingBox",
-            #     ]
-            # },
         }
 
     def set_sampling_type(self, sampling_type: str):

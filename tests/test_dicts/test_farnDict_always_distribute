@@ -1,0 +1,33 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+/*
+Test farn dict for testing default parameter distribution.
+default parameters wont generate a dedicated layer but will appear in paramDicts
+*/
+_always
+{
+param0              0.;
+param1              1.;
+}
+_layers
+{
+	linspaceLayer
+	{
+		_sampling
+		{
+			_type	linSpace;
+            _names (param2);
+            _ranges ((2. 3.));
+            _numberOfSamples 2;
+        }
+	}
+}
