@@ -81,7 +81,7 @@ jobs:
       - name: Run pytest
         run: tox -e ${{matrix.python.toxenv}}-${{matrix.platform.toxenv}}
 
-  # Test also with Python 3.12 (experimental; workflow will not fail on error.)
+  # Test also on Python 3.12 (experimental; workflow will not fail on error.)
   test312:
     if: github.event_name != 'pull_request'
     name: Test on ${{matrix.python.toxenv}}-${{matrix.platform.toxenv}} (experimental)
