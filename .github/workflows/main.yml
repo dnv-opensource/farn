@@ -83,6 +83,7 @@ jobs:
 
   # Test also with Python 3.12 (experimental; workflow will not fail on error.)
   test312:
+    if: github.event_name != 'pull_request'
     name: Test on ${{matrix.python.toxenv}}-${{matrix.platform.toxenv}} (experimental)
     needs: test
     continue-on-error: true
