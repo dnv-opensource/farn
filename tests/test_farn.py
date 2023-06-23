@@ -87,6 +87,7 @@ def test_regenerate(caplog: LogCaptureFixture):
 # @TODO: There is nothing  actually asserted in this test. -> Frank to check.
 # CLAROS, 2022-05-13
 def test_execute(caplog: LogCaptureFixture):
+    # sourcery skip: no-conditionals-in-tests
     # Prepare
     farn_dict_file = Path("test_farnDict")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
