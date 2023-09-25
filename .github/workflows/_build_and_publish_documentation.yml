@@ -14,7 +14,7 @@ jobs:
     steps:
       # Checkout farn (active branch)
       - name: Checkout farn (active branch)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           lfs: true
@@ -32,7 +32,7 @@ jobs:
 
       # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
       - name: Checkout dictIO (same branch as in farn)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
@@ -48,7 +48,7 @@ jobs:
 
       # Checkout ospx (same branch as the one that triggered the workflow here in farn)
       - name: Checkout ospx (same branch as in farn)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
@@ -98,7 +98,7 @@ jobs:
           pip list
 
       # Build documentation
-      - uses: ammaraskar/sphinx-problem-matcher@master
+      - uses: sphinx-doc/github-problem-matcher@master
       - name: Build documentation
         run: |
           cd docs
