@@ -1,3 +1,4 @@
+import logging
 import os
 from glob import glob
 from pathlib import Path
@@ -12,7 +13,12 @@ def chdir():
     os.chdir(Path(__file__).parent.absolute() / "test_dicts")
 
 
-farn_dirs = [
+@pytest.fixture(scope="package", autouse=True)
+def test_dir():
+    return Path(__file__).parent.absolute()
+
+
+output_dirs = [
     "cases",
     "cases_one_layer",
     "cases_two_layers",
@@ -24,7 +30,7 @@ farn_dirs = [
     "results",
     "templates",
 ]
-farn_files = [
+output_files = [
     "sampled*",
     "queueList*",
     "*.copy",
@@ -35,15 +41,15 @@ farn_files = [
 
 @pytest.fixture(autouse=True)
 def default_setup_and_teardown(caplog: LogCaptureFixture):
-    _remove_farn_dirs_and_files()
+    _remove_output_dirs_and_files()
     yield
-    _remove_farn_dirs_and_files()
+    _remove_output_dirs_and_files()
 
 
-def _remove_farn_dirs_and_files():
-    for folder in farn_dirs:
+def _remove_output_dirs_and_files():
+    for folder in output_dirs:
         rmtree(folder, ignore_errors=True)
-    for pattern in farn_files:
+    for pattern in output_files:
         for file in glob(pattern):
             file = Path(file)
             file.unlink(missing_ok=True)
@@ -53,3 +59,8 @@ def _remove_farn_dirs_and_files():
 def setup_logging(caplog: LogCaptureFixture):
     caplog.set_level("INFO")
     caplog.clear()
+
+
+@pytest.fixture(autouse=True)
+def logger():
+    return logging.getLogger()
