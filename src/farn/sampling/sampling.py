@@ -367,7 +367,7 @@ class DiscreteSampling:
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
         """Gaussnormal LHS."""
         from pyDOE2 import lhs
-        from scipy.stats import norm  # qmc, truncnorm
+        from scipy.stats import norm  # type: ignore
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
             self.number_of_fields,
