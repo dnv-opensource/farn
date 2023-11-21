@@ -13,9 +13,8 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: int = 3600):
-    """Create a subprocess with cwd = path and execute the given shell command.
-
+def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: Union[int, None] = 7200):  # 1h ->2h
+    """Create a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
     """
@@ -33,7 +32,7 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
         if len(command) > 18:
             cmd_string = '"' + "".join(list(command)[:11]) + ".." + "".join(list(command)[-3:]) + '"'
         else:
-            cmd_string = f'"{command}"'
+            cmd_string = '"' + command + '"'
 
         logger.info("Execute {:18} in {:}".format(cmd_string, path))
         logger.debug(f"(timout: {timeout}, pid: %{sub_process.pid})")
@@ -44,12 +43,15 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
     try:
         stdout, stderr = sub_process.communicate(timeout=timeout)
     except sub.TimeoutExpired:
-        logger.warning(f"Execution timeout, killing process {sub_process.pid:s}")
+        logger.warning(f"Execution timeout, killing process {sub_process.pid}")
         # kill subprocess
-        parent = Process(sub_process.pid)
-        for child in parent.children(recursive=True):
-            child.kill()
-        parent.kill()
+        try:
+            parent = Process(sub_process.pid)  # look if the pid still exists
+            for child in parent.children(recursive=True):  # raise exeption w/o termination
+                child.kill()
+            parent.kill()
+        except Exception:
+            logger.warning(f"Process {sub_process.pid} non-existent. Perhaps previously terminated?")
 
     _log_subprocess_output(command, path, stdout, stderr)
 
