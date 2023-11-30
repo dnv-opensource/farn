@@ -36,6 +36,9 @@ class DiscreteSampling:
         self.number_of_bb_samples: int = 0
         self.leading_zeros: int = 0
 
+        self.iteration_depth: int
+        self.minIterationDepth: int
+        self.maxIterationDepth: int
         self.include_bounding_box: bool = False
 
     def _set_up_known_sampling_types(self):
@@ -170,23 +173,26 @@ class DiscreteSampling:
         if self.sampling_type == "fixed":
             samples = self._generate_samples_using_fixed_sampling()
 
-        if self.sampling_type == "linSpace":
+        elif self.sampling_type == "linSpace":
             samples = self._generate_samples_using_linspace_sampling()
 
-        if self.sampling_type == "uniformLhs":
+        elif self.sampling_type == "uniformLhs":
             samples = self._generate_samples_using_uniform_lhs_sampling()
 
-        if self.sampling_type == "normalLhs":
+        elif self.sampling_type == "normalLhs":
             samples = self._generate_samples_using_normal_lhs_sampling()
 
-        if self.sampling_type == "sobol":
+        elif self.sampling_type == "sobol":
             samples = self._generate_samples_using_sobol_sampling()
 
-        if self.sampling_type == "arbitrary":
+        elif self.sampling_type == "arbitrary":
             samples = self._generate_samples_using_arbitrary_sampling()
 
-        if self.sampling_type == "hilbertCurve":
+        elif self.sampling_type == "hilbertCurve":
             samples = self._generate_samples_using_hilbert_sampling()
+
+        else:
+            raise NotImplementedError(f"{self.sampling_type} not implemented yet.")
 
         return samples
 

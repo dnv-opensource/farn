@@ -102,7 +102,8 @@ _layers
             _type hilbertCurve;                 // Hilbert-Sampling. (derived from Hilbert's space-filling curve for dimensions >= 2)
             _names(param1 param2 param3);
             _ranges((-5. 5.)(0. 10.)(-10 10.)); // list containing ranges. A range is defined through the lower and upper boundary value for the related parameter name, given as tuple (minimum, maximum). For each parameter name, one range tuple must exist.
-            _includeBoundingBox True;           // [optional] defines whether the lower and upper boundary values of each parameter name shall be added as additional samples. If missing, defaults to False.
+            _includeBoundingBox True;           // [optional] defines whether the lower and upper boundary values of each parameter name shall be added as additional samples. 
+                                                // If missing, defaults to False. If it is given, start and end points of Hilbert distribution coincide with bb points for technical reasons.
             _numberOfSamples 20;                // number of samples to be generated. The given number of samples will be generated within range (=between lower and upper boundary), excluding the boundaries themselves. Resampling, keeping the already done cases, is possible in a subsequent farn call by adding (_numberOfSamples-1) to itself.
             _iterationDepth   5;                // iteration depth of Hilbert's algorithm: this example generates 2**(3*5) = 32768 Hilbert points (H. length).
         }
