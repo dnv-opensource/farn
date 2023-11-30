@@ -19,7 +19,7 @@ class DiscreteSampling:
         self.fields: List[str] = []
         self.values: List[Sequence[Any]] = []
         self.ranges: Sequence[Sequence[Any]] = []
-        self.boundingBox: List[List[float]] = []
+        self.bounding_box: List[List[float]] = []
         self.minVals: List[Any] = []
         self.maxVals: List[Any] = []
         self.case_names: List[str] = []
@@ -36,6 +36,8 @@ class DiscreteSampling:
         self.number_of_bb_samples: int = 0
         self.leading_zeros: int = 0
 
+        self.include_bounding_box: bool = False
+
     def _set_up_known_sampling_types(self):
         self.known_sampling_types = {
             "fixed": {"required_args": ["_names", "_values"]},
@@ -45,8 +47,10 @@ class DiscreteSampling:
                     "_names",
                     "_ranges",
                     "_numberOfSamples",
+                ],
+                "optional_args": [
                     "_includeBoundingBox",
-                ]
+                ],
             },
             "normalLhs": {
                 "required_args": ["_names", "_numberOfSamples", "_mu", "_sigma"],
@@ -58,8 +62,10 @@ class DiscreteSampling:
                     "_ranges",
                     "_numberOfSamples",  # determines overall sobol set (+ _onset)
                     "_onset",  # skip first sobol points and start at _onset number
+                ],
+                "optional_args": [
                     "_includeBoundingBox",
-                ]
+                ],
             },
             "arbitrary": {
                 "required_args": [
@@ -70,6 +76,17 @@ class DiscreteSampling:
                     "_distributionParameters",  # mu|sigma|skew|camber not applicsble for uniform
                     "_includeBoundingBox",  # required
                 ]
+            },
+            "hilbertCurve": {
+                "required_args": [
+                    "_names",
+                    "_ranges",
+                    "_numberOfSamples",
+                ],
+                "optional_args": [
+                    "_includeBoundingBox",
+                    "_iterationDepth",
+                ],
             },
         }
 
@@ -168,6 +185,9 @@ class DiscreteSampling:
         if self.sampling_type == "arbitrary":
             samples = self._generate_samples_using_arbitrary_sampling()
 
+        if self.sampling_type == "hilbertCurve":
+            samples = self._generate_samples_using_hilbert_sampling()
+
         return samples
 
     def _generate_samples_using_fixed_sampling(self) -> Dict[str, List[Any]]:
@@ -223,9 +243,15 @@ class DiscreteSampling:
 
     def _generate_samples_using_uniform_lhs_sampling(self) -> Dict[str, List[Any]]:
         samples: Dict[str, List[Any]] = {}
+
+        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
+            self.sampling_parameters["_includeBoundingBox"], bool
+        ):
+            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
+
         # first dimension n samples
         self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-        if self.sampling_parameters["_includeBoundingBox"] is True:
+        if self.include_bounding_box is True:
             self.number_of_bb_samples = int(2**self.number_of_fields)
         self.number_of_samples += self.number_of_bb_samples
 
@@ -235,9 +261,9 @@ class DiscreteSampling:
 
         values: ndarray[Any, Any] = self._generate_values_using_uniform_lhs_sampling()
 
-        if self.sampling_parameters["_includeBoundingBox"] is True:
+        if self.include_bounding_box is True:
             self._create_bounding_box()
-            values = np.concatenate((np.array(self.boundingBox).T, values), axis=1)  # type: ignore
+            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
 
         for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = values[index].tolist()
@@ -291,9 +317,14 @@ class DiscreteSampling:
 
         values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
 
-        if self.sampling_parameters["_includeBoundingBox"] is True:
+        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
+            self.sampling_parameters["_includeBoundingBox"], bool
+        ):
+            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
+
+        if self.include_bounding_box is True:
             self._create_bounding_box()
-            values = np.concatenate((np.array(self.boundingBox).T, values), axis=1)  # type: ignore
+            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
 
         for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = values[index].tolist()
@@ -340,6 +371,40 @@ class DiscreteSampling:
             ).tolist()
 
             # requires if self.kwargs['_includeBoundingBox'] is True: as well
+
+        return samples
+
+    def _generate_samples_using_hilbert_sampling(self) -> Dict[str, List[Any]]:
+        samples: Dict[str, List[Any]] = {}
+        # Depending on implementation
+        self.minIterationDepth = 3
+        self.maxIterationDepth = 15
+        # for numpy: self.maxIterationDepth = 10
+
+        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
+            self.sampling_parameters["_includeBoundingBox"], bool
+        ):
+            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
+
+        # first dimension n samples
+        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
+
+        if self.include_bounding_box is True:
+            self.number_of_bb_samples = int(2**self.number_of_fields)
+        self.number_of_samples += self.number_of_bb_samples
+
+        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
+
+        self._generate_case_names(samples)
+
+        values: ndarray[Any, Any] = self._generate_values_using_hilbert_sampling()
+
+        if self.include_bounding_box is True:
+            self._create_bounding_box()
+            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
+
+        for index, _ in enumerate(self.fields):
+            samples[self.fields[index]] = values[index].tolist()
 
         return samples
 
@@ -411,6 +476,100 @@ class DiscreteSampling:
 
         return sample_set
 
+    def _generate_values_using_hilbert_sampling(self) -> ndarray[Any, Any]:
+        """Source hilbertcurve pypi pkg or numpy
+        it showed that hilbertcurve is a better choice and more precise with a higher iteration depth (<=15)
+        pypi pkg Decimals is required for proper function up to (<=15)
+        numpy approach instead has only (<=10).
+        """
+        from math import modf
+
+        try:
+            from decimal import Decimal
+        except ImportError:
+            logger.error("no module named Decimal")
+            exit(1)
+        try:
+            from hilbertcurve.hilbertcurve import HilbertCurve
+        except ImportError:
+            logger.error("no module named HilbertCurve")
+            exit(1)
+
+        if "_iterationDepth" in self.sampling_parameters.keys():
+            if not isinstance(self.sampling_parameters["_iterationDepth"], int):
+                logger.error(
+                    f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
+                )
+                exit(1)
+            if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
+                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\nsetting to {self.maxIterationDepth}'
+                logger.warning(msg)
+                self.iteration_depth = self.maxIterationDepth
+            elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
+                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\nsetting to {self.minIterationDepth}'
+                logger.warning(msg)
+                self.iteration_depth = self.minIterationDepth
+            else:
+                self.iteration_depth = self.sampling_parameters["_iterationDepth"]
+        else:
+            self.iteration_depth = 10
+
+        # maximum number of possible pure hilbert points
+        # max_h = np.power(2, (self.iteration_depth * self.number_of_fields), dtype=np.int64)
+
+        hc = HilbertCurve(self.iteration_depth, self.number_of_fields, n_procs=0)  # -1: all threads
+
+        # integer hilbert box dimensions
+        # h_ranges = np.array([[hc.min_x, hc.max_x] for _ in range(self.number_of_fields)])
+
+        # hilbert maximum distribution, including 0 it is +1
+        # ds = np.linspace(int(hc.min_h), int(hc.max_h), int(hc.max_h)+1)
+        ds = np.linspace(int(hc.min_h), int(hc.max_h), self.number_of_samples - self.number_of_bb_samples)
+        # redo it for long u-int
+        dist = np.array([Decimal(x) for x in ds])
+        int_dist = np.trunc(dist)
+
+        # hilbert points filed generated from int_dist
+        h_points = hc.points_from_distances(int_dist)
+
+        # real valued poinit field
+        points = []
+        interpolation_hits = 0
+        for pt, dst, idst in zip(h_points, dist, int_dist):
+            if dst == idst:
+                points.append(pt)
+            else:
+                # interpolation starts: use idst to find integer neighbour of dst
+                # nn: next neighbour
+                dst_nn = idst + 1
+                pt_from_dst = pt
+                pt_from_dst_nn = hc.point_from_distance(dst_nn)
+
+                # find the index where both points are different and interpolate that index
+                # acc. trailing digits of dst
+                # and create the new point, now floating point
+                point = []
+                for i, j in zip(pt_from_dst, pt_from_dst_nn):
+                    if i != j:
+                        # non-matching index found, but points are on that line and need to be interpolated
+                        smaller_index = min(i, j)
+                        fraction, _ = modf(dst)
+                        # add the component to real valued vector
+                        point.append(float(smaller_index) + fraction)
+                        interpolation_hits += 1
+                    else:
+                        # nothing else to do than add ing the component
+                        point.append(float(i))
+                # fill-up the field
+                points.append(point)
+
+        sample_set: ndarray[Any, Any] = np.array(points).T
+
+        for index, item in enumerate(sample_set):
+            sample_set[index] = self._min_max_scale(item, self.ranges[index])
+
+        return sample_set
+
     def _generate_case_names(
         self,
         samples: Dict[str, List[Any]],
@@ -455,12 +614,12 @@ class DiscreteSampling:
             )
             for field_index in range(1, self.number_of_fields - 1):
                 tmp = list(itertools.product(tmp, self.sampling_parameters["_ranges"][field_index + 1]))
-        self.boundingBox = []
+        self.bounding_box = []
         for item in tmp:
             if isinstance(item, Iterable):
-                self.boundingBox.append(list(self._flatten(item)))
+                self.bounding_box.append(list(self._flatten(item)))
             else:
-                self.boundingBox.append([item])
+                self.bounding_box.append([item])
         return
 
     def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:

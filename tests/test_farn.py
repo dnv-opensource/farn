@@ -33,10 +33,12 @@ def test_create_samples():
     assert "_samples" in farn_dict["_layers"]["gp"]
     assert "_samples" in farn_dict["_layers"]["lhsvar"]
     assert "_samples" in farn_dict["_layers"]["cp"]
+    assert "_samples" in farn_dict["_layers"]["hilbert"]
     assert "_samples" in farn_dict["_layers"]["mp"]
     assert len(farn_dict["_layers"]["gp"]) == len(sampled_farn_dict_assert["_layers"]["gp"])
     assert len(farn_dict["_layers"]["lhsvar"]) == len(sampled_farn_dict_assert["_layers"]["lhsvar"])
     assert len(farn_dict["_layers"]["cp"]) == len(sampled_farn_dict_assert["_layers"]["cp"])
+    assert len(farn_dict["_layers"]["lhsvar"]) == len(sampled_farn_dict_assert["_layers"]["hilbert"])
     assert len(farn_dict["_layers"]["mp"]) == len(sampled_farn_dict_assert["_layers"]["mp"])
 
 
