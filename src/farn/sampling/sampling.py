@@ -501,6 +501,8 @@ class DiscreteSampling:
             logger.error("no module named HilbertCurve")
             exit(1)
 
+        number_of_continuous_samples: int = self.number_of_samples - self.number_of_bb_samples
+
         if "_iterationDepth" in self.sampling_parameters.keys():
             if not isinstance(self.sampling_parameters["_iterationDepth"], int):
                 logger.error(
@@ -508,11 +510,11 @@ class DiscreteSampling:
                 )
                 exit(1)
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\nsetting to {self.maxIterationDepth}'
+                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
                 logger.warning(msg)
                 self.iteration_depth = self.maxIterationDepth
             elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\nsetting to {self.minIterationDepth}'
+                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\n\t\tsetting to {self.minIterationDepth}'
                 logger.warning(msg)
                 self.iteration_depth = self.minIterationDepth
             else:
@@ -520,53 +522,49 @@ class DiscreteSampling:
         else:
             self.iteration_depth = 10
 
-        # maximum number of possible pure hilbert points
-        # max_h = np.power(2, (self.iteration_depth * self.number_of_fields), dtype=np.int64)
-
         hc = HilbertCurve(self.iteration_depth, self.number_of_fields, n_procs=0)  # -1: all threads
 
-        # integer hilbert box dimensions
-        # h_ranges = np.array([[hc.min_x, hc.max_x] for _ in range(self.number_of_fields)])
+        logger.info(
+            f"The number of hilbert points is {hc.max_h}, the number of continuous samples is {number_of_continuous_samples}"
+        )
+        if hc.max_h <= int(10.0 * number_of_continuous_samples):
+            logger.warning(
+                'Try to set or increase "_iterationDepth" gradually to achieve a number of hilbert points of about 10-times higher than "_numberOfSamples".'
+            )
 
-        # hilbert maximum distribution, including 0 it is +1
-        # ds = np.linspace(int(hc.min_h), int(hc.max_h), int(hc.max_h)+1)
-        ds = np.linspace(int(hc.min_h), int(hc.max_h), self.number_of_samples - self.number_of_bb_samples)
-        # redo it for long u-int
-        dist = np.array([Decimal(x) for x in ds])
-        int_dist = np.trunc(dist)
+        distribution = np.array(
+            [Decimal(x) for x in np.linspace(int(hc.min_h), int(hc.max_h), number_of_continuous_samples)]
+        )
+        int_distribution = np.trunc(distribution)
 
-        # hilbert points filed generated from int_dist
-        h_points = hc.points_from_distances(int_dist)
+        hilbert_points = hc.points_from_distances(int_distribution)
 
-        # real valued poinit field
-        points = []
+        points: List[List[float]] = []
         interpolation_hits = 0
-        for pt, dst, idst in zip(h_points, dist, int_dist):
+        for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution):
             if dst == idst:
-                points.append(pt)
+                points.append(hpt)
             else:
                 # interpolation starts: use idst to find integer neighbour of dst
                 # nn: next neighbour
                 dst_nn = idst + 1
-                pt_from_dst = pt
+                pt_from_dst = hpt
                 pt_from_dst_nn = hc.point_from_distance(dst_nn)
 
-                # find the index where both points are different and interpolate that index
-                # acc. trailing digits of dst
-                # and create the new point, now floating point
-                point = []
+                # find the index where both discrete points are different and interpolate that index
+                # and create the new real-valued point
+                point: List[float] = []
                 for i, j in zip(pt_from_dst, pt_from_dst_nn):
                     if i != j:
-                        # non-matching index found, but points are on that line and need to be interpolated
+                        # non-matching index found, i.e. points are in the same dimension and need to be interpolated alongside
                         smaller_index = min(i, j)
                         fraction, _ = modf(dst)
-                        # add the component to real valued vector
+                        # add the component to real-valued vector
                         point.append(float(smaller_index) + fraction)
                         interpolation_hits += 1
                     else:
-                        # nothing else to do than add ing the component
                         point.append(float(i))
-                # fill-up the field
+
                 points.append(point)
 
         sample_set: ndarray[Any, Any] = np.array(points).T
