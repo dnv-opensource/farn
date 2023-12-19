@@ -62,6 +62,8 @@ def test_cli(
     expected: Union[CliArgs, type],
     monkeypatch: MonkeyPatch,
 ):
+    # sourcery skip: no-conditionals-in-tests
+    # sourcery skip: no-loop-in-tests
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
     parser = _argparser()
@@ -123,6 +125,8 @@ def test_logging_configuration(
     expected: Union[ConfigureLoggingArgs, type],
     monkeypatch: MonkeyPatch,
 ):
+    # sourcery skip: no-conditionals-in-tests
+    # sourcery skip: no-loop-in-tests
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
     args: ConfigureLoggingArgs = ConfigureLoggingArgs()
@@ -205,6 +209,8 @@ def test_api_invokation(
     expected: Union[ApiArgs, type],
     monkeypatch: MonkeyPatch,
 ):
+    # sourcery skip: no-conditionals-in-tests
+    # sourcery skip: no-loop-in-tests
     # Prepare
     monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
     args: ApiArgs = ApiArgs()

@@ -285,14 +285,18 @@ class Cases(List[Case]):
 
         for _index, case in enumerate(_cases):
             if case.case:
-                series["case"].loc[_index] = case.case
-            series["path"].loc[_index] = str(case.path)
+                series["case"].loc[_index] = case.case  # pyright: ignore
+            series["path"].loc[_index] = str(case.path)  # pyright: ignore
             if case.parameters:
                 for parameter in case.parameters:
                     if parameter.name not in series:
-                        series[parameter.name] = Series(data=None, dtype=parameter.dtype, name=parameter.name)
+                        series[parameter.name] = Series(
+                            data=None,
+                            dtype=parameter.dtype,  # pyright: ignore
+                            name=parameter.name,
+                        )
                     if parameter.value is not None:
-                        series[parameter.name].loc[_index] = parameter.value
+                        series[parameter.name].loc[_index] = parameter.value  # pyright: ignore
 
         if parameters_only:
             _ = series.pop("case")

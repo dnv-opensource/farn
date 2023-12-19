@@ -16,6 +16,7 @@ farn
 * runs simulation cases as batch process
 
 ## Installation
+
 ```sh
 pip install farn
 ```
@@ -30,18 +31,18 @@ However, both get installed automatically with farn (just pip install farn and y
 farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
 
 Reading a farnDict file and creating the corresponding case folder structure:
-~~~py
+```py
 from farn import run_farn
 
 run_farn('farnDict', sample=True, generate=True)
-~~~
+```
 
 The above task can also be invoked from the command line, using the 'farn' command line script installed with farn:
-~~~sh
+```sh
 farn farnDict --sample --generate
-~~~
+```
 
-_For more examples and usage, please refer to [farn's documentation][farn_docs] on GitHub Pages._
+_For more examples and usage, please refer to [farn's documentation][farn_docs]._
 
 Further, the [farn-demo][farn_demo_repo] repository on GitHub is an excellent place for a jumpstart into farn.
 Simply clone the [farn-demo][farn_demo_repo] repository to your local machine and click through the demos and related READMEs, by recommendation in the following sequence:
@@ -61,47 +62,76 @@ _For a detailed documentation of the dictIO dict file format used by farn, see [
 
 ## Development Setup
 
-1. Install Python 3.9 or higher, i.e. [Python 3.9](https://www.python.org/downloads/release/python-3912/) or [Python 3.10](https://www.python.org/downloads/release/python-3104/)
+1. Install Python 3.9 or higher, i.e. [Python 3.10](https://www.python.org/downloads/release/python-3104/) or [Python 3.11](https://www.python.org/downloads/release/python-3114/)
 
 2. Update pip and setuptools:
 
-    ~~~sh
-    $ python -m pip install --upgrade pip setuptools
-    ~~~
+    ```sh
+    python -m pip install --upgrade pip setuptools
+    ```
 
 3. git clone the farn repository into your local development directory:
 
-    ~~~sh
+    ```sh
     git clone https://github.com/dnv-opensource/farn path/to/your/dev/farn
-    ~~~
+    ```
 
 4. In the farn root folder:
 
     Create a Python virtual environment:
-    ~~~sh
-    $ python -m venv .venv
-    ~~~
-    Activate the virtual environment: <br>
+
+    ```sh
+    python -m venv .venv
+    ```
+
+    Activate the virtual environment:
+
     ..on Windows:
-    ~~~sh
+
+    ```sh
     > .venv\Scripts\activate.bat
-    ~~~
+    ```
+
     ..on Linux:
-    ~~~sh
-    $ source .venv/bin/activate
-    ~~~
+
+    ```sh
+    source .venv/bin/activate
+    ```
+
     Update pip and setuptools:
-    ~~~sh
-    $ python -m pip install --upgrade pip setuptools
-    ~~~
+
+    ```sh
+    (.venv) $ python -m pip install --upgrade pip setuptools
+    ```
+
     Install farn's dependencies:
-    ~~~sh
-    $ pip install -r requirements-dev.txt
-    ~~~
+    ```sh
+    (.venv) $ pip install -r requirements-dev.txt
+    ```
+
+    This should return without errors.
+
+5. Setup your development environment to locate Python source codes:
+
+    For example, Visual Studio Code on Windows assumes the Python environment is specified in a `.env` file. <br>
+    If you are developing and running the Python code from VSCode, make sure to create a `.env` file in the mypackage root folder with below content. <br>
+    Set the path for `PROJ_DIR` to where your mypackage folder is on your system. <br>
+    _Note_: `.env` is part of `.gitignore`, such that you do not commit your `.env` file to the repository.
+
+    ```ini
+    PROJ_DIR=<path-to-farn-root-dir>
+    PYTHONPATH=${PROJ_DIR}/src
+    ```
+
+6. Test that the installation works (in the mypackage root folder):
+
+    ```sh
+    (.venv) $ pytest .
+    ```
 
 ## Meta
 
-Copyright (c) 2022 [DNV](https://www.dnv.com) [open source](https://github.com/dnv-opensource)
+Copyright (c) 2023 [DNV](https://www.dnv.com) [open source](https://github.com/dnv-opensource)
 
 Frank Lumpitzsch – [@LinkedIn](https://www.linkedin.com/in/frank-lumpitzsch-23013196/) – frank.lumpitzsch@dnv.com
 
@@ -117,9 +147,9 @@ Distributed under the MIT license. See [LICENSE](LICENSE.md) for more informatio
 
 1. Fork it (<https://github.com/dnv-opensource/farn/fork>)
 2. Create your branch (`git checkout -b myBranchName`)
-3. Commit your changes (`git commit -am 'place your commit message here'`)
-4. Push to the branch (`git push origin myBranchName`)
-5. Create a new Pull Request
+3. Commit your changes (e.g. `git commit -m 'place a descriptive commit message here'`)
+4. Push to the branch (e.g. `git push origin myBranchName`)
+5. Create a new Pull Request in GitHub
 
 For your contribution, please make sure you follow the [STYLEGUIDE](STYLEGUIDE.md) before creating the Pull Request.
 

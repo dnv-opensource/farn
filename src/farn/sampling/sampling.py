@@ -71,16 +71,6 @@ class DiscreteSampling:
                     "_includeBoundingBox",  # required
                 ]
             },
-            # "randNormal": {
-            #     "required_args": [
-            #         "_names",
-            #         "_ranges",
-            #         "_numberOfSamples",
-            #         "_mu",  # 1rst order
-            #         "_sigma",  # 2nd order
-            #         "_includeBoundingBox",
-            #     ]
-            # },
         }
 
     def set_sampling_type(self, sampling_type: str):
@@ -372,12 +362,12 @@ class DiscreteSampling:
             problem, self.number_of_samples - self.number_of_bb_samples
         )
 
-        return sample_set.T
+        return sample_set.T  # pyright: ignore
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
         """Gaussnormal LHS."""
         from pyDOE2 import lhs
-        from scipy.stats import norm  # qmc, truncnorm
+        from scipy.stats import norm  # type: ignore
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
             self.number_of_fields,
@@ -397,7 +387,7 @@ class DiscreteSampling:
         sample_set: ndarray[Any, Any] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # type: ignore
 
         # transpose to be aligned with uniformLhs output
-        return sample_set.T
+        return sample_set.T  # pyright: ignore
 
     def _generate_values_using_sobol_sampling(self) -> ndarray[Any, Any]:
         # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
