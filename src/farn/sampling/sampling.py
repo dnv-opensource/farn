@@ -539,7 +539,7 @@ class DiscreteSampling:
 
         hilbert_points = hc.points_from_distances(int_distribution)
 
-        points: List[List[float]] = []
+        points: Iterable[Iterable[float]] = []
         interpolation_hits = 0
         for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution):
             if dst == idst:
@@ -553,7 +553,7 @@ class DiscreteSampling:
 
                 # find the index where both discrete points are different and interpolate that index
                 # and create the new real-valued point
-                point: List[float] = []
+                point: Iterable[float] = []
                 for i, j in zip(pt_from_dst, pt_from_dst_nn):
                     if i != j:
                         # non-matching index found, i.e. points are in the same dimension and need to be interpolated alongside
