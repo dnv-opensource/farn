@@ -44,8 +44,19 @@ class DiscreteSampling:
 
     def _set_up_known_sampling_types(self):
         self.known_sampling_types = {
-            "fixed": {"required_args": ["_names", "_values"]},
-            "linSpace": {"required_args": ["_names", "_ranges", "_numberOfSamples"]},
+            "fixed": {
+                "required_args": [
+                    "_names",
+                    "_values",
+                ]
+            },
+            "linSpace": {
+                "required_args": [
+                    "_names",
+                    "_ranges",
+                    "_numberOfSamples",
+                ]
+            },
             "uniformLhs": {
                 "required_args": [
                     "_names",
@@ -57,8 +68,16 @@ class DiscreteSampling:
                 ],
             },
             "normalLhs": {
-                "required_args": ["_names", "_numberOfSamples", "_mu", "_sigma"],
-                "optional_args": ["_ranges", "_cov"],
+                "required_args": [
+                    "_names",
+                    "_numberOfSamples",
+                    "_mu",
+                    "_sigma",
+                ],
+                "optional_args": [
+                    "_ranges",
+                    "_cov",
+                ],
             },
             "sobol": {
                 "required_args": [
@@ -200,17 +219,17 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_fixed_sampling(self) -> Dict[str, List[Any]]:
+        _ = self._check_length_matches_number_of_names("_values")
         samples: Dict[str, List[Any]] = {}
-        _ = self._check_size_of_parameter_matches_number_of_names("_values")
 
-        # Check that the values per paramater are provided as a list
+        # Assert that the values per parameter are provided as a list
         for item in self.sampling_parameters["_values"]:
             if not isinstance(item, Sequence):
                 msg: str = "_values: The values per parameter need to be provided as a list of values."
                 logger.error(msg)
                 raise ValueError(msg)
 
-        # Check that the number of values per parameter is the same for all parameters
+        # Assert that the number of values per parameter is the same for all parameters
         number_of_values_per_parameter: List[int] = [len(item) for item in self.sampling_parameters["_values"]]
         all_parameters_have_same_number_of_values: bool = all(
             number_of_values == number_of_values_per_parameter[0]  # (breakline)
@@ -220,14 +239,12 @@ class DiscreteSampling:
             msg: str = "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
             logger.error(msg)
             raise ValueError(msg)
+
         self.number_of_samples = number_of_values_per_parameter[0]
-
-        # get all the fields
-        self.values = self.sampling_parameters["_values"]
-
         self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-
         self._generate_case_names(samples)
+
+        self.values = self.sampling_parameters["_values"]
 
         for index, field in enumerate(self.fields):
             samples[field] = list(self.values[index])
@@ -235,16 +252,13 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_linspace_sampling(self) -> Dict[str, List[Any]]:
+        _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = {}
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-
-        _ = self._check_size_of_parameter_matches_number_of_names("_ranges")
+        self._determine_number_of_samples()
+        self._generate_case_names(samples)
 
         self.minVals = [x[0] for x in self.ranges]
         self.maxVals = [x[1] for x in self.ranges]
-
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-        self._generate_case_names(samples)
 
         for index, _ in enumerate(self.fields):
             samples[self.fields[index]] = list(
@@ -258,31 +272,13 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_uniform_lhs_sampling(self) -> Dict[str, List[Any]]:
+        _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = {}
-
-        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
-            self.sampling_parameters["_includeBoundingBox"], bool
-        ):
-            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
-
-        # first dimension n samples
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-        if self.include_bounding_box is True:
-            self.number_of_bb_samples = int(2**self.number_of_fields)
-        self.number_of_samples += self.number_of_bb_samples
-
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-
+        self._determine_number_of_samples()
         self._generate_case_names(samples)
 
         values: ndarray[Any, Any] = self._generate_values_using_uniform_lhs_sampling()
-
-        if self.include_bounding_box is True:
-            self._create_bounding_box()
-            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
-
-        for index, _ in enumerate(self.fields):
-            samples[self.fields[index]] = values[index].tolist()
+        self._write_values_into_samples_dict(values, samples)
 
         return samples
 
@@ -297,62 +293,46 @@ class DiscreteSampling:
         NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE!
         * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples).
         """
+        _ = self._check_length_matches_number_of_names("_mu")
+        if isinstance(self.sampling_parameters["_sigma"], Sequence):
+            _ = self._check_length_matches_number_of_names("_sigma")
+
         samples: Dict[str, List[Any]] = {}
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
+        self._determine_number_of_samples()
         self._generate_case_names(samples)
-        _ = self._check_size_of_parameter_matches_number_of_names("_mu")
 
         self.mean = self.sampling_parameters["_mu"]
-        if isinstance(self.sampling_parameters["_sigma"], list):
-            _ = self._check_size_of_parameter_matches_number_of_names("_sigma")
         self.std = self.sampling_parameters["_sigma"]
 
         values: ndarray[Any, Any] = self._generate_values_using_normal_lhs_sampling()
 
-        # optional clipping cube
-        # ToDo:
-        # clipping is implemented, resets the value to range value
-        # if this is unaffordable, purgign should be considered, requiring a decrementation of number_of_samples
+        # Clipping (optional. Clipping will only be performed if sampling parameter "_ranges" is defined.)
+        # NOTE: In current implementation, sampled values exceeding a parameters valid range
+        #       are not discarded but reset to the respective range upper or lower bound.
+        #       If real clipping shall be implemented, it would require discarding exceeding values.
+        #       As the number of values that would need to be discarded is different for each individual parameter (dimension),
+        #       the necessary clipping logic will quickly become complex.
+        #       Hence the somewhat simpler approach for now, where exceeding values simply get reset to the range bounderies.
         if self.ranges:
             clipped: ndarray[Any, Any] = np.zeros(values.shape)
             for index, field in enumerate(values):
                 clipped[index] = np.clip(field, self.ranges[index][0], self.ranges[index][1])  # type: ignore
             values = clipped
 
-        for index, _ in enumerate(self.fields):
-            samples[self.fields[index]] = values[index].tolist()
+        self._write_values_into_samples_dict(values, samples)
 
         return samples
 
     def _generate_samples_using_sobol_sampling(self) -> Dict[str, List[Any]]:
-        samples: Dict[str, List[Any]] = {}
-
-        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
-            self.sampling_parameters["_includeBoundingBox"], bool
-        ):
-            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
-
-        # first dimension n samples
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-        if self.include_bounding_box is True:
-            self.number_of_bb_samples = int(2**self.number_of_fields)
-        self.number_of_samples += self.number_of_bb_samples
-
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-
+        _ = self._check_length_matches_number_of_names("_ranges")
         self.onset = int(self.sampling_parameters["_onset"])
 
+        samples: Dict[str, List[Any]] = {}
+        self._determine_number_of_samples()
         self._generate_case_names(samples)
 
         values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
-
-        if self.include_bounding_box is True:
-            self._create_bounding_box()
-            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
-
-        for index, _ in enumerate(self.fields):
-            samples[self.fields[index]] = values[index].tolist()
+        self._write_values_into_samples_dict(values, samples)
 
         return samples
 
@@ -366,17 +346,14 @@ class DiscreteSampling:
             4. At this moment, those prerequisites shall be provided as arguments. This could be modified later
             5. refer to commented example below.
         """
+        _ = self._check_length_matches_number_of_names("_ranges")
 
         samples: Dict[str, List[Any]] = {}
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-
-        _ = self._check_size_of_parameter_matches_number_of_names("_ranges")
+        self._determine_number_of_samples()
+        self._generate_case_names(samples)
 
         self.minVals = [x[0] for x in self.ranges]
         self.maxVals = [x[1] for x in self.ranges]
-
-        self._generate_case_names(samples)
 
         import scipy.stats  # noqa: F401
 
@@ -400,36 +377,17 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_hilbert_sampling(self) -> Dict[str, List[Any]]:
+        _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = {}
+        self._determine_number_of_samples()
+        self._generate_case_names(samples)
+
         # Depending on implementation
         self.minIterationDepth = 3
         self.maxIterationDepth = 15
-        # for numpy: self.maxIterationDepth = 10
-
-        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
-            self.sampling_parameters["_includeBoundingBox"], bool
-        ):
-            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
-
-        # first dimension n samples
-        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
-
-        if self.include_bounding_box is True:
-            self.number_of_bb_samples = int(2**self.number_of_fields)
-        self.number_of_samples += self.number_of_bb_samples
-
-        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
-
-        self._generate_case_names(samples)
 
         values: ndarray[Any, Any] = self._generate_values_using_hilbert_sampling()
-
-        if self.include_bounding_box is True:
-            self._create_bounding_box()
-            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)  # type: ignore
-
-        for index, _ in enumerate(self.fields):
-            samples[self.fields[index]] = values[index].tolist()
+        self._write_values_into_samples_dict(values, samples)
 
         return samples
 
@@ -509,27 +467,29 @@ class DiscreteSampling:
         pypi pkg Decimals is required for proper function up to (<=15)
         numpy approach instead has only (<=10).
         """
+        # sourcery skip: extract-duplicate-method
         from math import modf
 
         try:
             from decimal import Decimal
-        except ImportError:
-            logger.error("no module named Decimal")
-            exit(1)
+        except ImportError as e:
+            msg: str = "no module named Decimal"
+            logger.exception(msg)
+            raise e
         try:
             from hilbertcurve.hilbertcurve import HilbertCurve
-        except ImportError:
-            logger.error("no module named HilbertCurve")
-            exit(1)
+        except ImportError as e:
+            msg: str = "no module named HilbertCurve"
+            logger.exception(msg)
+            raise e
 
         number_of_continuous_samples: int = self.number_of_samples - self.number_of_bb_samples
 
         if "_iterationDepth" in self.sampling_parameters.keys():
             if not isinstance(self.sampling_parameters["_iterationDepth"], int):
-                logger.error(
-                    f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
-                )
-                exit(1)
+                msg: str = f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
+                logger.error(msg)
+                raise ValueError(msg)
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
                 msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
                 logger.warning(msg)
@@ -595,6 +555,17 @@ class DiscreteSampling:
 
         return sample_set
 
+    def _determine_number_of_samples(self):
+        if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
+            self.sampling_parameters["_includeBoundingBox"], bool
+        ):
+            self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
+        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
+        if self.include_bounding_box is True:
+            self.number_of_bb_samples = int(2**self.number_of_fields)
+        self.number_of_samples += self.number_of_bb_samples
+        self.leading_zeros = int(math.log10(self.number_of_samples) - 1e-06) + 1
+
     def _generate_case_names(
         self,
         samples: Dict[str, List[Any]],
@@ -604,12 +575,12 @@ class DiscreteSampling:
         ]
         samples["_case_name"] = self.case_names
 
-    def _check_size_of_parameter_matches_number_of_names(
+    def _check_length_matches_number_of_names(
         self,
         parameter_name: str,
     ) -> bool:
         # check that size of a list/ vector equals the size of _names
-        if len(self.sampling_parameters["_names"]) != len(self.sampling_parameters[parameter_name]):
+        if len(self.sampling_parameters[parameter_name]) != len(self.sampling_parameters["_names"]):
             msg: str = f"lists _names and {parameter_name}: lengths of entries do not match"
             logger.error(msg)
             return False
@@ -620,7 +591,7 @@ class DiscreteSampling:
             if len(item) != 2:
                 logger.error("The structure of min and max values in _ranges is inconsistent.")
                 return False
-        return self._check_size_of_parameter_matches_number_of_names("_ranges")
+        return self._check_length_matches_number_of_names("_ranges")
 
     def _create_bounding_box(self):
         import itertools
@@ -645,6 +616,14 @@ class DiscreteSampling:
                 self.bounding_box.append(list(self._flatten(item)))
             else:
                 self.bounding_box.append([item])
+        return
+
+    def _write_values_into_samples_dict(self, values: ndarray[Any, Any], samples: Dict[str, List[Any]]):
+        if self.include_bounding_box is True:
+            self._create_bounding_box()
+            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)
+        for index, _ in enumerate(self.fields):
+            samples[self.fields[index]] = values[index].tolist()
         return
 
     def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
