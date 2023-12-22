@@ -241,9 +241,6 @@ def test_uniformLhs_sampling_three_parameters():
         "param2",
         "param3",
     }
-    # print(repr(samples["param1"]))
-    # print(repr(samples["param2"]))
-    # print(repr(samples["param3"]))
     assert len(samples["_case_name"]) == 20
     assert samples["_case_name"] == case_names_expected
     assert len(samples["param1"]) == 20
@@ -521,9 +518,6 @@ def test_normalLhs_sampling_three_parameters():
         "param2",
         "param3",
     }
-    print(repr(samples["param1"]))
-    print(repr(samples["param2"]))
-    print(repr(samples["param3"]))
     assert len(samples["_case_name"]) == 20
     assert samples["_case_name"] == case_names_expected
     assert len(samples["param1"]) == 20
@@ -647,10 +641,6 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
         "param2",
         "param3",
     }
-    print(repr(samples["_case_name"]))
-    print(repr(samples["param1"]))
-    print(repr(samples["param2"]))
-    print(repr(samples["param3"]))
     assert len(samples["_case_name"]) == 20
     assert samples["_case_name"] == case_names_expected
     assert len(samples["param1"]) == 20
@@ -895,9 +885,6 @@ def test_sobol_sampling_three_parameters_with_onset():
         "param2",
         "param3",
     }
-    print(repr(samples["param1"]))
-    print(repr(samples["param2"]))
-    print(repr(samples["param3"]))
     assert len(samples["_case_name"]) == 20
     assert samples["_case_name"] == case_names_expected
     assert len(samples["param1"]) == 20
@@ -1053,6 +1040,407 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
         "param2",
         "param3",
     }
+    assert len(samples["_case_name"]) == 28
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 28
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 28
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 28
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_hilbertCurve_sampling_three_parameters():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling()
+    sampling.set_sampling_type(sampling_type="hilbertCurve")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_numberOfSamples": 20,
+            # "_iterationDepth": 5,
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+        "layer0_12",
+        "layer0_13",
+        "layer0_14",
+        "layer0_15",
+        "layer0_16",
+        "layer0_17",
+        "layer0_18",
+        "layer0_19",
+    ]
+    param1_values_expected: List[float] = [
+        -10.0,
+        -2.0625610948191593,
+        -10.0,
+        -2.9114575295154648,
+        -1.8084066471163247,
+        -10.0,
+        -0.9872922776148574,
+        -3.978494623655914,
+        -5.562072336265885,
+        -8.030560271830852,
+        8.03056027066556,
+        5.562072336265885,
+        3.978494623655914,
+        0.9872922776148574,
+        10.0,
+        1.8084066471163247,
+        2.911457528350173,
+        10.0,
+        2.0625610948191593,
+        10.0,
+    ]
+    param2_values_expected: List[float] = [
+        0.0,
+        0.7426904253928639,
+        1.773277701078467,
+        0.0,
+        1.1724494917718806,
+        3.020830719013671,
+        3.4971451875496222,
+        2.5076232902309616,
+        3.388881917286891,
+        2.720416614360378,
+        2.720416614360378,
+        3.391297527764435,
+        2.5076232902309616,
+        3.5,
+        3.020830719013671,
+        1.1724494917718806,
+        0.0,
+        1.773277701078467,
+        0.7426904253928639,
+        0.0,
+    ]
+    param3_values_expected: List[float] = [
+        0.0,
+        0.14691640866416344,
+        0.4258328173283269,
+        1.1,
+        1.061312693480183,
+        0.8756408668405871,
+        0.7971764705882354,
+        0.7359442723849241,
+        0.462,
+        0.27047058823529413,
+        0.27047058823529413,
+        0.462,
+        0.7354674922438229,
+        0.7971764705882354,
+        0.8753003094757306,
+        1.0623343652276434,
+        1.1,
+        0.4269907120255863,
+        0.14684829718926376,
+        0.0,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    assert len(samples["_case_name"]) == 20
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 20
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 20
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 20
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling()
+    sampling.set_sampling_type(sampling_type="hilbertCurve")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_numberOfSamples": 20,
+            "_iterationDepth": 5,
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+        "layer0_12",
+        "layer0_13",
+        "layer0_14",
+        "layer0_15",
+        "layer0_16",
+        "layer0_17",
+        "layer0_18",
+        "layer0_19",
+    ]
+    param1_values_expected: List[float] = [
+        -10.0,
+        -1.8845500848896517,
+        -9.898132427843818,
+        -2.903225806451613,
+        -1.612903225806452,
+        -10.0,
+        -0.9677419354838719,
+        -4.193548387096774,
+        -5.72156196943979,
+        -8.064516129032258,
+        8.064516129032256,
+        5.721561969438616,
+        4.193548387096774,
+        0.9677419354838701,
+        10.0,
+        1.612903225806452,
+        2.903225806451612,
+        9.898132427842938,
+        1.8845500848903836,
+        10.0,
+    ]
+    param2_values_expected: List[float] = [
+        0.0,
+        0.6597222222222319,
+        1.7152777777778028,
+        0.0,
+        1.0972222222222319,
+        3.0208333333333393,
+        3.493055555555657,
+        2.3750000000000346,
+        3.298611111111159,
+        2.6388888888889275,
+        2.6388888888889275,
+        3.298611111111159,
+        2.3750000000000346,
+        3.5000000000000004,
+        2.916666666666507,
+        1.1458333333334763,
+        0.0,
+        1.7152777777778028,
+        0.6597222222222319,
+        0.0,
+    ]
+    param3_values_expected: List[float] = [
+        0.0,
+        0.12342519685039283,
+        0.4114173228346427,
+        1.1,
+        1.0285433070866068,
+        0.8639763779527497,
+        0.7816929133858211,
+        0.6604330708661055,
+        0.452559055118107,
+        0.25551181102364384,
+        0.2793307086613917,
+        0.452559055118107,
+        0.6972440944882156,
+        0.7816929133858211,
+        0.8639763779527497,
+        1.0285433070866068,
+        1.0805118110236065,
+        0.4114173228346427,
+        0.12342519685039283,
+        0.0,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    assert len(samples["_case_name"]) == 20
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 20
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 20
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 20
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling()
+    sampling.set_sampling_type(sampling_type="hilbertCurve")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_numberOfSamples": 20,
+            "_includeBoundingBox": True,
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+        "layer0_12",
+        "layer0_13",
+        "layer0_14",
+        "layer0_15",
+        "layer0_16",
+        "layer0_17",
+        "layer0_18",
+        "layer0_19",
+        "layer0_20",
+        "layer0_21",
+        "layer0_22",
+        "layer0_23",
+        "layer0_24",
+        "layer0_25",
+        "layer0_26",
+        "layer0_27",
+    ]
+    param1_values_expected: List[float] = [
+        -10.0,
+        -10.0,
+        -10.0,
+        -10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        -10.0,
+        -2.0625610948191593,
+        -10.0,
+        -2.9114575295154648,
+        -1.8084066471163247,
+        -10.0,
+        -0.9872922776148574,
+        -3.978494623655914,
+        -5.562072336265885,
+        -8.030560271830852,
+        8.03056027066556,
+        5.562072336265885,
+        3.978494623655914,
+        0.9872922776148574,
+        10.0,
+        1.8084066471163247,
+        2.911457528350173,
+        10.0,
+        2.0625610948191593,
+        10.0,
+    ]
+    param2_values_expected: List[float] = [
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        0.0,
+        0.7426904253928639,
+        1.773277701078467,
+        0.0,
+        1.1724494917718806,
+        3.020830719013671,
+        3.4971451875496222,
+        2.5076232902309616,
+        3.388881917286891,
+        2.720416614360378,
+        2.720416614360378,
+        3.391297527764435,
+        2.5076232902309616,
+        3.5,
+        3.020830719013671,
+        1.1724494917718806,
+        0.0,
+        1.773277701078467,
+        0.7426904253928639,
+        0.0,
+    ]
+    param3_values_expected: List[float] = [
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.0,
+        0.14691640866416344,
+        0.4258328173283269,
+        1.1,
+        1.061312693480183,
+        0.8756408668405871,
+        0.7971764705882354,
+        0.7359442723849241,
+        0.462,
+        0.27047058823529413,
+        0.27047058823529413,
+        0.462,
+        0.7354674922438229,
+        0.7971764705882354,
+        0.8753003094757306,
+        1.0623343652276434,
+        1.1,
+        0.4269907120255863,
+        0.14684829718926376,
+        0.0,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    # print(repr(samples["param1"]))
+    # print(repr(samples["param2"]))
+    # print(repr(samples["param3"]))
     assert len(samples["_case_name"]) == 28
     assert samples["_case_name"] == case_names_expected
     assert len(samples["param1"]) == 28
