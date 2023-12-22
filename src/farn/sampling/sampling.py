@@ -1,6 +1,6 @@
 import logging
 import math
-from typing import Any, Dict, Generator, Iterable, List, Mapping, Sequence, Union
+from typing import Any, Dict, Generator, Iterable, List, Mapping, Sequence, Tuple, Union
 
 import numpy as np
 from numpy import ndarray
@@ -13,7 +13,7 @@ class DiscreteSampling:
     i.e. of all variables defined in the given layer.
     """
 
-    def __init__(self):
+    def __init__(self, seed: Union[int, None] = None):
         self.layer_name: str = ""
         self.sampling_parameters: Mapping[str, Any] = {}
         self.fields: List[str] = []
@@ -40,6 +40,7 @@ class DiscreteSampling:
         self.minIterationDepth: int
         self.maxIterationDepth: int
         self.include_bounding_box: bool = False
+        self.seed: Union[int, None] = seed
 
     def _set_up_known_sampling_types(self):
         self.known_sampling_types = {
@@ -103,12 +104,14 @@ class DiscreteSampling:
             "normalLhs"
             "sobol"
             "arbitrary"
+            "hilbertCurve"
         """
         if sampling_type in self.known_sampling_types:
             self.sampling_type = sampling_type
         else:
-            logger.error(f"sampling type {sampling_type} not implemented yet")
-            exit(1)
+            msg: str = f"sampling type {sampling_type} not implemented yet"
+            logger.error(msg)
+            raise ValueError(msg)
 
     def set_sampling_parameters(
         self,
@@ -200,17 +203,24 @@ class DiscreteSampling:
         samples: Dict[str, List[Any]] = {}
         _ = self._check_size_of_parameter_matches_number_of_names("_values")
 
+        # Check that the values per paramater are provided as a list
         for item in self.sampling_parameters["_values"]:
-            try:
-                self.number_of_samples = len(item)
-                break
-            except Exception:
-                logger.exception("values: list(dim names) of lists(dim _samples) required as input")
+            if not isinstance(item, Sequence):
+                msg: str = "_values: The values per parameter need to be provided as a list of values."
+                logger.error(msg)
+                raise ValueError(msg)
 
-        # check equality of nested lists
-        for item in self.sampling_parameters["_values"]:
-            if self.number_of_samples != len(item):
-                logger.error("values: lists in list of lists do not match")
+        # Check that the number of values per parameter is the same for all parameters
+        number_of_values_per_parameter: List[int] = [len(item) for item in self.sampling_parameters["_values"]]
+        all_parameters_have_same_number_of_values: bool = all(
+            number_of_values == number_of_values_per_parameter[0]  # (breakline)
+            for number_of_values in number_of_values_per_parameter
+        )
+        if not all_parameters_have_same_number_of_values:
+            msg: str = "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
+            logger.error(msg)
+            raise ValueError(msg)
+        self.number_of_samples = number_of_values_per_parameter[0]
 
         # get all the fields
         self.values = self.sampling_parameters["_values"]
@@ -277,7 +287,7 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_normal_lhs_sampling(self) -> Dict[str, List[Any]]:
-        """LHS using gaussian normal dstributions
+        """LHS using gaussian normal distributions
         required input arguments:
         * _names: required names template
         * _numberOfSamples: required how many samples
@@ -430,7 +440,9 @@ class DiscreteSampling:
         }
 
         sample_set: ndarray[Any, Any] = latin.sample(  # type: ignore
-            problem, self.number_of_samples - self.number_of_bb_samples
+            problem=problem,
+            N=self.number_of_samples - self.number_of_bb_samples,
+            seed=self.seed,
         )
 
         return sample_set.T  # pyright: ignore
@@ -441,10 +453,10 @@ class DiscreteSampling:
         from scipy.stats import norm  # type: ignore
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
-            self.number_of_fields,
+            n=self.number_of_fields,
             samples=self.number_of_samples - self.number_of_bb_samples,
             criterion="corr",
-            random_state=None,
+            random_state=self.seed,
         )
         # criterion:center|c: center the points within the sampling intervals
         #          maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
@@ -469,8 +481,8 @@ class DiscreteSampling:
         import sobol_seq
 
         sequence: ndarray[Any, Any] = sobol_seq.i4_sobol_generate(  # type: ignore
-            self.number_of_fields,
-            self.number_of_samples - self.number_of_bb_samples + self.onset,
+            dim_num=self.number_of_fields,
+            n=self.number_of_samples - self.number_of_bb_samples + self.onset,
         )
 
         start: int = self.onset
