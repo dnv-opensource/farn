@@ -1,6 +1,6 @@
 import logging
 import math
-from typing import Any, Dict, Generator, Iterable, List, Mapping, Sequence, Tuple, Union
+from typing import Any, Dict, Generator, Iterable, List, Mapping, Sequence, Union
 
 import numpy as np
 from numpy import ndarray
