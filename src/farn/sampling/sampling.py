@@ -327,16 +327,25 @@ class DiscreteSampling:
 
     def _generate_samples_using_sobol_sampling(self) -> Dict[str, List[Any]]:
         samples: Dict[str, List[Any]] = {}
-        samples = self._generate_samples_using_uniform_lhs_sampling()
-        self.onset = int(self.sampling_parameters["_onset"])
-        self._generate_case_names(samples)
-
-        values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
 
         if "_includeBoundingBox" in self.sampling_parameters.keys() and isinstance(
             self.sampling_parameters["_includeBoundingBox"], bool
         ):
             self.include_bounding_box = self.sampling_parameters["_includeBoundingBox"]
+
+        # first dimension n samples
+        self.number_of_samples = int(self.sampling_parameters["_numberOfSamples"])
+        if self.include_bounding_box is True:
+            self.number_of_bb_samples = int(2**self.number_of_fields)
+        self.number_of_samples += self.number_of_bb_samples
+
+        self.leading_zeros = int(math.log10(self.number_of_samples) - 1.0e-06) + 1
+
+        self.onset = int(self.sampling_parameters["_onset"])
+
+        self._generate_case_names(samples)
+
+        values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
 
         if self.include_bounding_box is True:
             self._create_bounding_box()

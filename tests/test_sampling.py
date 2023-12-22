@@ -696,9 +696,194 @@ def test_sobol_sampling_three_parameters():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = []
-    param2_values_expected: List[float] = []
-    param3_values_expected: List[float] = []
+    param1_values_expected: List[float] = [
+        2.220446049250313e-16,
+        5.7142857142857135,
+        -5.714285714285714,
+        -2.8571428571428577,
+        8.571428571428571,
+        2.8571428571428577,
+        -8.571428571428571,
+        -7.142857142857143,
+        4.2857142857142865,
+        10.000000000000002,
+        -1.4285714285714286,
+        -4.285714285714286,
+        7.142857142857144,
+        1.428571428571429,
+        -10.0,
+        -9.285714285714286,
+        2.1428571428571423,
+        7.857142857142856,
+        -3.571428571428571,
+        -0.7142857142857133,
+    ]
+    param2_values_expected: List[float] = [
+        1.6896551724137931,
+        0.7241379310344828,
+        2.6551724137931036,
+        1.206896551724138,
+        3.137931034482759,
+        0.2413793103448276,
+        2.1724137931034484,
+        0.9655172413793103,
+        2.8965517241379315,
+        0.0,
+        1.9310344827586208,
+        0.48275862068965514,
+        2.4137931034482762,
+        1.4482758620689655,
+        3.3793103448275867,
+        1.5689655172413794,
+        3.5000000000000004,
+        0.603448275862069,
+        2.53448275862069,
+        0.12068965517241378,
+    ]
+    param3_values_expected: List[float] = [
+        0.55,
+        0.8642857142857144,
+        0.23571428571428577,
+        0.7071428571428572,
+        0.07857142857142858,
+        0.39285714285714296,
+        1.0214285714285716,
+        0.31428571428571433,
+        0.942857142857143,
+        0.6285714285714287,
+        0.0,
+        1.1000000000000003,
+        0.4714285714285715,
+        0.1571428571428572,
+        0.7857142857142858,
+        0.9821428571428573,
+        0.35357142857142865,
+        0.0392857142857143,
+        0.6678571428571429,
+        0.5107142857142858,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    assert len(samples["_case_name"]) == 20
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 20
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 20
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 20
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_sobol_sampling_three_parameters_with_onset():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling(seed=42)
+    sampling.set_sampling_type(sampling_type="sobol")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_numberOfSamples": 20,
+            "_onset": 10,
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+        "layer0_12",
+        "layer0_13",
+        "layer0_14",
+        "layer0_15",
+        "layer0_16",
+        "layer0_17",
+        "layer0_18",
+        "layer0_19",
+    ]
+    param1_values_expected: List[float] = [
+        -1.724137931034483,
+        -4.482758620689655,
+        6.5517241379310365,
+        1.0344827586206913,
+        -10.0,
+        -9.310344827586206,
+        1.724137931034483,
+        7.24137931034483,
+        -3.793103448275862,
+        -1.0344827586206895,
+        10.0,
+        4.482758620689656,
+        -6.551724137931035,
+        -7.93103448275862,
+        3.1034482758620703,
+        8.620689655172413,
+        -2.413793103448275,
+        -5.1724137931034475,
+        5.862068965517243,
+        0.3448275862068977,
+    ]
+    param2_values_expected: List[float] = [
+        1.9833333333333334,
+        0.5833333333333333,
+        2.45,
+        1.5166666666666666,
+        3.3833333333333333,
+        1.6333333333333333,
+        3.5,
+        0.7,
+        2.566666666666667,
+        0.2333333333333333,
+        2.1,
+        1.1666666666666667,
+        3.033333333333333,
+        0.4666666666666667,
+        2.3333333333333335,
+        1.4,
+        3.2666666666666666,
+        0.9333333333333333,
+        2.8,
+        0.0,
+    ]
+    param3_values_expected: List[float] = [
+        0.03666666666666667,
+        1.0633333333333335,
+        0.4766666666666666,
+        0.18333333333333335,
+        0.77,
+        0.9533333333333334,
+        0.36666666666666664,
+        0.07333333333333333,
+        0.66,
+        0.5133333333333334,
+        1.1,
+        0.8066666666666668,
+        0.21999999999999997,
+        0.5866666666666667,
+        0.0,
+        0.29333333333333333,
+        0.88,
+        0.14666666666666667,
+        0.7333333333333334,
+        1.0266666666666666,
+    ]
 
     # Execute
     samples: Dict[str, List[Any]] = sampling.generate_samples()
@@ -720,4 +905,159 @@ def test_sobol_sampling_three_parameters():
     assert len(samples["param2"]) == 20
     assert np.allclose(samples["param2"], param2_values_expected)
     assert len(samples["param3"]) == 20
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_sobol_sampling_three_parameters_including_bounding_box():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling(seed=42)
+    sampling.set_sampling_type(sampling_type="sobol")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_numberOfSamples": 20,
+            "_onset": 0,
+            "_includeBoundingBox": True,
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+        "layer0_12",
+        "layer0_13",
+        "layer0_14",
+        "layer0_15",
+        "layer0_16",
+        "layer0_17",
+        "layer0_18",
+        "layer0_19",
+        "layer0_20",
+        "layer0_21",
+        "layer0_22",
+        "layer0_23",
+        "layer0_24",
+        "layer0_25",
+        "layer0_26",
+        "layer0_27",
+    ]
+    param1_values_expected: List[float] = [
+        -10.0,
+        -10.0,
+        -10.0,
+        -10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        2.220446049250313e-16,
+        5.7142857142857135,
+        -5.714285714285714,
+        -2.8571428571428577,
+        8.571428571428571,
+        2.8571428571428577,
+        -8.571428571428571,
+        -7.142857142857143,
+        4.2857142857142865,
+        10.000000000000002,
+        -1.4285714285714286,
+        -4.285714285714286,
+        7.142857142857144,
+        1.428571428571429,
+        -10.0,
+        -9.285714285714286,
+        2.1428571428571423,
+        7.857142857142856,
+        -3.571428571428571,
+        -0.7142857142857133,
+    ]
+    param2_values_expected: List[float] = [
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        1.6896551724137931,
+        0.7241379310344828,
+        2.6551724137931036,
+        1.206896551724138,
+        3.137931034482759,
+        0.2413793103448276,
+        2.1724137931034484,
+        0.9655172413793103,
+        2.8965517241379315,
+        0.0,
+        1.9310344827586208,
+        0.48275862068965514,
+        2.4137931034482762,
+        1.4482758620689655,
+        3.3793103448275867,
+        1.5689655172413794,
+        3.5000000000000004,
+        0.603448275862069,
+        2.53448275862069,
+        0.12068965517241378,
+    ]
+    param3_values_expected: List[float] = [
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.0,
+        1.1,
+        0.55,
+        0.8642857142857144,
+        0.23571428571428577,
+        0.7071428571428572,
+        0.07857142857142858,
+        0.39285714285714296,
+        1.0214285714285716,
+        0.31428571428571433,
+        0.942857142857143,
+        0.6285714285714287,
+        0.0,
+        1.1000000000000003,
+        0.4714285714285715,
+        0.1571428571428572,
+        0.7857142857142858,
+        0.9821428571428573,
+        0.35357142857142865,
+        0.0392857142857143,
+        0.6678571428571429,
+        0.5107142857142858,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    assert len(samples["_case_name"]) == 28
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 28
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 28
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 28
     assert np.allclose(samples["param3"], param3_values_expected)
