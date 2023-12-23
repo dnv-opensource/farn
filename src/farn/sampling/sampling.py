@@ -392,32 +392,9 @@ class DiscreteSampling:
         return samples
 
     def _generate_values_using_uniform_lhs_sampling(self) -> ndarray[Any, Any]:
-        """
-        alternative
+        """Uniform LHS."""
         from pyDOE2 import lhs
-        lhs_dist = lhs(n, samples=n_samples, criterion='corr', random_state=None)
-        criterion: center|maximin|centermaximin|correlation.
-        """
-        from SALib.sample import latin
-
-        problem: Dict[str, Any] = {
-            "num_vars": self.number_of_fields,
-            "names": self.fields,
-            "bounds": self.ranges,
-        }
-
-        sample_set: ndarray[Any, Any] = latin.sample(  # type: ignore
-            problem=problem,
-            N=self.number_of_samples - self.number_of_bb_samples,
-            seed=self.seed,
-        )
-
-        return sample_set.T  # pyright: ignore
-
-    def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
-        """Gaussnormal LHS."""
-        from pyDOE2 import lhs
-        from scipy.stats import norm  # type: ignore
+        from scipy.stats import uniform
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
             n=self.number_of_fields,
@@ -425,11 +402,32 @@ class DiscreteSampling:
             criterion="corr",
             random_state=self.seed,
         )
-        # criterion:center|c: center the points within the sampling intervals
-        #          maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
-        #          centermaximin|cm: same as “maximin”, but centered within the intervals
-        #          correlation|corr: minimize the maximum correlation coefficient
-        # lhs_distribution = qmc.LatinHypercube(d=self.number_of_fields, optimization="random-cd").random(n=self.number_of_samples - self.number_of_bb_samples)
+
+        _range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
+        _range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        loc: ndarray[Any, Any] = _range_lower_bounds
+        scale: ndarray[Any, Any] = _range_upper_bounds - _range_lower_bounds
+
+        sample_set: ndarray[Any, Any] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore
+
+        return sample_set.T  # pyright: ignore
+
+    def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
+        """Gaussnormal LHS."""
+        from pyDOE2 import lhs
+        from scipy.stats import norm
+
+        lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
+            n=self.number_of_fields,
+            samples=self.number_of_samples - self.number_of_bb_samples,
+            criterion="corr",
+            random_state=self.seed,
+        )
+        # criterion: a string that tells lhs how to sample the points (default: None, which simply randomizes the points within the intervals)
+        #   - center|c: center the points within the sampling intervals
+        #   - maximin|m: maximize the minimum distance between points, but place the point in a randomized location within its interval
+        #   - centermaximin|cm: same as “maximin”, but centered within the intervals
+        #   - correlation|corr: minimize the maximum correlation coefficient
 
         # std of type scalar (scale) or vector (stretch, scale), no rotation
         _std: ndarray[Any, Any] = np.array(self.std)
