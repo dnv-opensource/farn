@@ -259,10 +259,7 @@ class DiscreteSampling:
 
     def _generate_samples_using_linspace_sampling(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         self.minVals = [x[0] for x in self.ranges]
         self.maxVals = [x[1] for x in self.ranges]
 
@@ -279,10 +276,7 @@ class DiscreteSampling:
 
     def _generate_samples_using_uniform_lhs_sampling(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         values: ndarray[Any, Any] = self._generate_values_using_uniform_lhs_sampling()
         self._write_values_into_samples_dict(values, samples)
 
@@ -303,10 +297,7 @@ class DiscreteSampling:
         if isinstance(self.sampling_parameters["_sigma"], Sequence):
             _ = self._check_length_matches_number_of_names("_sigma")
 
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         self.mean = self.sampling_parameters["_mu"]
         self.std = self.sampling_parameters["_sigma"]
 
@@ -332,10 +323,7 @@ class DiscreteSampling:
         _ = self._check_length_matches_number_of_names("_ranges")
         self.onset = int(self.sampling_parameters["_onset"])
 
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
         self._write_values_into_samples_dict(values, samples)
 
@@ -353,10 +341,7 @@ class DiscreteSampling:
         """
         _ = self._check_length_matches_number_of_names("_ranges")
 
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         self.minVals = [x[0] for x in self.ranges]
         self.maxVals = [x[1] for x in self.ranges]
 
@@ -383,10 +368,7 @@ class DiscreteSampling:
 
     def _generate_samples_using_hilbert_sampling(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
-        samples: Dict[str, List[Any]] = {}
-        self._determine_number_of_samples()
-        self._generate_case_names(samples)
-
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
         # Depending on implementation
         self.minIterationDepth = 3
         self.maxIterationDepth = 15
@@ -395,6 +377,12 @@ class DiscreteSampling:
         self._write_values_into_samples_dict(values, samples)
 
         return samples
+
+    def _generate_samples_dict(self) -> Dict[str, List[Any]]:
+        samples_dict: Dict[str, List[Any]] = {}
+        self._determine_number_of_samples()
+        self._generate_case_names(samples_dict)
+        return samples_dict
 
     def _generate_values_using_uniform_lhs_sampling(self) -> ndarray[Any, Any]:
         """Uniform LHS."""
