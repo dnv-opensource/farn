@@ -386,7 +386,7 @@ class DiscreteSampling:
 
     def _generate_values_using_uniform_lhs_sampling(self) -> ndarray[Any, Any]:
         """Uniform LHS."""
-        from pyDOE2 import lhs
+        from pyDOE3 import lhs
         from scipy.stats import uniform
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
@@ -407,7 +407,7 @@ class DiscreteSampling:
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
         """Gaussnormal LHS."""
-        from pyDOE2 import lhs
+        from pyDOE3 import lhs
         from scipy.stats import norm
 
         lhs_distribution: Union[ndarray[Any, Any], None] = lhs(
