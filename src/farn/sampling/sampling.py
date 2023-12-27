@@ -5,6 +5,12 @@ from typing import Any, Dict, Generator, Iterable, List, Mapping, Sequence, Unio
 import numpy as np
 from numpy import ndarray
 
+# from typing import TYPE_CHECKING
+# if TYPE_CHECKING:
+# import numpy.typing as npt
+# from numpy import integer, ndarray, number
+# from scipy._lib._util import DecimalNumber, GeneratorType, IntNumber, SeedType
+
 logger = logging.getLogger(__name__)
 
 
@@ -314,10 +320,9 @@ class DiscreteSampling:
         #       the necessary clipping logic will quickly become complex.
         #       Hence the somewhat simpler approach for now, where exceeding values simply get reset to the range bounderies.
         if self.ranges:
-            clipped: ndarray[Any, Any] = np.zeros(values.shape)
-            for index, field in enumerate(values):
-                clipped[index] = np.clip(field, self.ranges[index][0], self.ranges[index][1])  # type: ignore
-            values = clipped
+            range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
+            range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+            values = np.clip(values, range_lower_bounds, range_upper_bounds)
 
         self._write_values_into_samples_dict(values, samples)
 
@@ -410,7 +415,7 @@ class DiscreteSampling:
 
         sample_set: ndarray[Any, Any] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore
 
-        return sample_set.T  # pyright: ignore
+        return sample_set
 
     def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
         """Gaussnormal LHS."""
@@ -434,28 +439,29 @@ class DiscreteSampling:
 
         sample_set: ndarray[Any, Any] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # type: ignore
 
-        # transpose to be aligned with uniformLhs output
-        return sample_set.T  # pyright: ignore
+        return sample_set
 
     def _generate_values_using_sobol_sampling(self) -> ndarray[Any, Any]:
-        # @TODO: Should be reimplemented using the scipy.stats.qmc.sobol
-        #        https://scipy.github.io/devdocs/reference/generated/scipy.stats.qmc.Sobol.html#scipy-stats-qmc-sobol
-        #        This to substitute the sobol-seq package, which is no longer maintained.
-        #        (See https://github.com/naught101/sobol_seq)
-        #        CLAROS, 2022-05-27
-        import sobol_seq
+        from scipy.stats import qmc
+        from scipy.stats.qmc import Sobol
 
-        sequence: ndarray[Any, Any] = sobol_seq.i4_sobol_generate(  # type: ignore
-            dim_num=self.number_of_fields,
-            n=self.number_of_samples - self.number_of_bb_samples + self.onset,
+        sobol_engine: Sobol = Sobol(
+            d=self.number_of_fields,
+            scramble=False,
+            seed=None,
         )
 
-        start: int = self.onset
-        end: int = self.onset + self.number_of_samples - self.number_of_bb_samples
-        sample_set: ndarray[Any, Any] = sequence[start:end].T
+        if self.onset > 0:
+            _ = sobol_engine.fast_forward(n=self.onset)  # type: ignore
 
-        for index, item in enumerate(sample_set):
-            sample_set[index] = self._min_max_scale(item, self.ranges[index])
+        points: ndarray[Any, Any] = sobol_engine.random(  # type: ignore
+            n=self.number_of_samples - self.number_of_bb_samples,
+        )
+
+        # Upscale points from unit hypercube to bounds
+        range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
+        range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        sample_set: ndarray[Any, Any] = qmc.scale(points, range_lower_bounds, range_upper_bounds)  # type: ignore
 
         return sample_set
 
@@ -467,6 +473,8 @@ class DiscreteSampling:
         """
         # sourcery skip: extract-duplicate-method
         from math import modf
+
+        from scipy.stats import qmc
 
         try:
             from decimal import Decimal
@@ -518,11 +526,11 @@ class DiscreteSampling:
 
         hilbert_points = hc.points_from_distances(int_distribution)
 
-        points: Iterable[Iterable[float]] = []
+        _points: Iterable[Iterable[float]] = []
         interpolation_hits = 0
         for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution):
             if dst == idst:
-                points.append(hpt)
+                _points.append(hpt)
             else:
                 # interpolation starts: use idst to find integer neighbour of dst
                 # nn: next neighbour
@@ -544,12 +552,16 @@ class DiscreteSampling:
                     else:
                         point.append(float(i))
 
-                points.append(point)
+                _points.append(point)
+        points: ndarray[Any, Any] = np.array(_points)
 
-        sample_set: ndarray[Any, Any] = np.array(points).T
+        # Downscale points from hilbert space to unit hypercube [0,1)*d
+        points = qmc.scale(points, points.min(axis=0), points.max(axis=0), reverse=True)  # type: ignore
 
-        for index, item in enumerate(sample_set):
-            sample_set[index] = self._min_max_scale(item, self.ranges[index])
+        # Upscale points from unit hypercube to bounds
+        range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
+        range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        sample_set: ndarray[Any, Any] = qmc.scale(points, range_lower_bounds, range_upper_bounds)  # type: ignore
 
         return sample_set
 
@@ -619,9 +631,9 @@ class DiscreteSampling:
     def _write_values_into_samples_dict(self, values: ndarray[Any, Any], samples: Dict[str, List[Any]]):
         if self.include_bounding_box is True:
             self._create_bounding_box()
-            values = np.concatenate((np.array(self.bounding_box).T, values), axis=1)
+            values = np.concatenate((np.array(self.bounding_box), values), axis=0)
         for index, _ in enumerate(self.fields):
-            samples[self.fields[index]] = values[index].tolist()
+            samples[self.fields[index]] = values.T[index].tolist()
         return
 
     def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
@@ -631,10 +643,3 @@ class DiscreteSampling:
                 yield from self._flatten(element)
             else:
                 yield element
-
-    def _min_max_scale(self, field: ndarray[Any, Any], range: Sequence[float]) -> ndarray[Any, Any]:
-        """Might belong to different class in future
-        from sklearn.preprocessing import minmax_scale.
-        """
-        scale = (range[1] - range[0]) / (field.max(axis=0) - field.min(axis=0))  # type: ignore
-        return scale * field + range[0] - field.min(axis=0) * scale  # type: ignore
