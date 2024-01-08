@@ -82,7 +82,6 @@ class DiscreteSampling:
                 ],
                 "optional_args": [
                     "_ranges",
-                    "_cov",
                 ],
             },
             "sobol": {
@@ -283,15 +282,13 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_normal_lhs_sampling(self) -> Dict[str, List[Any]]:
-        """LHS using gaussian normal distributions
+        """LHS using gaussian normal distributions.
+
         required input arguments:
         * _names: required names template
         * _numberOfSamples: required how many samples
         * _mu: required absolute location vector of distribution center point (origin)
-        * _sigma: variation (vector), or required scalar, optional vector, optional cov
-        or
-        NOT IMPLEMENTED, DOES NOT MAKE MUCH SENSE!
-        * _cov: @ _mu optional rotation (tensor), otherwise I(_numberOfSamples,_numberOfSamples).
+        * _sigma: variation (vector), or required scalar, optional vector
         """
         _ = self._check_length_matches_number_of_names("_mu")
         if isinstance(self.sampling_parameters["_sigma"], Sequence):
