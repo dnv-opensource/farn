@@ -4,10 +4,8 @@ scipy>=1.11
 pandas>=2.1
 matplotlib>=3.8
 Pillow>=10.1
-pyDOE2>=1.3
+pyDOE3>=1.0
 psutil>=5.9
-SALib>=1.4.7
-sobol-seq>=0.2
 hilbertcurve>=2.0.5
 
 dictIO>=0.2.9
