@@ -22,7 +22,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 * Upgraded from pyDOE2>=1.3 to pyDOE3>=1.0
 * Removed SALib and sobol-seq
-* Updated to dictIO>=0.3.0  (from dictIO>=0.2.9)
+* Updated to dictIO>=0.3.1 and ospx>=0.2.12
+* Updated other dependencies to latest versions
 
 
 ## [0.3.4] - 2023-09-25
