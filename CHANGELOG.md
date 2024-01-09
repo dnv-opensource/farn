@@ -17,6 +17,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
     replaced SALib latin with pyDOE2 lhs
   * _generate_values_using_sobol_sampling():
     replaced sobol-seq with scipy.stats.qmc.sobol
+  * removed orphaned _cov argument from normalLhs sampling
 
 ### Dependencies
 
