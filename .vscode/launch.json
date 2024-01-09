@@ -5,33 +5,47 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Unit Test",
+            "name": "Python: Debug Tests",
             "type": "python",
-            "request": "test",
+            "request": "launch",
+            "program": "${file}",
+            "purpose": [
+                "debug-test"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
+            "autoReload": {
+                "enable": true
+            },
             "justMyCode": false,
         },
         {
-            "name": "Python: Current File",
+            "name": "Python: Current File, cwd = file dir, envFile",
             "type": "python",
             "request": "launch",
-            "cwd": "${fileDirname}",
+            "cwd": "${fileDirname}", // working dir = dir where current file is
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
-            "name": "Python: Current File, cwd = workspace root folder",
+            "name": "Python: Current File, cwd = workspace root folder, envFile",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}", // working dir = workspace (mvx) dir
             "program": "${file}",
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test sample and generate test_farnDict",
@@ -47,7 +61,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test generate test_farnDict",
@@ -62,7 +78,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test execute test_farnDict",
@@ -78,7 +96,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test sample test_farnDict_v4",
@@ -93,7 +113,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test generate test_farnDict_v4",
@@ -108,7 +130,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test sample and generate test_farnDict_v4",
@@ -124,7 +148,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test execute test_farnDict_v4",
@@ -140,7 +166,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
         {
             "name": "farn test generate test_farnDict logfile in subdir",
@@ -159,7 +187,9 @@
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
-            }
+            },
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/.env" // specify where .env file is
         },
     ]
 }

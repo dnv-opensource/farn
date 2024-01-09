@@ -1,16 +1,15 @@
 lxml>=4.9
-numpy>=1.24
+numpy>=1.26
 scipy>=1.11
 pandas>=2.1
 matplotlib>=3.8
-Pillow>=10.0
-pyDOE2>=1.3
+Pillow>=10.1
+pyDOE3>=1.0
 psutil>=5.9
-SALib>=1.4.7
-sobol-seq>=0.2
+hilbertcurve>=2.0.5
 
-dictIO>=0.2.9
-ospx>=0.2.11
+dictIO>=0.3.1
+ospx>=0.2.12
 
 # ../dictIO
 # ../ospx
