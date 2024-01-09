@@ -8,6 +8,25 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.5] - 2024-01-09
+
+### Changed
+
+* farn/sampling/sampling.py:
+  * _generate_values_using_uniform_lhs_sampling():
+    replaced SALib latin with pyDOE2 lhs
+  * _generate_values_using_sobol_sampling():
+    replaced sobol-seq with scipy.stats.qmc.sobol
+  * removed orphaned _cov argument from normalLhs sampling
+
+### Dependencies
+
+* Upgraded from pyDOE2>=1.3 to pyDOE3>=1.0
+* Removed SALib and sobol-seq
+* Updated to dictIO>=0.3.1 and ospx>=0.2.12
+* Updated other dependencies to latest versions
+
+
 ## [0.3.4] - 2023-09-25
 
 ### Dependencies
@@ -260,7 +279,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.4...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.5...HEAD
+[0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/dnv-opensource/farn/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/dnv-opensource/farn/compare/v0.3.1...v0.3.2
