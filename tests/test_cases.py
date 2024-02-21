@@ -1,4 +1,6 @@
 # pyright: reportUnknownMemberType=false
+# pyright: reportArgumentType=false
+
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, List, Tuple

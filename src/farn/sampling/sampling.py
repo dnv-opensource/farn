@@ -241,7 +241,9 @@ class DiscreteSampling:
             for number_of_values in number_of_values_per_parameter
         )
         if not all_parameters_have_same_number_of_values:
-            msg: str = "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
+            msg: str = (
+                "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
+            )
             logger.error(msg)
             raise ValueError(msg)
 
@@ -482,11 +484,15 @@ class DiscreteSampling:
                 logger.error(msg)
                 raise ValueError(msg)
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
+                msg: str = (
+                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
+                )
                 logger.warning(msg)
                 self.iteration_depth = self.maxIterationDepth
             elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\n\t\tsetting to {self.minIterationDepth}'
+                msg: str = (
+                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\n\t\tsetting to {self.minIterationDepth}'
+                )
                 logger.warning(msg)
                 self.iteration_depth = self.minIterationDepth
             else:

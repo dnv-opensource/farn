@@ -8,6 +8,35 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.6] - 2024-02-21
+
+### Added
+* README.md : Under `Development Setup`, added a step to install current package in "editable" mode, using the pip install -e option.
+This removes the need to manually add /src to the PythonPath environment variable in order for debugging and tests to work.
+
+### Removed
+* VS Code settings: Removed the setting which added the /src folder to PythonPath. This is no longer necessary. Installing the project itself as a package in "editable" mode, using the pip install -e option, solves the issue and removes the need to manually add /src to the PythonPath environment variable.
+
+### Changed
+* Moved all project configuration from setup.cfg to pyproject.toml
+* Moved all tox configuration from setup.cfg to tox.ini.
+* Moved pytest configuration from pyproject.toml to pytest.ini
+* Deleted setup.cfg
+
+### Dependencies
+* updated to black[jupyter]==24.1  (from black[jupyter]==23.12)
+* updated to version: '==24.1'  (from version: '==23.12')
+* updated to ruff==0.2.1  (from ruff==0.1.8)
+* updated to pyright==1.1.350  (from pyright==1.1.338)
+* updated to sourcery==1.15  (from sourcery==1.14)
+* updated to lxml>=5.1  (from lxml>=4.9)
+* updated to scipy>=1.12  (from scipy>=1.11)
+* updated to pandas>=2.2  (from pandas>=2.1)
+* updated to Pillow>=10.2  (from Pillow>=10.1)
+
+* -/-
+
+
 ## [0.3.5] - 2024-01-09
 
 ### Changed
@@ -279,7 +308,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.5...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.6...HEAD
+[0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/dnv-opensource/farn/compare/v0.3.2...v0.3.3
