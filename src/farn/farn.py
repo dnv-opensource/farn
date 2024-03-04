@@ -86,7 +86,8 @@ def run_farn(
     if sample:
         create_samples(farn_dict)  # run sampling
         farn_dict.source_file = create_target_file_name(  # change filename to 'sampled.*'
-            farn_dict.source_file, prefix="sampled."  # type: ignore
+            farn_dict.source_file,
+            prefix="sampled.",  # type: ignore
         )
         logger.info(f"Save sampled farn dict {farn_dict.name}...")  # 1
         DictWriter.write(farn_dict, mode="w")  # save sampled.* farn dict file
