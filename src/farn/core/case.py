@@ -208,6 +208,29 @@ class Case:
 
         return True
 
+    def add_parameters(
+        self,
+        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
+     ):
+        '''Add extra parameters manually
+        '''
+        if isinstance (parameters, MutableSequence) and isinstance(parameters[0], Parameter):
+            self.parameters.extend(parameters)
+            
+        elif isinstance (parameters, MutableMapping):
+            self.parameters.extend(
+                Parameter(parameter_name, parameter_value) for parameter_name, parameter_value in parameters.items()
+            )
+            
+        else:
+            logger.error (
+                f"Layer {self.layer}, case {self.case} add_parameters failed:\n"
+                f"\tWrong input data format for additional parameters.\n"
+            )
+            exit(1)
+
+        return True
+    
     def to_dict(self) -> Dict[str, Any]:
         """Return a dict with all case attributes.
 
