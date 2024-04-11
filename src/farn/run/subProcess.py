@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 lock = Lock()
 
 
-def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout: Union[int, None] = 7200):  # 1h ->2h
+def execute_in_sub_process(
+    command: str, path: Union[Path, None] = None, timeout: Union[int, None] = 7200
+):  # 1h ->2h
     """Create a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns or until timeout is exceeded.
     If the subprocess has not returned after [timeout] seconds, the subprocess gets killed.
@@ -27,10 +29,18 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
 
         args = re.split(r"\s+", command.strip())
 
-        sub_process = sub.Popen(args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}")
+        sub_process = sub.Popen(
+            args, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, cwd=f"{path}"
+        )
 
         if len(command) > 18:
-            cmd_string = '"' + "".join(list(command)[:11]) + ".." + "".join(list(command)[-3:]) + '"'
+            cmd_string = (
+                '"'
+                + "".join(list(command)[:11])
+                + ".."
+                + "".join(list(command)[-3:])
+                + '"'
+            )
         else:
             cmd_string = f'"{command}"'
 
@@ -47,11 +57,15 @@ def execute_in_sub_process(command: str, path: Union[Path, None] = None, timeout
         # kill subprocess
         try:
             parent = Process(sub_process.pid)  # look if the pid still exists
-            for child in parent.children(recursive=True):  # raise exeption w/o termination
+            for child in parent.children(
+                recursive=True
+            ):  # raise exeption w/o termination
                 child.kill()
             parent.kill()
         except Exception:
-            logger.warning(f"Process {sub_process.pid} non-existent. Perhaps previously terminated?")
+            logger.warning(
+                f"Process {sub_process.pid} non-existent. Perhaps previously terminated?"
+            )
 
     _log_subprocess_output(command, path, stdout, stderr)
 

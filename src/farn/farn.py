@@ -4,7 +4,16 @@ import platform
 import re
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    MutableMapping,
+    MutableSequence,
+    MutableSet,
+    Sequence,
+    Union,
+)
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
@@ -70,7 +79,9 @@ def run_farn(
     # sourcery skip: extract-method
 
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
-    farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
+    farn_dict_file = (
+        farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
+    )
 
     # Check whether farn dict file exists
     if not farn_dict_file.exists():
@@ -87,9 +98,11 @@ def run_farn(
     if sample:
         create_samples(farn_dict)  # run sampling
         assert farn_dict.source_file is not None
-        farn_dict.source_file = create_target_file_name(  # change filename to 'sampled.*'
-            farn_dict.source_file,
-            prefix="sampled.",  # type: ignore
+        farn_dict.source_file = (
+            create_target_file_name(  # change filename to 'sampled.*'
+                farn_dict.source_file,
+                prefix="sampled.",  # type: ignore
+            )
         )
         logger.info(f"Save sampled farn dict {farn_dict.name}...")  # 1
         DictWriter.write(farn_dict, mode="w")  # save sampled.* farn dict file
@@ -152,7 +165,9 @@ def create_samples(farn_dict: CppDict):
     from farn.sampling.sampling import DiscreteSampling
 
     if "_layers" not in farn_dict:
-        logger.error(f"no '_layers' element in farn dict {farn_dict.name}. Sampling not possible.")
+        logger.error(
+            f"no '_layers' element in farn dict {farn_dict.name}. Sampling not possible."
+        )
         return
 
     def create_samples_in_layer(
@@ -294,7 +309,9 @@ def create_cases(
         current_layer_name: str = str(current_layer["_name"])
         current_layer_is_leaf: bool = level == len(layers) - 1
 
-        no_of_samples_in_current_layer: int = len(current_layer["_samples"]["_case_name"])
+        no_of_samples_in_current_layer: int = len(
+            current_layer["_samples"]["_case_name"]
+        )
         samples_in_current_layer: MutableMapping[str, MutableSequence[float]] = {
             param_name: param_values
             for param_name, param_values in current_layer["_samples"].items()
@@ -352,7 +369,9 @@ def create_cases(
                 parameter for parameter in base_case.parameters if parameter.name
             ]
             case_parameters.extend(
-                Parameter(parameter_name, samples_in_current_layer[parameter_name][index])
+                Parameter(
+                    parameter_name, samples_in_current_layer[parameter_name][index]
+                )
                 for parameter_name in parameter_names_in_current_layer
             )
             case_parameters.extend(user_variables_in_current_layer)
@@ -395,7 +414,9 @@ def create_cases(
             f'{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} {plural(number_of_invalid_cases, "were")} excluded.'
         )
     else:
-        log_msg = f"Successfully listed {len(leaf_cases)} case{plural(len(leaf_cases))}. "
+        log_msg = (
+            f"Successfully listed {len(leaf_cases)} case{plural(len(leaf_cases))}. "
+        )
     logger.info(log_msg)
 
     return cases
@@ -508,7 +529,9 @@ def create_case_list_files(
     _remove_old_case_list_files()
     target_dir = target_dir or Path.cwd()
     case_list_file_all_levels = target_dir / "caseList"
-    logger.info(f"Create case list file '{case_list_file_all_levels}', containing all case folders.")
+    logger.info(
+        f"Create case list file '{case_list_file_all_levels}', containing all case folders."
+    )
 
     case_list_files_created: MutableSequence[Path] = []
     max_level: int = 0
@@ -531,9 +554,13 @@ def create_case_list_files(
                 _ = f.write(f"{case.path.absolute()}\n")
         case_list_files_created.append(case_list_file_for_level)
 
-    case_list_files_created_log = "".join("\t" + path.name + "\n" for path in case_list_files_created)
+    case_list_files_created_log = "".join(
+        "\t" + path.name + "\n" for path in case_list_files_created
+    )
     case_list_files_created_log = case_list_files_created_log.removesuffix("\n")
-    logger.info(f"Successfully created following case list files:\n {case_list_files_created_log}")
+    logger.info(
+        f"Successfully created following case list files:\n {case_list_files_created_log}"
+    )
 
     return case_list_files_created
 
@@ -563,7 +590,9 @@ def execute_command_set(
         number of case folders in which the command set has been executed
     """
 
-    logger.info(f"Execute command set '{command_set}' in all layers where '{command_set}' is defined...")
+    logger.info(
+        f"Execute command set '{command_set}' in all layers where '{command_set}' is defined..."
+    )
 
     cases_registered: List[Case] = []
     number_of_cases_registered: int = 0
@@ -590,7 +619,9 @@ def execute_command_set(
                 if case.is_leaf:
                     reached_first_leaf = True
             else:
-                logger.debug(f"Command set '{command_set}' not defined in case {case.case}")
+                logger.debug(
+                    f"Command set '{command_set}' not defined in case {case.case}"
+                )
         if test and reached_first_leaf:  # if test and at least one execution
             break
 
@@ -676,7 +707,9 @@ def _set_up_farn_environment(farn_dict_file: Path) -> Dict[str, Path]:
     environment["RESULTDIR"] = "results"
     environment["TEMPLATEDIR"] = "template"
     # 2: Overwrite default values with values defined in farn dict, if so
-    if environment_from_farn_dict := DictReader.read(farn_dict_file, scope=["_environment"]):
+    if environment_from_farn_dict := DictReader.read(
+        farn_dict_file, scope=["_environment"]
+    ):
         environment |= environment_from_farn_dict
     else:
         logger.warning(
@@ -715,11 +748,15 @@ def _configure_additional_logging_handler_exclusively_for_farn(log_dir: Path):
     file_handler = logging.FileHandler(str(log_file.absolute()), "a")
     file_handler.name = str(log_file.absolute())
     file_handler.setLevel(logging.INFO)
-    file_formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(message)s", "%Y-%m-%d %H:%M:%S")
+    file_formatter = logging.Formatter(
+        "%(asctime)s %(levelname)-8s %(message)s", "%Y-%m-%d %H:%M:%S"
+    )
     file_handler.setFormatter(file_formatter)
     # Register file handler at root logger
     root_logger = logging.getLogger()
-    file_handler_already_exists: bool = any(handler.name == file_handler.name for handler in root_logger.handlers)
+    file_handler_already_exists: bool = any(
+        handler.name == file_handler.name for handler in root_logger.handlers
+    )
     if not file_handler_already_exists:
         root_logger.addHandler(file_handler)
     return
@@ -729,7 +766,11 @@ def _remove_old_case_list_files():  # sourcery skip: avoid-builtin-shadow
     """Remove old case list files, if existing."""
     logger.info("Remove old case list files...")
 
-    lists = [list for list in Path.cwd().rglob("*") if re.search("(path|queue)List", str(list))]
+    lists = [
+        list
+        for list in Path.cwd().rglob("*")
+        if re.search("(path|queue)List", str(list))
+    ]
 
     for list in lists:
         list = Path(list)

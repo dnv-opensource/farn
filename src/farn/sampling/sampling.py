@@ -235,7 +235,9 @@ class DiscreteSampling:
                 raise ValueError(msg)
 
         # Assert that the number of values per parameter is the same for all parameters
-        number_of_values_per_parameter: List[int] = [len(item) for item in self.sampling_parameters["_values"]]
+        number_of_values_per_parameter: List[int] = [
+            len(item) for item in self.sampling_parameters["_values"]
+        ]
         all_parameters_have_same_number_of_values: bool = all(
             number_of_values == number_of_values_per_parameter[0]  # (breakline)
             for number_of_values in number_of_values_per_parameter
@@ -308,8 +310,12 @@ class DiscreteSampling:
         #       the necessary clipping logic will quickly become complex.
         #       Hence the somewhat simpler approach for now, where exceeding values simply get reset to the range bounderies.
         if self.ranges:
-            range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
-            range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+            range_lower_bounds: ndarray[Any, Any] = np.array(
+                [range[0] for range in self.ranges]
+            )
+            range_upper_bounds: ndarray[Any, Any] = np.array(
+                [range[1] for range in self.ranges]
+            )
             values = np.clip(values, range_lower_bounds, range_upper_bounds)
 
         self._write_values_into_samples_dict(values, samples)
@@ -348,7 +354,9 @@ class DiscreteSampling:
         distribution_parameters: Sequence[Any]
         for index, _ in enumerate(self.fields):
             distribution_name = self.sampling_parameters["_distributionName"]
-            distribution_parameters = self.sampling_parameters["_distributionParameters"]
+            distribution_parameters = self.sampling_parameters[
+                "_distributionParameters"
+            ]
 
             eval_command = f"scipy.stats.{distribution_name[index]}"
 
@@ -393,12 +401,18 @@ class DiscreteSampling:
             random_state=self.seed,
         )
 
-        _range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
-        _range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        _range_lower_bounds: ndarray[Any, Any] = np.array(
+            [range[0] for range in self.ranges]
+        )
+        _range_upper_bounds: ndarray[Any, Any] = np.array(
+            [range[1] for range in self.ranges]
+        )
         loc: ndarray[Any, Any] = _range_lower_bounds
         scale: ndarray[Any, Any] = _range_upper_bounds - _range_lower_bounds
 
-        sample_set: ndarray[Any, Any] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore
+        sample_set: ndarray[Any, Any] = uniform(loc=loc, scale=scale).ppf(
+            lhs_distribution
+        )  # pyright: ignore
 
         return sample_set
 
@@ -444,8 +458,12 @@ class DiscreteSampling:
         )
 
         # Upscale points from unit hypercube to bounds
-        range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
-        range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        range_lower_bounds: ndarray[Any, Any] = np.array(
+            [range[0] for range in self.ranges]
+        )
+        range_upper_bounds: ndarray[Any, Any] = np.array(
+            [range[1] for range in self.ranges]
+        )
         sample_set: ndarray[Any, Any] = qmc.scale(points, range_lower_bounds, range_upper_bounds)  # type: ignore
 
         return sample_set
@@ -474,7 +492,9 @@ class DiscreteSampling:
             logger.exception(msg)
             raise e
 
-        number_of_continuous_samples: int = self.number_of_samples - self.number_of_bb_samples
+        number_of_continuous_samples: int = (
+            self.number_of_samples - self.number_of_bb_samples
+        )
 
         if "_iterationDepth" in self.sampling_parameters.keys():
             if not isinstance(self.sampling_parameters["_iterationDepth"], int):
@@ -494,7 +514,9 @@ class DiscreteSampling:
         else:
             self.iteration_depth = 10
 
-        hc = HilbertCurve(self.iteration_depth, self.number_of_fields, n_procs=0)  # -1: all threads
+        hc = HilbertCurve(
+            self.iteration_depth, self.number_of_fields, n_procs=0
+        )  # -1: all threads
 
         logger.info(
             f"The number of hilbert points is {hc.max_h}, the number of continuous samples is {number_of_continuous_samples}"
@@ -505,7 +527,12 @@ class DiscreteSampling:
             )
 
         distribution = np.array(
-            [Decimal(x) for x in np.linspace(int(hc.min_h), int(hc.max_h), number_of_continuous_samples)]
+            [
+                Decimal(x)
+                for x in np.linspace(
+                    int(hc.min_h), int(hc.max_h), number_of_continuous_samples
+                )
+            ]
         )
         int_distribution = np.trunc(distribution)
 
@@ -544,8 +571,12 @@ class DiscreteSampling:
         points = qmc.scale(points, points.min(axis=0), points.max(axis=0), reverse=True)  # type: ignore
 
         # Upscale points from unit hypercube to bounds
-        range_lower_bounds: ndarray[Any, Any] = np.array([range[0] for range in self.ranges])
-        range_upper_bounds: ndarray[Any, Any] = np.array([range[1] for range in self.ranges])
+        range_lower_bounds: ndarray[Any, Any] = np.array(
+            [range[0] for range in self.ranges]
+        )
+        range_upper_bounds: ndarray[Any, Any] = np.array(
+            [range[1] for range in self.ranges]
+        )
         sample_set: ndarray[Any, Any] = qmc.scale(points, range_lower_bounds, range_upper_bounds)  # type: ignore
 
         return sample_set
@@ -566,7 +597,8 @@ class DiscreteSampling:
         samples: Dict[str, List[Any]],
     ):
         self.case_names = [
-            f'{self.layer_name}_{format(i, "0%i" % self.leading_zeros)}' for i in range(self.number_of_samples)
+            f'{self.layer_name}_{format(i, "0%i" % self.leading_zeros)}'
+            for i in range(self.number_of_samples)
         ]
         samples["_case_name"] = self.case_names
 
@@ -575,8 +607,12 @@ class DiscreteSampling:
         parameter_name: str,
     ) -> bool:
         # check that size of a list/ vector equals the size of _names
-        if len(self.sampling_parameters[parameter_name]) != len(self.sampling_parameters["_names"]):
-            msg: str = f"lists _names and {parameter_name}: lengths of entries do not match"
+        if len(self.sampling_parameters[parameter_name]) != len(
+            self.sampling_parameters["_names"]
+        ):
+            msg: str = (
+                f"lists _names and {parameter_name}: lengths of entries do not match"
+            )
             logger.error(msg)
             return False
         return True
@@ -584,7 +620,9 @@ class DiscreteSampling:
     def _check_consistency_of_ranges(self, ranges: Sequence[Sequence[Any]]) -> bool:
         for item in ranges:
             if len(item) != 2:
-                logger.error("The structure of min and max values in _ranges is inconsistent.")
+                logger.error(
+                    "The structure of min and max values in _ranges is inconsistent."
+                )
                 return False
         return self._check_length_matches_number_of_names("_ranges")
 
@@ -604,7 +642,11 @@ class DiscreteSampling:
                 )
             )
             for field_index in range(1, self.number_of_fields - 1):
-                tmp = list(itertools.product(tmp, self.sampling_parameters["_ranges"][field_index + 1]))
+                tmp = list(
+                    itertools.product(
+                        tmp, self.sampling_parameters["_ranges"][field_index + 1]
+                    )
+                )
         self.bounding_box = []
         for item in tmp:
             if isinstance(item, Iterable):
@@ -613,7 +655,9 @@ class DiscreteSampling:
                 self.bounding_box.append([item])
         return
 
-    def _write_values_into_samples_dict(self, values: ndarray[Any, Any], samples: Dict[str, List[Any]]):
+    def _write_values_into_samples_dict(
+        self, values: ndarray[Any, Any], samples: Dict[str, List[Any]]
+    ):
         if self.include_bounding_box is True:
             self._create_bounding_box()
             values = np.concatenate((np.array(self.bounding_box), values), axis=0)

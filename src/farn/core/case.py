@@ -4,7 +4,16 @@ import re
 from copy import deepcopy
 from enum import IntEnum
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, Sequence, Set, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    MutableMapping,
+    MutableSequence,
+    Sequence,
+    Set,
+    Union,
+)
 
 import numpy as np
 from dictIO.utils.path import relative_path
@@ -87,7 +96,9 @@ class Case:
 
         # Check whether filter expression is defined.
         # If filter expression is missing, condition cannot be evaluated but case is, by default, still considered valid.
-        filter_expression = self.condition["_filter"] if "_filter" in self.condition else None
+        filter_expression = (
+            self.condition["_filter"] if "_filter" in self.condition else None
+        )
         if not filter_expression:
             logger.warning(
                 f"Layer {self.layer}: _condition element found but no _filter element defined therein. "
@@ -210,27 +221,31 @@ class Case:
 
     def add_parameters(
         self,
-        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
-     ):
-        '''Add extra parameters manually
-        '''
-        if isinstance (parameters, MutableSequence) and isinstance(parameters[0], Parameter):
+        parameters: Union[
+            MutableSequence[Parameter], MutableMapping[str, str], None
+        ] = None,
+    ):
+        """Add extra parameters manually"""
+        if isinstance(parameters, MutableSequence) and isinstance(
+            parameters[0], Parameter
+        ):
             self.parameters.extend(parameters)
-            
-        elif isinstance (parameters, MutableMapping):
+
+        elif isinstance(parameters, MutableMapping):
             self.parameters.extend(
-                Parameter(parameter_name, parameter_value) for parameter_name, parameter_value in parameters.items()
+                Parameter(parameter_name, parameter_value)
+                for parameter_name, parameter_value in parameters.items()
             )
-            
+
         else:
-            logger.error (
+            logger.error(
                 f"Layer {self.layer}, case {self.case} add_parameters failed:\n"
                 f"\tWrong input data format for additional parameters.\n"
             )
             exit(1)
 
         return True
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Return a dict with all case attributes.
 
@@ -248,7 +263,9 @@ class Case:
             "is_leaf": self.is_leaf,
             "no_of_samples": self.no_of_samples,
             "condition": self.condition,
-            "parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
+            "parameters": {
+                parameter.name: parameter.value for parameter in self.parameters or []
+            },
             "commands": self.command_sets,
             "status": self.status,
         }
@@ -319,7 +336,9 @@ class Cases(List[Case]):
                             name=parameter.name,
                         )
                     if parameter.value is not None:
-                        series[parameter.name].loc[_index] = parameter.value  # pyright: ignore
+                        series[parameter.name].loc[
+                            _index
+                        ] = parameter.value  # pyright: ignore
 
         if parameters_only:
             _ = series.pop("case")
@@ -368,7 +387,11 @@ class Cases(List[Case]):
         """
         _levels: List[int] = [levels] if isinstance(levels, int) else list(levels)
         filtered_cases: List[Case]
-        filtered_cases = [case for case in self if case.level in _levels or (case.is_leaf and -1 in _levels)]
+        filtered_cases = [
+            case
+            for case in self
+            if case.level in _levels or (case.is_leaf and -1 in _levels)
+        ]
 
         if valid_only:
             filtered_cases = [case for case in filtered_cases if case.is_valid]
