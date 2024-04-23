@@ -286,6 +286,20 @@ class Cases(List[Case]):
     into a pandas DataFrame or numpy ndarray, respectively.
     """
 
+    def add_parameters(
+        self,
+        parameters: Union[
+            MutableSequence[Parameter], MutableMapping[str, str], None
+        ] = None,       
+    ):
+        '''how can this run?
+        '''
+        _cases: List[Case] = deepcopy(self)
+        for case in _cases:
+            case.add_parameters(parameters)
+        
+        return False
+        
     def to_pandas(
         self,
         use_path_as_index: bool = True,
