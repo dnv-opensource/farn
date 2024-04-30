@@ -1,6 +1,6 @@
 lxml>=5.2
 numpy>=1.26,<2.0
-scipy>=1.12
+scipy>=1.13
 pandas>=2.2
 matplotlib>=3.8
 Pillow>=10.2
