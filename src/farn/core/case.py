@@ -222,7 +222,7 @@ class Case:
         parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
     ):
         """Manually add extra parameters."""
-        if isinstance(parameters, MutableSequence) and isinstance(parameters[0], Parameter):
+        if isinstance(parameters, MutableSequence):
             self.parameters.extend(parameters)
 
         elif isinstance(parameters, MutableMapping):
