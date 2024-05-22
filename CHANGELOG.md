@@ -5,6 +5,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+* -/-
+
+
+## [0.3.7] - 2024-05-22
+
 ### Dependencies
 * updated to ruff==0.4.2  (from ruff==0.2.1)
 * updated to pyright==1.1.360  (from pyright==1.1.350)
@@ -335,7 +340,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.6...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.7...HEAD
+[0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4
