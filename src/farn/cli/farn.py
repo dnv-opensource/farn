@@ -272,7 +272,7 @@ def _generate_barnsley_fern():
         else:
             p = t4(p)
         # ImageDraw.Draw(im,)
-        draw.point(
+        draw.point(  # pyright: ignore [reportUnknownMemberType]
             (p[0] * scale + x_offset, p[1] * scale),
             fill=(int(rgb[0] * rnd3[0]), int(rgb[1] * rnd3[1]), int(rgb[2] * rnd3[2])),
         )
@@ -284,7 +284,7 @@ def _generate_barnsley_fern():
     with tempfile.TemporaryDirectory() as temp_dir:
         # im.save(Path(os.getenv('HOME')) / 'splash.png')
         temp_file = Path(temp_dir) / "splash.png"
-        im.save(temp_file)
+        im.save(temp_file)  # pyright: ignore [reportUnknownMemberType]
 
         root = tk.Tk()
         root.overrideredirect(True)
