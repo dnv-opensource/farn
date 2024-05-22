@@ -4,7 +4,16 @@ import platform
 import re
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    MutableMapping,
+    MutableSequence,
+    MutableSet,
+    Sequence,
+    Union,
+)
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes

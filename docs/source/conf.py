@@ -23,7 +23,7 @@ copyright = "2024, DNV SE. All rights reserved."
 author = "Frank Lumpitzsch, Claas Rostock, Seung Hyeon Yoo"
 
 # The full version, including alpha/beta/rc tags
-release = "0.3.6"
+release = "0.3.7"
 
 # -- General configuration ---------------------------------------------------
 
