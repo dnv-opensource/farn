@@ -147,7 +147,9 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    log_level_console: str = (
+        "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    )
     if any([args.quiet, args.verbose]):
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console
@@ -168,9 +170,7 @@ def main():
     # as one of them IS required
     if not sample and not generate and command is None:
         parser.print_help()
-        logger.error(
-            "farn: none of the required options given: '--sample' or '--generate' or '--execute'"
-        )
+        logger.error("farn: none of the required options given: '--sample' or '--generate' or '--execute'")
 
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():

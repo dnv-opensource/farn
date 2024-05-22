@@ -96,9 +96,7 @@ class Case:
 
         # Check whether filter expression is defined.
         # If filter expression is missing, condition cannot be evaluated but case is, by default, still considered valid.
-        filter_expression = (
-            self.condition["_filter"] if "_filter" in self.condition else None
-        )
+        filter_expression = self.condition["_filter"] if "_filter" in self.condition else None
         if not filter_expression:
             logger.warning(
                 f"Layer {self.layer}: _condition element found but no _filter element defined therein. "
@@ -221,20 +219,15 @@ class Case:
 
     def add_parameters(
         self,
-        parameters: Union[
-            MutableSequence[Parameter], MutableMapping[str, str], None
-        ] = None,
+        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
     ):
-        """Add extra parameters manually"""
-        if isinstance(parameters, MutableSequence) and isinstance(
-            parameters[0], Parameter
-        ):
+        """Manually add extra parameters."""
+        if isinstance(parameters, MutableSequence) and isinstance(parameters[0], Parameter):
             self.parameters.extend(parameters)
 
         elif isinstance(parameters, MutableMapping):
             self.parameters.extend(
-                Parameter(parameter_name, parameter_value)
-                for parameter_name, parameter_value in parameters.items()
+                Parameter(parameter_name, parameter_value) for parameter_name, parameter_value in parameters.items()
             )
 
         else:
@@ -263,9 +256,7 @@ class Case:
             "is_leaf": self.is_leaf,
             "no_of_samples": self.no_of_samples,
             "condition": self.condition,
-            "parameters": {
-                parameter.name: parameter.value for parameter in self.parameters or []
-            },
+            "parameters": {parameter.name: parameter.value for parameter in self.parameters or []},
             "commands": self.command_sets,
             "status": self.status,
         }
@@ -288,18 +279,15 @@ class Cases(List[Case]):
 
     def add_parameters(
         self,
-        parameters: Union[
-            MutableSequence[Parameter], MutableMapping[str, str], None
-        ] = None,       
+        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
     ):
-        '''how can this run?
-        '''
+        """Manually add extra parameters."""
         _cases: List[Case] = deepcopy(self)
         for case in _cases:
-            case.add_parameters(parameters)
-        
+            _ = case.add_parameters(parameters)
+
         return False
-        
+
     def to_pandas(
         self,
         use_path_as_index: bool = True,
@@ -350,9 +338,7 @@ class Cases(List[Case]):
                             name=parameter.name,
                         )
                     if parameter.value is not None:
-                        series[parameter.name].loc[
-                            _index
-                        ] = parameter.value  # pyright: ignore
+                        series[parameter.name].loc[_index] = parameter.value  # pyright: ignore
 
         if parameters_only:
             _ = series.pop("case")
@@ -401,11 +387,7 @@ class Cases(List[Case]):
         """
         _levels: List[int] = [levels] if isinstance(levels, int) else list(levels)
         filtered_cases: List[Case]
-        filtered_cases = [
-            case
-            for case in self
-            if case.level in _levels or (case.is_leaf and -1 in _levels)
-        ]
+        filtered_cases = [case for case in self if case.level in _levels or (case.is_leaf and -1 in _levels)]
 
         if valid_only:
             filtered_cases = [case for case in filtered_cases if case.is_valid]
