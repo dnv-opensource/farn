@@ -6,8 +6,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
-* updated to ruff==0.4.2  (from ruff==0.3.0)
-* updated to pyright==1.1.360  (from pyright==1.1.352)
+* updated to ruff==0.4.2  (from ruff==0.2.1)
+* updated to pyright==1.1.360  (from pyright==1.1.350)
 * updated to sourcery==1.16  (from sourcery==1.15)
 * updated to lxml>=5.2  (from lxml>=5.1)
 * updated to types-lxml>=2024.4  (from types-lxml>=5.1)
@@ -19,18 +19,14 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to sphinx-argparse-cli>=1.15  (from sphinx-argparse-cli>=1.11)
 * updated to myst-parser>=3.0  (from myst-parser>=2.0)
 * updated to furo>=2024.4  (from furo>=2023.9.10)
+* updated to dictIO>=0.3.4  (from dictIO>=0.3.3)
+* updated to ospx>=0.2.14  (from ospx>=0.2.13)
+* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
+* updated to matplotlib>=3.9  (from matplotlib>=3.8)
+* removed black
 
 ### Changed
 * replaced black formatter with ruff formatter
-
-### Dependencies
-* updated to ruff==0.3.0  (from ruff==0.2.1)
-* updated to pyright==1.1.352  (from pyright==1.1.350)
-* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
-* removed black
-* updated to matplotlib>=3.9  (from matplotlib>=3.8)
-
-### Changed
 * Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI
 * Updated copyright statement
 * VS Code settings: Turned off automatic venv activation
