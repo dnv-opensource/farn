@@ -43,8 +43,8 @@ dependencies = [
     "pyDOE3>=1.0",
     "psutil>=5.9",
     "hilbertcurve>=2.0.5",
-    "dictIO>=0.3.3",
-    "ospx>=0.2.13",
+    "dictIO>=0.3.4",
+    "ospx>=0.2.14",
 ]
 
 [project.urls]
