@@ -31,6 +31,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Updated copyright statement
 * VS Code settings: Turned off automatic venv activation
 
+### Added
+* `farn.core.case.Case`: Added method `add_parameters()`, which allows to manually add user-defined parameters to a Case.
+
 
 ## [0.3.6] - 2024-02-21
 
