@@ -8,6 +8,38 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.3.7] - 2024-05-22
+
+### Dependencies
+* updated to ruff==0.4.2  (from ruff==0.2.1)
+* updated to pyright==1.1.360  (from pyright==1.1.350)
+* updated to sourcery==1.16  (from sourcery==1.15)
+* updated to lxml>=5.2  (from lxml>=5.1)
+* updated to types-lxml>=2024.4  (from types-lxml>=5.1)
+* updated to scipy>=1.13  (from scipy>=1.12)
+* updated to Pillow>=10.3  (from Pillow>=10.2)
+* updated to pytest>=8.2  (from pytest>=7.4)
+* updated to pytest-cov>=5.0  (from pytest-cov>=4.1)
+* updated to Sphinx>=7.3  (from Sphinx>=7.2)
+* updated to sphinx-argparse-cli>=1.15  (from sphinx-argparse-cli>=1.11)
+* updated to myst-parser>=3.0  (from myst-parser>=2.0)
+* updated to furo>=2024.4  (from furo>=2023.9.10)
+* updated to dictIO>=0.3.4  (from dictIO>=0.3.3)
+* updated to ospx>=0.2.14  (from ospx>=0.2.13)
+* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
+* updated to matplotlib>=3.9  (from matplotlib>=3.8)
+* removed black
+
+### Changed
+* replaced black formatter with ruff formatter
+* Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI
+* Updated copyright statement
+* VS Code settings: Turned off automatic venv activation
+
+### Added
+* `farn.core.case.Case`: Added method `add_parameters()`, which allows to manually add user-defined parameters to a Case.
+
+
 ## [0.3.6] - 2024-02-21
 
 ### Added
@@ -308,7 +340,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.6...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.7...HEAD
+[0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4

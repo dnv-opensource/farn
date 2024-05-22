@@ -4,7 +4,16 @@ import platform
 import re
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, MutableSet, Sequence, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    MutableMapping,
+    MutableSequence,
+    MutableSet,
+    Sequence,
+    Union,
+)
 
 from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
 from dictIO.utils.strings import remove_quotes
@@ -67,6 +76,7 @@ def run_farn(
     FileNotFoundError
         if farn_dict_file does not exist
     """
+    # sourcery skip: extract-method
 
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
     farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)
@@ -85,8 +95,10 @@ def run_farn(
     # Run sampling and create the samples for all layers in farn dict
     if sample:
         create_samples(farn_dict)  # run sampling
+        assert farn_dict.source_file is not None
         farn_dict.source_file = create_target_file_name(  # change filename to 'sampled.*'
-            farn_dict.source_file, prefix="sampled."  # type: ignore
+            farn_dict.source_file,
+            prefix="sampled.",  # type: ignore
         )
         logger.info(f"Save sampled farn dict {farn_dict.name}...")  # 1
         DictWriter.write(farn_dict, mode="w")  # save sampled.* farn dict file

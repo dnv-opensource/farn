@@ -4,7 +4,16 @@ import re
 from copy import deepcopy
 from enum import IntEnum
 from pathlib import Path
-from typing import Any, Dict, List, MutableMapping, MutableSequence, Sequence, Set, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    MutableMapping,
+    MutableSequence,
+    Sequence,
+    Set,
+    Union,
+)
 
 import numpy as np
 from dictIO.utils.path import relative_path
@@ -208,6 +217,28 @@ class Case:
 
         return True
 
+    def add_parameters(
+        self,
+        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
+    ):
+        """Manually add extra parameters."""
+        if isinstance(parameters, MutableSequence):
+            self.parameters.extend(parameters)
+
+        elif isinstance(parameters, MutableMapping):
+            self.parameters.extend(
+                Parameter(parameter_name, parameter_value) for parameter_name, parameter_value in parameters.items()
+            )
+
+        else:
+            logger.error(
+                f"Layer {self.layer}, case {self.case} add_parameters failed:\n"
+                f"\tWrong input data format for additional parameters.\n"
+            )
+            exit(1)
+
+        return True
+
     def to_dict(self) -> Dict[str, Any]:
         """Return a dict with all case attributes.
 
@@ -245,6 +276,17 @@ class Cases(List[Case]):
     to_pandas() and to_numpy(), which turn the list of Case objects
     into a pandas DataFrame or numpy ndarray, respectively.
     """
+
+    def add_parameters(
+        self,
+        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
+    ):
+        """Manually add extra parameters."""
+        _cases: List[Case] = deepcopy(self)
+        for case in _cases:
+            _ = case.add_parameters(parameters)
+
+        return False
 
     def to_pandas(
         self,
