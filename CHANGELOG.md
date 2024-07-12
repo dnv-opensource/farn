@@ -31,7 +31,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to sphinx-argparse-cli>=1.15  (from sphinx-argparse-cli>=1.11)
 * updated to myst-parser>=3.0  (from myst-parser>=2.0)
 * updated to furo>=2024.4  (from furo>=2023.9.10)
-* updated to dictIO>=0.3.4  (from dictIO>=0.3.3)
+* updated to dictIO>=0.3.4  (from dictIO>=0.3.4)
 * updated to ospx>=0.2.14  (from ospx>=0.2.13)
 * updated to numpy>=1.26,<2.0  (from numpy>=1.26,<2.0)
 * updated to matplotlib>=3.9  (from matplotlib>=3.9)
@@ -91,7 +91,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 
 * Upgraded from pyDOE2>=1.3 to pyDOE3>=1.0
 * Removed SALib and sobol-seq
-* Updated to dictIO>=0.3.1 and ospx>=0.2.12
+* Updated to dictIO>=0.3.4 and ospx>=0.2.12
 * Updated other dependencies to latest versions
 
 
@@ -111,7 +111,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 
 ### Dependencies
 
-* updated to dictIO>=0.2.8 and ospx>=0.2.10
+* updated to dictIO>=0.3.4 and ospx>=0.2.10
 * requirements-dev.txt: Updated dependencies to latest versions
 
 
@@ -133,7 +133,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 
 ### Dependencies
 
-* updated to dictIO>=0.2.6 and ospx>=0.2.8
+* updated to dictIO>=0.3.4 and ospx>=0.2.8
 
 
 ## [0.3.0] - 2023-01-09
@@ -182,7 +182,7 @@ Users are encouraged to update to this version.
 
 ### Dependencies
 
-* updated to dictIO>=0.2.5 and ospx>=0.2.7
+* updated to dictIO>=0.3.4 and ospx>=0.2.7
 
 
 ## [0.2.6] - 2022-12-12
@@ -215,7 +215,7 @@ Users are encouraged to update to this version.
 
 ### Dependencies
 
-* updated to dictIO>=0.2.4
+* updated to dictIO>=0.3.4
 
 ## [0.2.4] - 2022-12-01
 
