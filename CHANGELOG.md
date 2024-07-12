@@ -22,7 +22,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to pyright==1.1.371  (from pyright==1.1.371)
 * updated to sourcery==1.21  (from sourcery==1.21)
 * updated to lxml>=5.2  (from lxml>=5.2)
-* updated to types-lxml>=2024.4  (from types-lxml>=5.1)
+* updated to types-lxml>=2024.4  (from types-lxml>=2024.4)
 * updated to scipy>=1.13  (from scipy>=1.12)
 * updated to Pillow>=10.3  (from Pillow>=10.2)
 * updated to pytest>=8.2  (from pytest>=7.4)
