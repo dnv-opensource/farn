@@ -70,7 +70,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 * updated to sourcery==1.21  (from sourcery==1.21)
 * updated to lxml>=5.2  (from lxml>=5.2)
 * updated to scipy>=1.14  (from scipy>=1.14)
-* updated to pandas>=2.2  (from pandas>=2.1)
+* updated to pandas>=2.2  (from pandas>=2.2)
 * updated to Pillow>=10.2  (from Pillow>=10.1)
 
 * -/-
