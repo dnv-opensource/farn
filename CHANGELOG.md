@@ -23,7 +23,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to sourcery==1.21  (from sourcery==1.21)
 * updated to lxml>=5.2  (from lxml>=5.2)
 * updated to types-lxml>=2024.4  (from types-lxml>=2024.4)
-* updated to scipy>=1.13  (from scipy>=1.12)
+* updated to scipy>=1.14  (from scipy>=1.14)
 * updated to Pillow>=10.3  (from Pillow>=10.2)
 * updated to pytest>=8.2  (from pytest>=7.4)
 * updated to pytest-cov>=5.0  (from pytest-cov>=4.1)
@@ -69,7 +69,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 * updated to pyright==1.1.371  (from pyright==1.1.371)
 * updated to sourcery==1.21  (from sourcery==1.21)
 * updated to lxml>=5.2  (from lxml>=5.2)
-* updated to scipy>=1.12  (from scipy>=1.11)
+* updated to scipy>=1.14  (from scipy>=1.14)
 * updated to pandas>=2.2  (from pandas>=2.1)
 * updated to Pillow>=10.2  (from Pillow>=10.1)
 
