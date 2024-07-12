@@ -63,7 +63,7 @@ This removes the need to manually add /src to the PythonPath environment variabl
 * Deleted setup.cfg
 
 ### Dependencies
-* updated to black[jupyter]==24.1  (from black[jupyter]==23.12)
+* updated to black[jupyter]==24.4  (from black[jupyter]==24.4)
 * updated to version: '==24.1'  (from version: '==23.12')
 * updated to ruff==0.2.1  (from ruff==0.1.8)
 * updated to pyright==1.1.350  (from pyright==1.1.338)
