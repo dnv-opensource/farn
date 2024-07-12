@@ -33,7 +33,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to furo>=2024.4  (from furo>=2023.9.10)
 * updated to dictIO>=0.3.4  (from dictIO>=0.3.3)
 * updated to ospx>=0.2.14  (from ospx>=0.2.13)
-* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
+* updated to numpy>=1.26,<2.0  (from numpy>=1.26,<2.0)
 * updated to matplotlib>=3.9  (from matplotlib>=3.8)
 * removed black
 
