@@ -226,7 +226,7 @@ Users are encouraged to update to this version.
 * VS Code settings: Updated to use black as formatter
 * requirements.txt: Updated dependencies to their most recent versions
 * GitHub actions (yml files): Updated following actions to their most recent versions:
-    * checkout@v1 -> checkout@v3
+    * checkout@v4 -> checkout@v4
     * setup-python@v2 -> setup-python@v4
     * cache@v2 -> cache@v3
 
