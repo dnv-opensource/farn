@@ -25,7 +25,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * updated to types-lxml>=2024.4  (from types-lxml>=2024.4)
 * updated to scipy>=1.14  (from scipy>=1.14)
 * updated to Pillow>=10.4  (from Pillow>=10.4)
-* updated to pytest>=8.2  (from pytest>=7.4)
+* updated to pytest>=8.2  (from pytest>=8.2)
 * updated to pytest-cov>=5.0  (from pytest-cov>=4.1)
 * updated to Sphinx>=7.3  (from Sphinx>=7.2)
 * updated to sphinx-argparse-cli>=1.15  (from sphinx-argparse-cli>=1.11)
