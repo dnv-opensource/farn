@@ -290,16 +290,15 @@ class Cases(List[Case]):
         self,
         parameters: Union[
             MutableSequence[Parameter], MutableMapping[str, str], None
-        ] = None,       
+        ] = None,
     ):
-        '''how can this run?
-        '''
+        """How can this run?"""
         _cases: List[Case] = deepcopy(self)
         for case in _cases:
-            case.add_parameters(parameters)
-        
+            _ = case.add_parameters(parameters)
+
         return False
-        
+
     def to_pandas(
         self,
         use_path_as_index: bool = True,

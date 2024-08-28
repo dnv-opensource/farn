@@ -147,7 +147,9 @@ def main():
 
     # Configure Logging
     # ..to console
-    log_level_console: str = "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    log_level_console: str = (
+        "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    )
     if any([args.quiet, args.verbose]):
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console

@@ -41,6 +41,7 @@ class DiscreteSampling:
         self.number_of_samples: int = 0
         self.number_of_bb_samples: int = 0
         self.leading_zeros: int = 0
+        self.list_of_samples: list[int] = []
 
         self.iteration_depth: int
         self.minIterationDepth: int
@@ -50,6 +51,13 @@ class DiscreteSampling:
 
     def _set_up_known_sampling_types(self):
         self.known_sampling_types = {
+            "factorial": {
+                "required_args": [
+                    "_names",
+                    "_ranges",
+                    "_listOfSamples",
+                ]
+            },
             "fixed": {
                 "required_args": [
                     "_names",
@@ -95,16 +103,6 @@ class DiscreteSampling:
                     "_includeBoundingBox",
                 ],
             },
-            "arbitrary": {
-                "required_args": [
-                    "_names",
-                    "_ranges",
-                    "_numberOfSamples",
-                    "_distributionName",  # uniform|normal|exp... better to have a dedicated name in known_sampling_types
-                    "_distributionParameters",  # mu|sigma|skew|camber not applicsble for uniform
-                    "_includeBoundingBox",  # required
-                ]
-            },
             "hilbertCurve": {
                 "required_args": [
                     "_names",
@@ -122,6 +120,7 @@ class DiscreteSampling:
         """Set the sampling type.
 
         Valid values:
+            "factorial"
             "fixed"
             "linSpace"
             "uniformLhs"
@@ -197,40 +196,66 @@ class DiscreteSampling:
 
         samples: Dict[str, List[Any]] = {}
 
-        if self.sampling_type == "fixed":
-            samples = self._generate_samples_using_fixed_sampling()
+        if self.sampling_type == "factorial":
+            samples = self._generate_samples_using_factorial()
+
+        elif self.sampling_type == "fixed":
+            samples = self._generate_samples_using_fixed()
 
         elif self.sampling_type == "linSpace":
-            samples = self._generate_samples_using_linspace_sampling()
+            samples = self._generate_samples_using_linspace()
 
         elif self.sampling_type == "uniformLhs":
-            samples = self._generate_samples_using_uniform_lhs_sampling()
+            samples = self._generate_samples_using_uniform_lhs()
+
+        # elif self.sampling_type == "uniformRnd":
+        #    samples = self._generate_samples_using_uniform_rnd()
 
         elif self.sampling_type == "normalLhs":
-            samples = self._generate_samples_using_normal_lhs_sampling()
+            samples = self._generate_samples_using_normal_lhs()
+
+        # elif self.sampling_type == "normalRnd":
+        #    samples = self._generate_samples_using_normal_rnd()
 
         elif self.sampling_type == "sobol":
-            samples = self._generate_samples_using_sobol_sampling()
-
-        elif self.sampling_type == "arbitrary":
-            samples = self._generate_samples_using_arbitrary_sampling()
+            samples = self._generate_samples_using_sobol()
 
         elif self.sampling_type == "hilbertCurve":
-            samples = self._generate_samples_using_hilbert_sampling()
+            samples = self._generate_samples_using_hilbert()
 
         else:
             raise NotImplementedError(f"{self.sampling_type} not implemented yet.")
 
         return samples
 
-    def _generate_samples_using_fixed_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_factorial(self) -> Dict[str, List[Any]]:
+        _ = self._check_length_matches_number_of_names("_ranges")
+        self.list_of_samples = list(self.sampling_parameters["_listOfSamples"])
+        if any(x <= 1 for x in self.list_of_samples):
+            logger.error(
+                f"Factorial does not work for dimensions populated with less than 2 values: {self.list_of_samples}"
+            )
+            exit(0)
+        # to continue using _determine_number_of_samples, _numberOfSamples is generated
+        self.sampling_parameters["_numberOfSamples"] = int(
+            np.prod(self.list_of_samples)
+        )
+        samples: Dict[str, List[Any]] = self._generate_samples_dict()
+        values: ndarray[Any, Any] = self._generate_values_using_factorial()
+        self._write_values_into_samples_dict(values, samples)
+
+        return samples
+
+    def _generate_samples_using_fixed(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_values")
         samples: Dict[str, List[Any]] = {}
 
         # Assert that the values per parameter are provided as a list
         for item in self.sampling_parameters["_values"]:
             if not isinstance(item, Sequence):
-                msg: str = "_values: The values per parameter need to be provided as a list of values."
+                msg: str = (
+                    "_values: The values per parameter need to be provided as a list of values."
+                )
                 logger.error(msg)
                 raise ValueError(msg)
 
@@ -243,7 +268,9 @@ class DiscreteSampling:
             for number_of_values in number_of_values_per_parameter
         )
         if not all_parameters_have_same_number_of_values:
-            msg: str = "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
+            msg: str = (
+                "_values: The number of values per parameter need to be the same for all parameters. However, they are different."
+            )
             logger.error(msg)
             raise ValueError(msg)
 
@@ -258,7 +285,7 @@ class DiscreteSampling:
 
         return samples
 
-    def _generate_samples_using_linspace_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_linspace(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = self._generate_samples_dict()
         self.minVals = [x[0] for x in self.ranges]
@@ -275,15 +302,15 @@ class DiscreteSampling:
 
         return samples
 
-    def _generate_samples_using_uniform_lhs_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_uniform_lhs(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = self._generate_samples_dict()
-        values: ndarray[Any, Any] = self._generate_values_using_uniform_lhs_sampling()
+        values: ndarray[Any, Any] = self._generate_values_using_uniform_lhs()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
 
-    def _generate_samples_using_normal_lhs_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_normal_lhs(self) -> Dict[str, List[Any]]:
         """LHS using gaussian normal distributions.
 
         required input arguments:
@@ -300,7 +327,7 @@ class DiscreteSampling:
         self.mean = self.sampling_parameters["_mu"]
         self.std = self.sampling_parameters["_sigma"]
 
-        values: ndarray[Any, Any] = self._generate_values_using_normal_lhs_sampling()
+        values: ndarray[Any, Any] = self._generate_values_using_normal_lhs()
 
         # Clipping (optional. Clipping will only be performed if sampling parameter "_ranges" is defined.)
         # NOTE: In current implementation, sampled values exceeding a parameters valid range
@@ -322,63 +349,24 @@ class DiscreteSampling:
 
         return samples
 
-    def _generate_samples_using_sobol_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_sobol(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
         self.onset = int(self.sampling_parameters["_onset"])
 
         samples: Dict[str, List[Any]] = self._generate_samples_dict()
-        values: ndarray[Any, Any] = self._generate_values_using_sobol_sampling()
+        values: ndarray[Any, Any] = self._generate_values_using_sobol()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
 
-    def _generate_samples_using_arbitrary_sampling(self) -> Dict[str, List[Any]]:
-        """
-        Purpose: To perform a sampling based on the pre-drawn sample.
-        Pre-requisite:
-            1. Since the most fitted distribution is unknown, it shall be found by using the fitter module.
-            2. fitter module provides: 1) the name of the most fitted distribution, 2) relavant parameters
-            3. relavent parameters mostly comprises with 3 components: 1) skewness 2) location 3) scale
-            4. At this moment, those prerequisites shall be provided as arguments. This could be modified later
-            5. refer to commented example below.
-        """
-        _ = self._check_length_matches_number_of_names("_ranges")
-
-        samples: Dict[str, List[Any]] = self._generate_samples_dict()
-        self.minVals = [x[0] for x in self.ranges]
-        self.maxVals = [x[1] for x in self.ranges]
-
-        import scipy.stats  # noqa: F401
-
-        distribution_name: Sequence[str]
-        distribution_parameters: Sequence[Any]
-        for index, _ in enumerate(self.fields):
-            distribution_name = self.sampling_parameters["_distributionName"]
-            distribution_parameters = self.sampling_parameters[
-                "_distributionParameters"
-            ]
-
-            eval_command = f"scipy.stats.{distribution_name[index]}"
-
-            dist = eval(eval_command)  # check this need!
-
-            samples[self.fields[index]] = dist.rvs(
-                *distribution_parameters[index],
-                size=self.number_of_samples,
-            ).tolist()
-
-            # requires if self.kwargs['_includeBoundingBox'] is True: as well
-
-        return samples
-
-    def _generate_samples_using_hilbert_sampling(self) -> Dict[str, List[Any]]:
+    def _generate_samples_using_hilbert(self) -> Dict[str, List[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = self._generate_samples_dict()
         # Depending on implementation
         self.minIterationDepth = 3
         self.maxIterationDepth = 15
 
-        values: ndarray[Any, Any] = self._generate_values_using_hilbert_sampling()
+        values: ndarray[Any, Any] = self._generate_values_using_hilbert()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
@@ -389,7 +377,35 @@ class DiscreteSampling:
         self._generate_case_names(samples_dict)
         return samples_dict
 
-    def _generate_values_using_uniform_lhs_sampling(self) -> ndarray[Any, Any]:
+    def _generate_values_using_factorial(self) -> ndarray[Any, Any]:
+        """Full factorial, normalized and scaled to ranges."""
+        from pyDOE3 import fullfact
+        from sklearn.preprocessing import normalize
+
+        ff_distribution = fullfact(self.list_of_samples)
+
+        _range_lower_bounds: ndarray[Any, Any] = np.array(
+            [range[0] for range in self.ranges]
+        )
+        _range_upper_bounds: ndarray[Any, Any] = np.array(
+            [range[1] for range in self.ranges]
+        )
+        loc: ndarray[Any, Any] = _range_lower_bounds
+        scale: ndarray[Any, Any] = _range_upper_bounds - _range_lower_bounds
+        values, norms = normalize(
+            ff_distribution.T, norm="l1", axis=1, return_norm=True
+        )
+        sample_set: ndarray[Any, Any] = (
+            values.T
+            * norms
+            / (self.list_of_samples - np.ones(len(self.list_of_samples)))
+            * scale
+            + loc
+        )
+
+        return sample_set
+
+    def _generate_values_using_uniform_lhs(self) -> ndarray[Any, Any]:
         """Uniform LHS."""
         from pyDOE3 import lhs
         from scipy.stats import uniform
@@ -416,7 +432,7 @@ class DiscreteSampling:
 
         return sample_set
 
-    def _generate_values_using_normal_lhs_sampling(self) -> ndarray[Any, Any]:
+    def _generate_values_using_normal_lhs(self) -> ndarray[Any, Any]:
         """Gaussnormal LHS."""
         from pyDOE3 import lhs
         from scipy.stats import norm
@@ -440,7 +456,7 @@ class DiscreteSampling:
 
         return sample_set
 
-    def _generate_values_using_sobol_sampling(self) -> ndarray[Any, Any]:
+    def _generate_values_using_sobol(self) -> ndarray[Any, Any]:
         from scipy.stats import qmc
         from scipy.stats.qmc import Sobol
 
@@ -468,7 +484,7 @@ class DiscreteSampling:
 
         return sample_set
 
-    def _generate_values_using_hilbert_sampling(self) -> ndarray[Any, Any]:
+    def _generate_values_using_hilbert(self) -> ndarray[Any, Any]:
         """Source hilbertcurve pypi pkg or numpy
         it showed that hilbertcurve is a better choice and more precise with a higher iteration depth (<=15)
         pypi pkg Decimals is required for proper function up to (<=15)
@@ -498,15 +514,21 @@ class DiscreteSampling:
 
         if "_iterationDepth" in self.sampling_parameters.keys():
             if not isinstance(self.sampling_parameters["_iterationDepth"], int):
-                msg: str = f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
+                msg: str = (
+                    f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
+                )
                 logger.error(msg)
                 raise ValueError(msg)
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
+                msg: str = (
+                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is beyond the limit of {self.maxIterationDepth}...\n\t\tsetting to {self.maxIterationDepth}'
+                )
                 logger.warning(msg)
                 self.iteration_depth = self.maxIterationDepth
             elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
-                msg: str = f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\n\t\tsetting to {self.minIterationDepth}'
+                msg: str = (
+                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} given in farnDict is below the limit of {self.minIterationDepth}...\n\t\tsetting to {self.minIterationDepth}'
+                )
                 logger.warning(msg)
                 self.iteration_depth = self.minIterationDepth
             else:
