@@ -57,7 +57,9 @@ def _assert_type_and_equality(cases: Cases, case_list_assert: List[Case]):
     assert isinstance(cases, Cases)
 
 
-def _assert_sequence(cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case):
+def _assert_sequence(
+    cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case
+):
     assert cases[0] is case_assert_1
     assert cases[1] is case_assert_2
     assert cases[2] is case_assert_3
@@ -67,7 +69,9 @@ def test_to_pandas_range_index():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=False, parameters_only=False)
+    df_assert: DataFrame = _create_dataframe(
+        use_path_as_index=False, parameters_only=False
+    )
     # Execute
     df: DataFrame = cases.to_pandas(use_path_as_index=False)
     # Assert
@@ -80,7 +84,9 @@ def test_to_pandas_range_index_parameters_only():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=False, parameters_only=True)
+    df_assert: DataFrame = _create_dataframe(
+        use_path_as_index=False, parameters_only=True
+    )
     # Execute
     df: DataFrame = cases.to_pandas(use_path_as_index=False, parameters_only=True)
     # Assert
@@ -93,7 +99,9 @@ def test_to_pandas_path_index():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=True, parameters_only=False)
+    df_assert: DataFrame = _create_dataframe(
+        use_path_as_index=True, parameters_only=False
+    )
     # Execute
     df: DataFrame = cases.to_pandas()
     # Assert
@@ -106,7 +114,9 @@ def test_to_pandas_path_index_parameters_only():
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    df_assert: DataFrame = _create_dataframe(use_path_as_index=True, parameters_only=True)
+    df_assert: DataFrame = _create_dataframe(
+        use_path_as_index=True, parameters_only=True
+    )
     # Execute
     df: DataFrame = cases.to_pandas(parameters_only=True)
     # Assert
@@ -140,7 +150,9 @@ def _create_cases() -> Tuple[Case, Case, Case]:
     parameter_31 = Parameter("param_1", 31.1)
     parameter_32 = Parameter("param_2", 32.2)
     parameter_33 = Parameter("param_3", 33.3)
-    case_3: Case = Case(case="case_3", parameters=[parameter_31, parameter_32, parameter_33])
+    case_3: Case = Case(
+        case="case_3", parameters=[parameter_31, parameter_32, parameter_33]
+    )
     return (case_1, case_2, case_3)
 
 
@@ -274,7 +286,9 @@ def test_filter_level_0_valid_only():
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
     cases_not_modified_assert: Cases = deepcopy(cases)
-    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 0 and case.is_valid])
+    cases_filtered_assert: Cases = Cases(
+        [case for case in cases if case.level == 0 and case.is_valid]
+    )
     # Execute
     cases_filtered: Cases = cases.filter(0, valid_only=True)
     # Assert
@@ -292,7 +306,9 @@ def test_filter_level_1_valid_only():
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
     cases_not_modified_assert: Cases = deepcopy(cases)
-    cases_filtered_assert: Cases = Cases([case for case in cases if case.level == 1 and case.is_valid])
+    cases_filtered_assert: Cases = Cases(
+        [case for case in cases if case.level == 1 and case.is_valid]
+    )
     # Execute
     cases_filtered: Cases = cases.filter(1, valid_only=True)
     # Assert
@@ -310,7 +326,9 @@ def test_filter_level_minus_1_valid_only():
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
     cases_not_modified_assert: Cases = deepcopy(cases)
-    cases_filtered_assert: Cases = Cases([case for case in cases if case.is_leaf and case.is_valid])
+    cases_filtered_assert: Cases = Cases(
+        [case for case in cases if case.is_leaf and case.is_valid]
+    )
     # Execute
     cases_filtered: Cases = cases.filter(-1, valid_only=True)
     # Assert
@@ -328,7 +346,9 @@ def test_filter_default_arguments():
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
     cases_not_modified_assert: Cases = deepcopy(cases)
-    cases_filtered_assert: Cases = Cases([case for case in cases if case.is_leaf and case.is_valid])
+    cases_filtered_assert: Cases = Cases(
+        [case for case in cases if case.is_leaf and case.is_valid]
+    )
     # Execute
     cases_filtered: Cases = cases.filter()
     # Assert

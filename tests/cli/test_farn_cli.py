@@ -21,7 +21,9 @@ class CliArgs:
     verbose: bool = False
     log: Union[str, None] = None
     log_level: str = field(default_factory=lambda: "WARNING")
-    farnDict: Union[str, None] = field(default_factory=lambda: "test_farnDict")  # noqa: N815
+    farnDict: Union[str, None] = field(
+        default_factory=lambda: "test_farnDict"
+    )  # noqa: N815
     sample: bool = False
     generate: bool = False
     execute: Union[str, None] = None

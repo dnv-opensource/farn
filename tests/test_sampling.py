@@ -96,7 +96,13 @@ def test_linSpace_sampling_one_parameter():
         "param1",
     }
     assert len(samples["_case_name"]) == 5
-    assert samples["_case_name"] == ["layer0_0", "layer0_1", "layer0_2", "layer0_3", "layer0_4"]
+    assert samples["_case_name"] == [
+        "layer0_0",
+        "layer0_1",
+        "layer0_2",
+        "layer0_3",
+        "layer0_4",
+    ]
     assert len(samples["param1"]) == 5
     assert np.allclose(samples["param1"], [0.5, 0.6, 0.7, 0.8, 0.9])
 
@@ -123,7 +129,13 @@ def test_linSpace_sampling_two_parameters():
         "param2",
     }
     assert len(samples["_case_name"]) == 5
-    assert samples["_case_name"] == ["layer0_0", "layer0_1", "layer0_2", "layer0_3", "layer0_4"]
+    assert samples["_case_name"] == [
+        "layer0_0",
+        "layer0_1",
+        "layer0_2",
+        "layer0_3",
+        "layer0_4",
+    ]
     assert len(samples["param1"]) == 5
     assert np.allclose(samples["param1"], [0.5, 0.6, 0.7, 0.8, 0.9])
     assert len(samples["param2"]) == 5
@@ -1484,44 +1496,44 @@ def test_factorial_sampling_three_parameters():
     ]
     param1_values_expected: List[float] = [
         -10.0,
-        0.0, 
-        10.0, 
-        -10.0, 
-        0.0, 
-        10.0, 
-        -10.0, 
-        0.0, 
-        10.0, 
-        -10.0, 
-        0.0, 
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
         10.0,
     ]
     param2_values_expected: List[float] = [
-        0.0, 
-        0.0, 
-        0.0, 
-        3.5, 
-        3.5, 
-        3.5, 
-        0.0, 
-        0.0, 
-        0.0, 
-        3.5, 
-        3.5, 
+        0.0,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        3.5,
+        0.0,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
         3.5,
     ]
     param3_values_expected: List[float] = [
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
         0.0,
-        0.0, 
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
         1.1,
-        1.1, 
-        1.1, 
-        1.1, 
-        1.1, 
+        1.1,
+        1.1,
+        1.1,
+        1.1,
         1.1,
     ]
 

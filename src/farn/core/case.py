@@ -225,7 +225,7 @@ class Case:
             MutableSequence[Parameter], MutableMapping[str, str], None
         ] = None,
     ):
-        """Add extra parameters manually"""
+        """Add extra parameters manually."""
         if isinstance(parameters, MutableSequence) and isinstance(
             parameters[0], Parameter
         ):
@@ -292,7 +292,7 @@ class Cases(List[Case]):
             MutableSequence[Parameter], MutableMapping[str, str], None
         ] = None,
     ):
-        """How can this run?"""
+        """How can this run?."""
         _cases: List[Case] = deepcopy(self)
         for case in _cases:
             _ = case.add_parameters(parameters)

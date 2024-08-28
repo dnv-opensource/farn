@@ -35,11 +35,21 @@ def test_create_samples():
     assert "_samples" in farn_dict["_layers"]["cp"]
     assert "_samples" in farn_dict["_layers"]["hilbert"]
     assert "_samples" in farn_dict["_layers"]["mp"]
-    assert len(farn_dict["_layers"]["gp"]) == len(sampled_farn_dict_assert["_layers"]["gp"])
-    assert len(farn_dict["_layers"]["lhsvar"]) == len(sampled_farn_dict_assert["_layers"]["lhsvar"])
-    assert len(farn_dict["_layers"]["cp"]) == len(sampled_farn_dict_assert["_layers"]["cp"])
-    assert len(farn_dict["_layers"]["hilbert"]) == len(sampled_farn_dict_assert["_layers"]["hilbert"])
-    assert len(farn_dict["_layers"]["mp"]) == len(sampled_farn_dict_assert["_layers"]["mp"])
+    assert len(farn_dict["_layers"]["gp"]) == len(
+        sampled_farn_dict_assert["_layers"]["gp"]
+    )
+    assert len(farn_dict["_layers"]["lhsvar"]) == len(
+        sampled_farn_dict_assert["_layers"]["lhsvar"]
+    )
+    assert len(farn_dict["_layers"]["cp"]) == len(
+        sampled_farn_dict_assert["_layers"]["cp"]
+    )
+    assert len(farn_dict["_layers"]["hilbert"]) == len(
+        sampled_farn_dict_assert["_layers"]["hilbert"]
+    )
+    assert len(farn_dict["_layers"]["mp"]) == len(
+        sampled_farn_dict_assert["_layers"]["mp"]
+    )
 
 
 def test_create_cases():
@@ -121,8 +131,12 @@ def test_execute(caplog: LogCaptureFixture):
         _ = os.system("farn.py sampled.test_farnDict -e testlinvar")
         _ = os.system("farn.py sampled.test_farnDict -e printlinenv")
     else:
-        _ = os.system(f"python -m farn.cli.farn {sampled_file.name} --execute testwinvar")
-        _ = os.system(f"python -m farn.cli.farn {sampled_file.name} --execute printwinenv")
+        _ = os.system(
+            f"python -m farn.cli.farn {sampled_file.name} --execute testwinvar"
+        )
+        _ = os.system(
+            f"python -m farn.cli.farn {sampled_file.name} --execute printwinenv"
+        )
     # Assert
 
 
@@ -172,7 +186,9 @@ def test_sample_exclude_filtering(caplog: LogCaptureFixture):
     out: str = caplog.text.rstrip()
     # Assert
     assert "The filter expression 'index != 1' evaluated to True." in out
-    assert "The filter expression 'abs(param0 * param1) >= 3.5' evaluated to True." in out
+    assert (
+        "The filter expression 'abs(param0 * param1) >= 3.5' evaluated to True." in out
+    )
     assert "Action 'exclude' performed. Case lhsVariation_" in out
 
 
