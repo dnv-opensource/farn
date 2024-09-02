@@ -235,7 +235,7 @@ class DiscreteSampling:
             logger.error(
                 f"Factorial does not work for dimensions populated with less than 2 values: {self.list_of_samples}"
             )
-            exit(0)
+            exit(1)
         # to continue using _determine_number_of_samples, _numberOfSamples is generated
         self.sampling_parameters["_numberOfSamples"] = int(
             np.prod(self.list_of_samples)
