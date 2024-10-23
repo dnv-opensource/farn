@@ -6,7 +6,6 @@ import logging
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Tuple, Union
 
 # Remove current directory from Python search path.
 # Only through this trick it is possible that the current CLI file 'farn.py'
@@ -132,12 +131,11 @@ def _argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def main():
+def main() -> None:
     """Entry point for console script as configured in setup.cfg.
 
     Runs the command line interface and parses arguments and options entered on the console.
     """
-
     parser = _argparser()
     try:
         args = parser.parse_args()
@@ -154,14 +152,14 @@ def main():
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console
         # ..to file
-    log_file: Union[Path, None] = Path(args.log) if args.log else None
+    log_file: Path | None = Path(args.log) if args.log else None
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
 
     farn_dict_file: Path = Path(args.farnDict)
     sample: bool = args.sample
     generate: bool = args.generate
-    command: Union[str, None] = args.execute
+    command: str | None = args.execute
     batch: bool = args.batch
     test: bool = args.test
 
@@ -200,7 +198,7 @@ def main():
     )
 
 
-def _generate_barnsley_fern():
+def _generate_barnsley_fern() -> None:
     """
     easter egg: Barnsley fern.
 
@@ -224,19 +222,19 @@ def _generate_barnsley_fern():
     from PIL import Image
     from PIL.ImageDraw import ImageDraw
 
-    def t1(p: Tuple[float, float]) -> Tuple[float, float]:
+    def t1(p: tuple[float, float]) -> tuple[float, float]:
         """1%."""
         return (0.0, 0.16 * p[1])
 
-    def t2(p: Tuple[float, float]) -> Tuple[float, float]:
+    def t2(p: tuple[float, float]) -> tuple[float, float]:
         """85%."""
         return (0.85 * p[0] + 0.04 * p[1], -0.04 * p[0] + 0.85 * p[1] + 1.6)
 
-    def t3(p: Tuple[float, float]) -> Tuple[float, float]:
+    def t3(p: tuple[float, float]) -> tuple[float, float]:
         """7%."""
         return (0.2 * p[0] - 0.26 * p[1], 0.23 * p[0] + 0.22 * p[1] + 1.6)
 
-    def t4(p: Tuple[float, float]) -> Tuple[float, float]:
+    def t4(p: tuple[float, float]) -> tuple[float, float]:
         """7%."""
         return (-0.15 * p[0] + 0.28 * p[1], 0.26 * p[0] + 0.24 * p[1] + 0.44)
 
@@ -245,7 +243,7 @@ def _generate_barnsley_fern():
     im = Image.new("RGBA", (x_size, x_size))
     draw = ImageDraw(im)
 
-    p: Tuple[float, float] = (0, 0)
+    p: tuple[float, float] = (0, 0)
     end = 20000
     ii = 0
     scale = 100

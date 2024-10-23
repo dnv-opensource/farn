@@ -1,18 +1,12 @@
 # pyright: reportUnknownMemberType=false
 import logging
 import re
+from collections.abc import MutableMapping, MutableSequence, Sequence
 from copy import deepcopy
 from enum import IntEnum
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    List,
-    MutableMapping,
-    MutableSequence,
-    Sequence,
-    Set,
-    Union,
 )
 
 import numpy as np
@@ -60,14 +54,14 @@ class Case:
         level: int = 0,
         no_of_samples: int = 0,
         index: int = 0,
-        path: Union[Path, None] = None,
+        path: Path | None = None,
         is_leaf: bool = False,
-        condition: Union[MutableMapping[str, str], None] = None,
-        parameters: Union[MutableSequence[Parameter], None] = None,
-        command_sets: Union[MutableMapping[str, List[str]], None] = None,
+        condition: MutableMapping[str, str] | None = None,
+        parameters: MutableSequence[Parameter] | None = None,
+        command_sets: MutableMapping[str, list[str]] | None = None,
     ):
-        self.case: Union[str, None] = case
-        self.layer: Union[str, None] = layer
+        self.case: str | None = case
+        self.layer: str | None = layer
         self.level: int = level
         self.no_of_samples: int = no_of_samples
         self.index: int = index
@@ -75,7 +69,7 @@ class Case:
         self.is_leaf: bool = is_leaf
         self.condition: MutableMapping[str, str] = condition or {}
         self.parameters: MutableSequence[Parameter] = parameters or []
-        self.command_sets: MutableMapping[str, List[str]] = command_sets or {}
+        self.command_sets: MutableMapping[str, list[str]] = command_sets or {}
         self.status: CaseStatus = CaseStatus.NONE
 
     @property
@@ -89,7 +83,6 @@ class Case:
         bool
             result of validity check. True indicates the case is valid, False not valid.
         """
-
         # Check whether the '_condition' element is defined.  Without it, case is in any case considered valid.
         if not self.condition:
             return True
@@ -138,7 +131,7 @@ class Case:
                 return False
 
         # transfer a white list of case properties to locals() for subsequent filtering
-        available_vars: Set[str] = set()
+        available_vars: set[str] = set()
         for attribute in dir(self):
             try:
                 if attribute in [
@@ -219,7 +212,7 @@ class Case:
 
     def add_parameters(
         self,
-        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
+        parameters: MutableSequence[Parameter] | MutableMapping[str, str] | None = None,
     ):
         """Manually add extra parameters."""
         if isinstance(parameters, MutableSequence):
@@ -239,7 +232,7 @@ class Case:
 
         return True
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return a dict with all case attributes.
 
         Returns
@@ -261,14 +254,14 @@ class Case:
             "status": self.status,
         }
 
-    def __str__(self):
+    def __str__(self) -> None:
         return str(self.to_dict())
 
     def __eq__(self, __o: object) -> bool:
         return str(self) == str(__o)
 
 
-class Cases(List[Case]):
+class Cases(list[Case]):
     """Container Class for Cases.
 
     Inherits from List[Case] and can hence be transparently used as a Python list type.
@@ -279,10 +272,10 @@ class Cases(List[Case]):
 
     def add_parameters(
         self,
-        parameters: Union[MutableSequence[Parameter], MutableMapping[str, str], None] = None,
+        parameters: MutableSequence[Parameter] | MutableMapping[str, str] | None = None,
     ):
         """Manually add extra parameters."""
-        _cases: List[Case] = deepcopy(self)
+        _cases: list[Case] = deepcopy(self)
         for case in _cases:
             _ = case.add_parameters(parameters)
 
@@ -309,9 +302,9 @@ class Cases(List[Case]):
         DataFrame
             DataFrame with case properties and case specific parameter values of all cases.
         """
-        indices: List[int] = []
+        indices: list[int] = []
 
-        _cases: List[Case] = deepcopy(self)
+        _cases: list[Case] = deepcopy(self)
         for _index, case in enumerate(_cases):
             indices.append(_index)
             case.path = relative_path(Path.cwd(), case.path)
@@ -320,7 +313,7 @@ class Cases(List[Case]):
                     if not parameter.name:
                         parameter.name = "NA"
 
-        series: Dict[str, Series] = {  # pyright: ignore
+        series: dict[str, Series] = {  # pyright: ignore
             "case": Series(data=None, dtype=np.dtype(str), name="case"),
             "path": Series(data=None, dtype=np.dtype(str), name="path"),
         }
@@ -366,7 +359,7 @@ class Cases(List[Case]):
 
     def filter(
         self,
-        levels: Union[int, Sequence[int]] = -1,
+        levels: int | Sequence[int] = -1,
         valid_only: bool = True,
     ) -> "Cases":
         """Return a sub-set of cases according to the passed in selection criteria.
@@ -385,8 +378,8 @@ class Cases(List[Case]):
         Cases
             Cases object containing all cases that match the selection criteria.
         """
-        _levels: List[int] = [levels] if isinstance(levels, int) else list(levels)
-        filtered_cases: List[Case]
+        _levels: list[int] = [levels] if isinstance(levels, int) else list(levels)
+        filtered_cases: list[Case]
         filtered_cases = [case for case in self if case.level in _levels or (case.is_leaf and -1 in _levels)]
 
         if valid_only:

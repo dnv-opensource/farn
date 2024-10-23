@@ -3,7 +3,7 @@
 
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, List, Tuple
+from typing import Any
 
 import numpy as np
 from dictIO import CppDict, DictReader
@@ -15,10 +15,10 @@ from farn import create_cases, create_samples
 from farn.core import Case, Cases, Parameter
 
 
-def test_cases():
+def test_cases() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
-    case_list_assert: List[Case] = [case_1, case_2, case_3]
+    case_list_assert: list[Case] = [case_1, case_2, case_3]
     # Execute
     cases: Cases = Cases([case_1, case_2, case_3])
     cases_by_append: Cases = Cases()
@@ -40,30 +40,30 @@ def test_cases():
     assert len(cases[0].parameters) == 1
     assert len(cases[1].parameters) == 2
     assert len(cases[2].parameters) == 3
-    assert cases[2].parameters[0].name == "param_1"  # type: ignore
-    assert cases[2].parameters[1].name == "param_2"  # type: ignore
-    assert cases[2].parameters[2].name == "param_3"  # type: ignore
-    assert cases[2].parameters[0].value == 31.1  # type: ignore
-    assert cases[2].parameters[1].value == 32.2  # type: ignore
-    assert cases[2].parameters[2].value == 33.3  # type: ignore
+    assert cases[2].parameters[0].name == "param_1"
+    assert cases[2].parameters[1].name == "param_2"
+    assert cases[2].parameters[2].name == "param_3"
+    assert cases[2].parameters[0].value == 31.1
+    assert cases[2].parameters[1].value == 32.2
+    assert cases[2].parameters[2].value == 33.3
     assert cases[0].case == "case_1"
     assert cases[1].case == "case_2"
     assert cases[2].case == "case_3"
 
 
-def _assert_type_and_equality(cases: Cases, case_list_assert: List[Case]):
+def _assert_type_and_equality(cases: Cases, case_list_assert: list[Case]) -> None:
     assert cases == case_list_assert
-    assert isinstance(cases, List)
+    assert isinstance(cases, list)
     assert isinstance(cases, Cases)
 
 
-def _assert_sequence(cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case):
+def _assert_sequence(cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case) -> None:
     assert cases[0] is case_assert_1
     assert cases[1] is case_assert_2
     assert cases[2] is case_assert_3
 
 
-def test_to_pandas_range_index():
+def test_to_pandas_range_index() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
@@ -76,7 +76,7 @@ def test_to_pandas_range_index():
     assert df.equals(df_assert)
 
 
-def test_to_pandas_range_index_parameters_only():
+def test_to_pandas_range_index_parameters_only() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
@@ -89,7 +89,7 @@ def test_to_pandas_range_index_parameters_only():
     assert df.equals(df_assert)
 
 
-def test_to_pandas_path_index():
+def test_to_pandas_path_index() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
@@ -102,7 +102,7 @@ def test_to_pandas_path_index():
     assert df.equals(df_assert)
 
 
-def test_to_pandas_path_index_parameters_only():
+def test_to_pandas_path_index_parameters_only() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
@@ -115,7 +115,7 @@ def test_to_pandas_path_index_parameters_only():
     assert df.equals(df_assert)
 
 
-def test_to_numpy():
+def test_to_numpy() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
@@ -128,7 +128,7 @@ def test_to_numpy():
     assert str(array) == str(array_assert)
 
 
-def _create_cases() -> Tuple[Case, Case, Case]:
+def _create_cases() -> tuple[Case, Case, Case]:
     parameter_11 = Parameter("param_1", 11.1)
     parameter_12 = Parameter("param_2", 12.2)  # noqa: F841
     parameter_13 = Parameter("param_3", 13.3)  # noqa: F841
@@ -144,25 +144,29 @@ def _create_cases() -> Tuple[Case, Case, Case]:
     return (case_1, case_2, case_3)
 
 
-def _create_dataframe(use_path_as_index: bool, parameters_only: bool) -> DataFrame:
+def _create_dataframe(
+    *,
+    use_path_as_index: bool,
+    parameters_only: bool,
+) -> DataFrame:
     cwd: Path = Path.cwd()
     path: str = str(relative_path(cwd, cwd))
-    index: List[int] = [0, 1, 2]
-    columns: List[str] = ["case", "path", "param_1", "param_2", "param_3"]
-    values: List[List[Any]]
+    index: list[int] = [0, 1, 2]
+    columns: list[str] = ["case", "path", "param_1", "param_2", "param_3"]
+    values: list[list[Any]]
     values = [
         ["case_1", path, 11.1, None, None],
         ["case_2", path, 21.1, 22.2, None],
         ["case_3", path, 31.1, 32.2, 33.3],
     ]
-    df: DataFrame = DataFrame(data=values, index=index, columns=columns)
+    data: DataFrame = DataFrame(data=values, index=index, columns=columns)
     if parameters_only:
-        df.drop(["case"], axis=1, inplace=True)
+        data = data.drop(["case"], axis=1)
         if not use_path_as_index:
-            df.drop(["path"], axis=1, inplace=True)
+            data = data.drop(["path"], axis=1)
     if use_path_as_index:
-        df.set_index("path", inplace=True)
-    return df
+        data = data.set_index("path")
+    return data
 
 
 def _create_ndarray() -> ndarray[Any, Any]:
@@ -176,7 +180,7 @@ def _create_ndarray() -> ndarray[Any, Any]:
     return array
 
 
-def test_filter_all():
+def test_filter_all() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -194,7 +198,7 @@ def test_filter_all():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_0():
+def test_filter_level_0() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -212,7 +216,7 @@ def test_filter_level_0():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_1():
+def test_filter_level_1() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -230,7 +234,7 @@ def test_filter_level_1():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_minus_1():
+def test_filter_level_minus_1() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -248,7 +252,7 @@ def test_filter_level_minus_1():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_all_valid_only():
+def test_filter_all_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -266,7 +270,7 @@ def test_filter_all_valid_only():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_0_valid_only():
+def test_filter_level_0_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -284,7 +288,7 @@ def test_filter_level_0_valid_only():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_1_valid_only():
+def test_filter_level_1_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -302,7 +306,7 @@ def test_filter_level_1_valid_only():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_level_minus_1_valid_only():
+def test_filter_level_minus_1_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
@@ -320,7 +324,7 @@ def test_filter_level_minus_1_valid_only():
     assert cases == cases_not_modified_assert
 
 
-def test_filter_default_arguments():
+def test_filter_default_arguments() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
