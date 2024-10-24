@@ -18,7 +18,7 @@ class AsyncBatchProcessor:
         command: str,
         timeout: int = 3600,
         max_number_of_cpus: int = 0,
-    ):
+    ) -> None:
         """Instantiate an asynchroneous batch processor
         to execute a shell command in multiple case folders.
 
@@ -38,9 +38,8 @@ class AsyncBatchProcessor:
         self.timeout: int = timeout
         self.max_number_of_cpus: int = max_number_of_cpus
 
-    def run(self):
+    def run(self) -> None:
         """Run the shell command in all case folders."""
-
         # Check whether caselist file exists
         if not self.case_list_file.is_file():
             logger.error(f"AsyncBatchProcessor: File {self.case_list_file} not found.")
@@ -48,15 +47,15 @@ class AsyncBatchProcessor:
 
         # Read the case list and fill job queue
         cases = []
-        with open(self.case_list_file, "r") as f:
+        with Path.open(self.case_list_file) as f:
             cases = f.readlines()
 
         jobs = JobQueue()
 
-        for index, path in enumerate(cases):
-            path = path.strip()
-            jobs.put(execute_in_sub_process, self.command, path, self.timeout)
-            logger.info("Job %g queued in %s" % (index, path))  # 1
+        for index, _path in enumerate(cases):
+            path = _path.strip()
+            jobs.put_callable(execute_in_sub_process, self.command, path, self.timeout)
+            logger.info(f"Job {index:g} queued in {path}")  # 1
 
         number_of_cpus = cpu_count()
         if self.max_number_of_cpus:
@@ -70,5 +69,3 @@ class AsyncBatchProcessor:
 
         # Wait until all jobs are done
         jobs.join()
-
-        # exit(0)

@@ -1,0 +1,13 @@
+[paths]
+source =
+    src/farn
+    */site-packages/farn
+
+[run]
+source = farn
+branch = True
+
+[report]
+fail_under = 10.0
+show_missing = True
+skip_covered = True
