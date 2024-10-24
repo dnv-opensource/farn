@@ -5,6 +5,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+-/-
+
+
+## [0.3.8] - 2024-10-24
+
 ### Changed
 * Changed from `pip`/`tox` to `uv` as package manager
 * README.md : Completely rewrote section "Development Setup", introducing `uv` as package manager.
@@ -369,7 +374,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.7...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.8...HEAD
+[0.3.8]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.3.8
 [0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
