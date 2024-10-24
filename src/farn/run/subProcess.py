@@ -16,7 +16,7 @@ def execute_in_sub_process(
     command: str,
     path: Path | None = None,
     timeout: int | None = 7200,  # 2 hours
-) -> None:
+) -> tuple[bytes, bytes]:
     """Create a subprocess with cwd = path and executes the given shell command.
     The subprocess runs asyncroneous. The calling thread waits until the subprocess returns
     or until timeout is exceeded.

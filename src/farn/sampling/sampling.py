@@ -223,11 +223,11 @@ class DiscreteSampling:
     def _generate_samples_using_fixed_sampling(self) -> dict[str, list[Any]]:
         _ = self._check_length_matches_number_of_names("_values")
         samples: dict[str, list[Any]] = {}
-
+        msg: str
         # Assert that the values per parameter are provided as a list
         for item in self.sampling_parameters["_values"]:
             if not isinstance(item, Sequence):
-                msg: str = "_values: The values per parameter need to be provided as a list of values."
+                msg = "_values: The values per parameter need to be provided as a list of values."
                 logger.error(msg)
                 raise TypeError(msg)
 
@@ -238,7 +238,7 @@ class DiscreteSampling:
             for number_of_values in number_of_values_per_parameter
         )
         if not all_parameters_have_same_number_of_values:
-            msg: str = (
+            msg = (
                 "_values: The number of values per parameter need to be the same for all parameters. "
                 "However, they are different."
             )
@@ -524,13 +524,20 @@ class DiscreteSampling:
             )
 
         distribution = np.array(
-            [Decimal(x) for x in np.linspace(int(hc.min_h), int(hc.max_h), number_of_continuous_samples)]
+            [
+                Decimal(x)
+                for x in np.linspace(
+                    int(hc.min_h),
+                    int(hc.max_h),
+                    number_of_continuous_samples,
+                )
+            ]
         )
         int_distribution = np.trunc(distribution)
 
         hilbert_points = hc.points_from_distances(int_distribution)
 
-        _points: Iterable[Iterable[float]] = []
+        _points: list[Iterable[float]] = []
         interpolation_hits = 0
         for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution, strict=False):
             if dst == idst:
@@ -642,7 +649,11 @@ class DiscreteSampling:
                 self.bounding_box.append([item])
         return
 
-    def _write_values_into_samples_dict(self, values: ndarray[Any, Any], samples: dict[str, list[Any]]) -> None:
+    def _write_values_into_samples_dict(
+        self,
+        values: ndarray[Any, Any],
+        samples: dict[str, list[Any]],
+    ) -> None:
         if self.include_bounding_box is True:
             self._create_bounding_box()
             values = np.concatenate((np.array(self.bounding_box), values), axis=0)
@@ -650,7 +661,10 @@ class DiscreteSampling:
             samples[self.fields[index]] = values.T[index].tolist()
         return
 
-    def _flatten(self, iterable: Sequence[Any]) -> Generator[Any, Any, Any]:
+    def _flatten(
+        self,
+        iterable: Sequence[Any],
+    ) -> Generator[Any, Any, Any]:
         """Flattens sequence... happens why?."""
         for element in iterable:
             if isinstance(element, Sequence) and not isinstance(element, str | bytes):

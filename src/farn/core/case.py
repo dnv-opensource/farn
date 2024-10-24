@@ -261,7 +261,7 @@ class Case:
             "status": self.status,
         }
 
-    def __str__(self) -> None:
+    def __str__(self) -> str:
         return str(self.to_dict())
 
     def __eq__(self, __o: object) -> bool:
@@ -284,7 +284,7 @@ class Cases(list[Case]):
         """Manually add extra parameters."""
         _cases: list[Case] = deepcopy(self)
         for case in _cases:
-            _ = case.add_parameters(parameters)
+            case.add_parameters(parameters)
 
         return
 

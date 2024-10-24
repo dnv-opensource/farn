@@ -531,7 +531,7 @@ def create_case_list_files(
     case_list_file_all_levels = target_dir / "caseList"
     logger.info(f"Create case list file '{case_list_file_all_levels}', containing all case folders.")
 
-    case_list_files_created: MutableSequence[Path] = []
+    case_list_files_created: list[Path] = []
     max_level: int = 0
     with case_list_file_all_levels.open(mode="w") as f:
         for case in cases:
