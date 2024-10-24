@@ -363,16 +363,16 @@ class Cases(list[Case]):
 
         return df_X
 
-    def to_numpy(self) -> ndarray[Any, Any]:
+    def to_numpy(self) -> ndarray[tuple[int, int], np.dtype[np.float64]]:
         """Return parameter values of all cases as a 2-dimensional numpy array.
 
         Returns
         -------
-        ndarray[Any, Any]
+        ndarray[tuple[int, int], np.dtype[np.float64 | np.int32]]
             2-dimensional numpy array with case specific parameter values of all cases.
         """
         df_X: DataFrame = self.to_pandas(parameters_only=True)
-        array: ndarray[Any, Any] = df_X.to_numpy()
+        array: ndarray[tuple[int, int], np.dtype[np.float64]] = df_X.to_numpy().astype(np.float64)
         return array
 
     def filter(

@@ -119,9 +119,9 @@ def test_to_numpy() -> None:
     # Prepare
     case_1, case_2, case_3 = _create_cases()
     cases: Cases = Cases([case_1, case_2, case_3])
-    array_assert: ndarray[Any, Any] = _create_ndarray()
+    array_assert: ndarray[tuple[int,], np.dtype[np.float64]] = _create_ndarray()
     # Execute
-    array: ndarray[Any, Any] = cases.to_numpy()
+    array: ndarray[tuple[int, int], np.dtype[np.float64]] = cases.to_numpy()
     # Assert
     assert array.shape == array_assert.shape
     assert array.shape == (3, 3)
@@ -169,8 +169,8 @@ def _create_dataframe(
     return data
 
 
-def _create_ndarray() -> ndarray[Any, Any]:
-    array: ndarray[Any, Any] = np.array(
+def _create_ndarray() -> ndarray[tuple[int,], np.dtype[np.float64]]:
+    array: ndarray[tuple[int,], np.dtype[np.float64]] = np.array(
         [
             [11.1, np.nan, np.nan],
             [21.1, 22.2, np.nan],
