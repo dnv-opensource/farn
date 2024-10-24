@@ -1,4 +1,7 @@
 # pyright: reportUnknownMemberType=false
+# ruff: noqa: N806
+from __future__ import annotations
+
 import logging
 import re
 from collections.abc import MutableMapping, MutableSequence, Sequence
@@ -47,7 +50,7 @@ class Case:
         - ..
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         case: str = "",
         layer: str = "",
@@ -55,11 +58,12 @@ class Case:
         no_of_samples: int = 0,
         index: int = 0,
         path: Path | None = None,
+        *,
         is_leaf: bool = False,
         condition: MutableMapping[str, str] | None = None,
         parameters: MutableSequence[Parameter] | None = None,
         command_sets: MutableMapping[str, list[str]] | None = None,
-    ):
+    ) -> None:
         self.case: str | None = case
         self.layer: str | None = layer
         self.level: int = level
@@ -88,17 +92,19 @@ class Case:
             return True
 
         # Check whether filter expression is defined.
-        # If filter expression is missing, condition cannot be evaluated but case is, by default, still considered valid.
-        filter_expression = self.condition["_filter"] if "_filter" in self.condition else None
+        # If filter expression is missing, condition cannot be evaluated but case is, by default,
+        # still considered valid.
+        filter_expression = self.condition.get("_filter", None)
         if not filter_expression:
             logger.warning(
                 f"Layer {self.layer}: _condition element found but no _filter element defined therein. "
-                f"As the filter expression is missing, the condition cannot be evalued. Case {self.case} is hence considered valid. "
+                f"As the filter expression is missing, the condition cannot be evalued. "
+                f"Case {self.case} is hence considered valid."
             )
             return True
 
         # Check whether optional argument '_action' is defined. Use default action, if not.
-        action = self.condition["_action"] if "_action" in self.condition else None
+        action = self.condition.get("_action", None)
         if not action:
             logger.warning(
                 f"Layer {self.layer}: No _action defined in _condition element. Default action 'exclude' is used. "
@@ -144,20 +150,21 @@ class Case:
                     "condition",
                     "command_sets",
                 ]:
-                    locals()[attribute] = eval(f"self.{attribute}")
+                    locals()[attribute] = eval(f"self.{attribute}")  # noqa: S307
                     available_vars.add(attribute)
-            except Exception:
+            except Exception:  # noqa: PERF203
                 logger.exception(
                     f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
                     f"Reading case property '{attribute}' failed."
                 )
                 return False
 
-        # Read all parameter names and their associated values defined in current case, and assign them to local in-memory variables
+        # Read all parameter names and their associated values defined in current case
+        # and assign them to local in-memory variables.
         for parameter in self.parameters:
             if parameter.name and not re.match("^_", parameter.name):
                 try:
-                    exec(f"{parameter.name} = {parameter.value}")
+                    exec(f"{parameter.name} = {parameter.value}")  # noqa: S102
                     available_vars.add(parameter.name)
                 except Exception:
                     logger.exception(
@@ -173,13 +180,14 @@ class Case:
         # Evaluate filter expression
         filter_expression_evaluates_to_true = False
         try:
-            filter_expression_evaluates_to_true = eval(filter_expression)
-        except Exception:
+            filter_expression_evaluates_to_true = eval(filter_expression)  # noqa: S307
+        except Exception:  # noqa: BLE001
             # In case evaluation of the filter expression fails, processing will not stop.
             # However, a warning will be logged and the respective case will be considered valid.
             logger.warning(
                 f"Layer {self.layer}, case {self.case} evaluation of the filter expression failed:\n"
-                f"\tOne or more of the variables used in the filter expression are not defined or not accessible in the current layer.\n"
+                f"\tOne or more of the variables used in the filter expression are not defined "
+                f"or not accessible in the current layer.\n"
                 f"\t\tLayer: {self.layer}\n"
                 f"\t\tLevel: {self.level}\n"
                 f"\t\tCase: {self.case}\n"
@@ -213,7 +221,7 @@ class Case:
     def add_parameters(
         self,
         parameters: MutableSequence[Parameter] | MutableMapping[str, str] | None = None,
-    ):
+    ) -> None:
         """Manually add extra parameters."""
         if isinstance(parameters, MutableSequence):
             self.parameters.extend(parameters)
@@ -228,9 +236,8 @@ class Case:
                 f"Layer {self.layer}, case {self.case} add_parameters failed:\n"
                 f"\tWrong input data format for additional parameters.\n"
             )
-            exit(1)
 
-        return True
+        return
 
     def to_dict(self) -> dict[str, Any]:
         """Return a dict with all case attributes.
@@ -273,16 +280,17 @@ class Cases(list[Case]):
     def add_parameters(
         self,
         parameters: MutableSequence[Parameter] | MutableMapping[str, str] | None = None,
-    ):
+    ) -> None:
         """Manually add extra parameters."""
         _cases: list[Case] = deepcopy(self)
         for case in _cases:
             _ = case.add_parameters(parameters)
 
-        return False
+        return
 
     def to_pandas(
         self,
+        *,
         use_path_as_index: bool = True,
         parameters_only: bool = False,
     ) -> DataFrame:
@@ -313,35 +321,45 @@ class Cases(list[Case]):
                     if not parameter.name:
                         parameter.name = "NA"
 
-        series: dict[str, Series] = {  # pyright: ignore
+        series: dict[str, Series] = {  # pyright: ignore[reportMissingTypeArgument]
             "case": Series(data=None, dtype=np.dtype(str), name="case"),
             "path": Series(data=None, dtype=np.dtype(str), name="path"),
         }
 
         for _index, case in enumerate(_cases):
+            # TODO @CLAROS: Check whether we can replace .loc[_index] with .iloc[_index]
+            #      and .loc[_index] with .at[_index]
+            #      CLAROS, 2024-10-24
             if case.case:
-                series["case"].loc[_index] = case.case  # pyright: ignore
-            series["path"].loc[_index] = str(case.path)  # pyright: ignore
+                series["case"].loc[_index] = case.case  # type: ignore[call-overload, reportCallIssue]
+            series["path"].loc[_index] = str(case.path)  # type: ignore[call-overload, reportCallIssue]
             if case.parameters:
                 for parameter in case.parameters:
                     if parameter.name not in series:
-                        series[parameter.name] = Series(
-                            data=None,
-                            dtype=parameter.dtype,  # pyright: ignore
-                            name=parameter.name,
-                        )
+                        if parameter.dtype is not None:
+                            series[parameter.name] = Series(
+                                data=None,
+                                dtype=parameter.dtype,
+                                name=parameter.name,
+                            )
+                        else:
+                            series[parameter.name] = Series(
+                                data=None,
+                                name=parameter.name,
+                            )
+
                     if parameter.value is not None:
-                        series[parameter.name].loc[_index] = parameter.value  # pyright: ignore
+                        series[parameter.name].loc[_index] = parameter.value  # type: ignore[call-overload, reportCallIssue]
 
         if parameters_only:
             _ = series.pop("case")
             if not use_path_as_index:
                 _ = series.pop("path")
 
-        df_X = DataFrame(data=series)  # noqa: N806
+        df_X = DataFrame(data=series)
 
         if use_path_as_index:
-            df_X.set_index("path", inplace=True)
+            df_X = df_X.set_index("path")
 
         return df_X
 
@@ -353,15 +371,16 @@ class Cases(list[Case]):
         ndarray[Any, Any]
             2-dimensional numpy array with case specific parameter values of all cases.
         """
-        df_X: DataFrame = self.to_pandas(parameters_only=True)  # noqa: N806
+        df_X: DataFrame = self.to_pandas(parameters_only=True)
         array: ndarray[Any, Any] = df_X.to_numpy()
         return array
 
     def filter(
         self,
         levels: int | Sequence[int] = -1,
+        *,
         valid_only: bool = True,
-    ) -> "Cases":
+    ) -> Cases:
         """Return a sub-set of cases according to the passed in selection criteria.
 
         Parameters

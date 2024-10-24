@@ -1,3 +1,4 @@
+# ruff: noqa: PYI041
 import logging
 
 import numpy as np
@@ -14,7 +15,7 @@ class Parameter:
         self,
         name: str = "",
         value: float | int | bool | str | None = None,
-    ):
+    ) -> None:
         self.name: str = name
         self.value: float | int | bool | str | None = value
 
@@ -30,13 +31,13 @@ class Parameter:
         return None if self.value is None else type(self.value)
 
     @property
-    def dtype(self) -> np.dtype[float] | np.dtype[int] | np.dtype[bool] | np.dtype[str] | None:  # type: ignore
+    def dtype(self) -> np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool_] | np.dtype[np.str_] | None:
         """Returns the numpy dtype of the parameter.
 
         Returns
         -------
-        Union[np.dtype[float], np.dtype[int], np.dtype[bool], np.dtype[str], None]
-            the numpy dtype
+        np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool_] | np.dtype[np.str_] | None
+            the numpy dtype, or None
         """
         _type = self.type
-        return None if _type is None else np.dtype(_type)  # type: ignore
+        return None if _type is None else np.dtype(_type)  # type: ignore[return-value, reportReturnType]
