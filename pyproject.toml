@@ -22,7 +22,7 @@ packages = [
 
 [project]
 name = "farn"
-version = "0.3.7"
+version = "0.3.8"
 description = "Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies."
 readme = "README.md"
 requires-python = ">= 3.10"
