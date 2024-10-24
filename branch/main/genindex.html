@@ -1,0 +1,1462 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 --><title>Index - farn 0.3.7 documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">farn 0.3.7 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/farn.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">farn 0.3.7 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README_farn.html">farn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README_ospx.html">ospx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README_dictIO.html">dictIO</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="changelogs.html">Changelogs</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Changelogs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_farn.html">farn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_ospx.html">ospx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_dictIO.html">dictIO</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="farn.html">farn package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of farn package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="farn.core.html">farn.core package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of farn.core package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="farn.core.case.html">farn.core.case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="farn.core.parameter.html">farn.core.parameter module</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="farn.run.html">farn.run package</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of farn.run package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="farn.run.batchProcess.html">farn.run.batchProcess module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="farn.run.subProcess.html">farn.run.subProcess module</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="farn.sampling.html">farn.sampling package</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of farn.sampling package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="farn.sampling.sampling.html">farn.sampling.sampling module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="farn.farn.html">farn.farn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ospx.html">ospx package</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of ospx package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ospx.fmi.html">ospx.fmi package</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of ospx.fmi package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ospx.fmi.experiment.html">ospx.fmi.experiment module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ospx.fmi.fmu.html">ospx.fmi.fmu module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ospx.fmi.unit.html">ospx.fmi.unit module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ospx.fmi.variable.html">ospx.fmi.variable module</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ospx.watch.html">ospx.watch package</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of ospx.watch package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ospx.watch.watchCosim.html">ospx.watch.watchCosim module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.component.html">ospx.component module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.connection.html">ospx.connection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.connector.html">ospx.connector module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.graph.html">ospx.graph module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.importer.html">ospx.importer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.ospCaseBuilder.html">ospx.ospCaseBuilder module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.ospSimulationCase.html">ospx.ospSimulationCase module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.simulation.html">ospx.simulation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ospx.system.html">ospx.system module</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="dictIO.html">dictIO package</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of dictIO package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="dictIO.utils.html">dictIO.utils package</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of dictIO.utils package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="dictIO.utils.counter.html">dictIO.utils.counter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dictIO.utils.logging.html">dictIO.utils.logging module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dictIO.utils.path.html">dictIO.utils.path module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dictIO.utils.strings.html">dictIO.utils.strings module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.cppDict.html">dictIO.cppDict module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.dictParser.html">dictIO.dictParser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.dictReader.html">dictIO.dictReader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.dictWriter.html">dictIO.dictWriter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.formatter.html">dictIO.formatter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dictIO.parser.html">dictIO.parser module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="farn_example.html">Example of farn API usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cli.html">CLI Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of CLI Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.farn.html">farn</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of farn</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.farn.html">farn - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.batchProcess.html">batchProcess - CLI interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.ospx.html">ospx</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of ospx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.ospCaseBuilder.html">ospCaseBuilder - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.importSystemStructure.html">importSystemStructure - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.watchCosim.html">watchCosim - CLI interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.dictIO.html">dictIO</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of dictIO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.dictParser.html">dictParser - CLI interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="fileFormat.html">File Formats</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of File Formats</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.farn.html">farn</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of farn</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.farnDict.html">farnDict</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.ospx.html">ospx</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of ospx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.caseDict.html">caseDict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.watchDict.html">watchDict</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.dictIO.html">dictIO</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of dictIO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.cppDict.html">dict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#J"><strong>J</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a> | <a href="#X"><strong>X</strong></a></div>
+</section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.A">A (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.add_double_quotes">add_double_quotes() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.Case.add_parameters">add_parameters() (farn.core.case.Case method)</a>
+
+        <ul>
+          <li><a href="farn.core.case.html#farn.core.case.Cases.add_parameters">(farn.core.case.Cases method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.add_single_quotes">add_single_quotes() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="ospx.simulation.html#ospx.simulation.Simulation.algorithm">algorithm (ospx.simulation.Simulation property)</a>
+</li>
+        <li><a href="farn.run.batchProcess.html#farn.run.batchProcess.AsyncBatchProcessor">AsyncBatchProcessor (class in farn.run.batchProcess)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.simulation.html#ospx.simulation.Simulation.base_step_size">base_step_size (ospx.simulation.Simulation attribute)</a>
+</li>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.Unit.base_unit">base_unit (ospx.fmi.unit.Unit attribute)</a>
+</li>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit">BaseUnit (class in ospx.fmi.unit)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.BorgCounter.Borg">Borg (dictIO.utils.counter.BorgCounter attribute)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.BorgCounter">BorgCounter (class in dictIO.utils.counter)</a>
+</li>
+        <li><a href="ospx.ospCaseBuilder.html#ospx.ospCaseBuilder.OspCaseBuilder.build">build() (ospx.ospCaseBuilder.OspCaseBuilder static method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="farn.core.case.html#farn.core.case.Case">Case (class in farn.core.case)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.Cases">Cases (class in farn.core.case)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus">CaseStatus (class in farn.core.case)</a>
+</li>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.ScalarVariable.causality">causality (ospx.fmi.variable.ScalarVariable property)</a>
+</li>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.cd">cd (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+        <li><a href="ospx.component.html#ospx.component.Component">Component (class in ospx.component)</a>
+</li>
+        <li><a href="ospx.system.html#ospx.system.System.components">components (ospx.system.System property)</a>
+</li>
+        <li><a href="dictIO.utils.logging.html#dictIO.utils.logging.configure_logging">configure_logging() (in module dictIO.utils.logging)</a>
+</li>
+        <li><a href="ospx.connection.html#ospx.connection.Connection">Connection (class in ospx.connection)</a>
+</li>
+        <li><a href="ospx.system.html#ospx.system.System.connections">connections (ospx.system.System property)</a>
+</li>
+        <li><a href="ospx.connector.html#ospx.connector.Connector">Connector (class in ospx.connector)</a>
+</li>
+        <li><a href="ospx.connection.html#ospx.connection.Endpoint.connector">connector (ospx.connection.Endpoint property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.component.html#ospx.component.Component.connectors">connectors (ospx.component.Component property)</a>
+
+        <ul>
+          <li><a href="ospx.system.html#ospx.system.System.connectors">(ospx.system.System property)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU.copy">copy() (ospx.fmi.fmu.FMU method)</a>
+</li>
+        <li><a href="ospx.watch.watchCosim.html#ospx.watch.watchCosim.CosimWatcher">CosimWatcher (class in ospx.watch.watchCosim)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict">CppDict (class in dictIO.cppDict)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter">CppFormatter (class in dictIO.formatter)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.CppParser">CppParser (class in dictIO.parser)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.create_case_folders">create_case_folders() (in module farn.farn)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.create_case_list_files">create_case_list_files() (in module farn.farn)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.create_cases">create_cases() (in module farn.farn)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.create_param_dict_files">create_param_dict_files() (in module farn.farn)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.create_samples">create_samples() (in module farn.farn)</a>
+</li>
+        <li><a href="dictIO.dictWriter.html#dictIO.dictWriter.create_target_file_name">create_target_file_name() (in module dictIO.dictWriter)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.ScalarVariable.data_type">data_type (ospx.fmi.variable.ScalarVariable property)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.Indenter.decr">decr() (dictIO.utils.counter.Indenter static method)</a>
+</li>
+        <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU.default_experiment">default_experiment (ospx.fmi.fmu.FMU property)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.DejaVue">DejaVue (class in dictIO.utils.counter)</a>
+</li>
+        <li>
+    dictIO
+
+        <ul>
+          <li><a href="dictIO.html#module-dictIO">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.cppDict
+
+        <ul>
+          <li><a href="dictIO.cppDict.html#module-dictIO.cppDict">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.dictParser
+
+        <ul>
+          <li><a href="dictIO.dictParser.html#module-dictIO.dictParser">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.dictReader
+
+        <ul>
+          <li><a href="dictIO.dictReader.html#module-dictIO.dictReader">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.dictWriter
+
+        <ul>
+          <li><a href="dictIO.dictWriter.html#module-dictIO.dictWriter">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.formatter
+
+        <ul>
+          <li><a href="dictIO.formatter.html#module-dictIO.formatter">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.parser
+
+        <ul>
+          <li><a href="dictIO.parser.html#module-dictIO.parser">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    dictIO.utils
+
+        <ul>
+          <li><a href="dictIO.utils.html#module-dictIO.utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.utils.counter
+
+        <ul>
+          <li><a href="dictIO.utils.counter.html#module-dictIO.utils.counter">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.utils.logging
+
+        <ul>
+          <li><a href="dictIO.utils.logging.html#module-dictIO.utils.logging">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.utils.path
+
+        <ul>
+          <li><a href="dictIO.utils.path.html#module-dictIO.utils.path">module</a>
+</li>
+        </ul></li>
+        <li>
+    dictIO.utils.strings
+
+        <ul>
+          <li><a href="dictIO.utils.strings.html#module-dictIO.utils.strings">module</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.dictParser.html#dictIO.dictParser.DictParser">DictParser (class in dictIO.dictParser)</a>
+</li>
+        <li><a href="dictIO.dictReader.html#dictIO.dictReader.DictReader">DictReader (class in dictIO.dictReader)</a>
+</li>
+        <li><a href="dictIO.dictWriter.html#dictIO.dictWriter.DictWriter">DictWriter (class in dictIO.dictWriter)</a>
+</li>
+        <li><a href="farn.sampling.sampling.html#farn.sampling.sampling.DiscreteSampling">DiscreteSampling (class in farn.sampling.sampling)</a>
+</li>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.Unit.display_unit">display_unit (ospx.fmi.unit.Unit attribute)</a>
+</li>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.DisplayUnit">DisplayUnit (class in ospx.fmi.unit)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.DejaVue.djv">djv (dictIO.utils.counter.DejaVue attribute)</a>
+</li>
+        <li><a href="farn.core.parameter.html#farn.core.parameter.Parameter.dtype">dtype (farn.core.parameter.Parameter property)</a>
+</li>
+        <li><a href="ospx.watch.watchCosim.html#ospx.watch.watchCosim.CosimWatcher.dump">dump() (ospx.watch.watchCosim.CosimWatcher method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.connection.html#ospx.connection.Endpoint">Endpoint (class in ospx.connection)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.execute_command_set">execute_command_set() (in module farn.farn)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="farn.run.subProcess.html#farn.run.subProcess.execute_in_sub_process">execute_in_sub_process() (in module farn.run.subProcess)</a>
+</li>
+        <li><a href="ospx.fmi.experiment.html#ospx.fmi.experiment.Experiment">Experiment (class in ospx.fmi.experiment)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.factor">factor (ospx.fmi.unit.BaseUnit attribute)</a>
+
+        <ul>
+          <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.DisplayUnit.factor">(ospx.fmi.unit.DisplayUnit attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus.FAILURE">FAILURE (farn.core.case.CaseStatus attribute)</a>
+</li>
+        <li>
+    farn
+
+        <ul>
+          <li><a href="farn.html#module-farn">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.core
+
+        <ul>
+          <li><a href="farn.core.html#module-farn.core">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.core.case
+
+        <ul>
+          <li><a href="farn.core.case.html#module-farn.core.case">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.core.parameter
+
+        <ul>
+          <li><a href="farn.core.parameter.html#module-farn.core.parameter">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.farn
+
+        <ul>
+          <li><a href="farn.farn.html#module-farn.farn">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.run
+
+        <ul>
+          <li><a href="farn.run.html#module-farn.run">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.run.batchProcess
+
+        <ul>
+          <li><a href="farn.run.batchProcess.html#module-farn.run.batchProcess">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.run.subProcess
+
+        <ul>
+          <li><a href="farn.run.subProcess.html#module-farn.run.subProcess">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.sampling
+
+        <ul>
+          <li><a href="farn.sampling.html#module-farn.sampling">module</a>
+</li>
+        </ul></li>
+        <li>
+    farn.sampling.sampling
+
+        <ul>
+          <li><a href="farn.sampling.sampling.html#module-farn.sampling.sampling">module</a>
+</li>
+        </ul></li>
+        <li><a href="farn.core.case.html#farn.core.case.Cases.filter">filter() (farn.core.case.Cases method)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.find_global_key">find_global_key() (dictIO.cppDict.CppDict method)</a>
+
+        <ul>
+          <li><a href="dictIO.cppDict.html#dictIO.cppDict.find_global_key">(in module dictIO.cppDict)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU">FMU (class in ospx.fmi.fmu)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.system.html#ospx.system.System.fmus">fmus (ospx.system.System property)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter">FoamFormatter (class in dictIO.formatter)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.FoamParser">FoamParser (class in dictIO.parser)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_bool">format_bool() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_bool">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_dict">format_dict() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_dict">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_empty_string">format_empty_string() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.format_empty_string">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_empty_string">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_expression_string">format_expression_string() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.format_expression_string">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_expression_string">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_float">format_float() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_int">format_int() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_multi_word_string">format_multi_word_string() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.format_multi_word_string">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_multi_word_string">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_none">format_none() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_none">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_reference_string">format_reference_string() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_single_word_string">format_single_word_string() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_string">format_string() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.format_string_with_nested_string">format_string_with_nested_string() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.format_string_with_nested_string">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_string_with_nested_string">(dictIO.formatter.Formatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.format_type">format_type() (dictIO.formatter.Formatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter">Formatter (class in dictIO.formatter)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.graph.html#ospx.graph.Graph.generate_dependency_graph">generate_dependency_graph() (ospx.graph.Graph static method)</a>
+</li>
+        <li><a href="farn.sampling.sampling.html#farn.sampling.sampling.DiscreteSampling.generate_samples">generate_samples() (farn.sampling.sampling.DiscreteSampling method)</a>
+</li>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.get_fmi_data_type">get_fmi_data_type() (in module ospx.fmi.variable)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.get_formatter">get_formatter() (dictIO.formatter.Formatter class method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.get_parser">get_parser() (dictIO.parser.Parser class method)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.global_key_exists">global_key_exists() (dictIO.cppDict.CppDict method)</a>
+
+        <ul>
+          <li><a href="dictIO.cppDict.html#dictIO.cppDict.global_key_exists">(in module dictIO.cppDict)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.graph.html#ospx.graph.Graph">Graph (class in ospx.graph)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="H" class="genindex-section">
+  <h2>H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.utils.path.html#dictIO.utils.path.highest_common_root_folder">highest_common_root_folder() (in module dictIO.utils.path)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.component.html#ospx.component.RemoteAccess.host">host (ospx.component.RemoteAccess attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.importer.html#ospx.importer.OspSystemStructureImporter.import_system_structure">import_system_structure() (ospx.importer.OspSystemStructureImporter static method)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.include">include() (dictIO.cppDict.CppDict method)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.Indenter.incr">incr() (dictIO.utils.counter.Indenter static method)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.Indenter.Ind">Ind (dictIO.utils.counter.Indenter attribute)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.Indenter">Indenter (class in dictIO.utils.counter)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.insert_block_comments">insert_block_comments() (dictIO.formatter.CppFormatter method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.insert_includes">insert_includes() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.JsonFormatter.insert_includes">(dictIO.formatter.JsonFormatter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.insert_line_comments">insert_line_comments() (dictIO.formatter.CppFormatter method)</a>
+</li>
+        <li><a href="ospx.connector.html#ospx.connector.Connector.is_group_connector">is_group_connector (ospx.connector.Connector property)</a>
+</li>
+        <li><a href="ospx.connector.html#ospx.connector.Connector.is_single_connector">is_single_connector (ospx.connector.Connector property)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.Case.is_valid">is_valid (farn.core.case.Case property)</a>
+
+        <ul>
+          <li><a href="ospx.connection.html#ospx.connection.Connection.is_valid">(ospx.connection.Connection property)</a>
+</li>
+          <li><a href="ospx.connection.html#ospx.connection.Endpoint.is_valid">(ospx.connection.Endpoint property)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.connection.html#ospx.connection.Connection.is_variable_connection">is_variable_connection (ospx.connection.Connection property)</a>
+</li>
+        <li><a href="ospx.connection.html#ospx.connection.Connection.is_variable_group_connection">is_variable_group_connection (ospx.connection.Connection property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="J" class="genindex-section">
+  <h2>J</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.JsonFormatter">JsonFormatter (class in dictIO.formatter)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.parser.html#dictIO.parser.JsonParser">JsonParser (class in dictIO.parser)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="K" class="genindex-section">
+  <h2>K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.K">K (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.kg">kg (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.m">m (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.make_default_block_comment">make_default_block_comment() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.make_default_block_comment">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.merge">merge() (dictIO.cppDict.CppDict method)</a>
+</li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="dictIO.html#module-dictIO">dictIO</a>
+</li>
+          <li><a href="dictIO.cppDict.html#module-dictIO.cppDict">dictIO.cppDict</a>
+</li>
+          <li><a href="dictIO.dictParser.html#module-dictIO.dictParser">dictIO.dictParser</a>
+</li>
+          <li><a href="dictIO.dictReader.html#module-dictIO.dictReader">dictIO.dictReader</a>
+</li>
+          <li><a href="dictIO.dictWriter.html#module-dictIO.dictWriter">dictIO.dictWriter</a>
+</li>
+          <li><a href="dictIO.formatter.html#module-dictIO.formatter">dictIO.formatter</a>
+</li>
+          <li><a href="dictIO.parser.html#module-dictIO.parser">dictIO.parser</a>
+</li>
+          <li><a href="dictIO.utils.html#module-dictIO.utils">dictIO.utils</a>
+</li>
+          <li><a href="dictIO.utils.counter.html#module-dictIO.utils.counter">dictIO.utils.counter</a>
+</li>
+          <li><a href="dictIO.utils.logging.html#module-dictIO.utils.logging">dictIO.utils.logging</a>
+</li>
+          <li><a href="dictIO.utils.path.html#module-dictIO.utils.path">dictIO.utils.path</a>
+</li>
+          <li><a href="dictIO.utils.strings.html#module-dictIO.utils.strings">dictIO.utils.strings</a>
+</li>
+          <li><a href="farn.html#module-farn">farn</a>
+</li>
+          <li><a href="farn.core.html#module-farn.core">farn.core</a>
+</li>
+          <li><a href="farn.core.case.html#module-farn.core.case">farn.core.case</a>
+</li>
+          <li><a href="farn.core.parameter.html#module-farn.core.parameter">farn.core.parameter</a>
+</li>
+          <li><a href="farn.farn.html#module-farn.farn">farn.farn</a>
+</li>
+          <li><a href="farn.run.html#module-farn.run">farn.run</a>
+</li>
+          <li><a href="farn.run.batchProcess.html#module-farn.run.batchProcess">farn.run.batchProcess</a>
+</li>
+          <li><a href="farn.run.subProcess.html#module-farn.run.subProcess">farn.run.subProcess</a>
+</li>
+          <li><a href="farn.sampling.html#module-farn.sampling">farn.sampling</a>
+</li>
+          <li><a href="farn.sampling.sampling.html#module-farn.sampling.sampling">farn.sampling.sampling</a>
+</li>
+          <li><a href="ospx.html#module-ospx">ospx</a>
+</li>
+          <li><a href="ospx.component.html#module-ospx.component">ospx.component</a>
+</li>
+          <li><a href="ospx.connection.html#module-ospx.connection">ospx.connection</a>
+</li>
+          <li><a href="ospx.connector.html#module-ospx.connector">ospx.connector</a>
+</li>
+          <li><a href="ospx.fmi.html#module-ospx.fmi">ospx.fmi</a>
+</li>
+          <li><a href="ospx.fmi.experiment.html#module-ospx.fmi.experiment">ospx.fmi.experiment</a>
+</li>
+          <li><a href="ospx.fmi.fmu.html#module-ospx.fmi.fmu">ospx.fmi.fmu</a>
+</li>
+          <li><a href="ospx.fmi.unit.html#module-ospx.fmi.unit">ospx.fmi.unit</a>
+</li>
+          <li><a href="ospx.fmi.variable.html#module-ospx.fmi.variable">ospx.fmi.variable</a>
+</li>
+          <li><a href="ospx.graph.html#module-ospx.graph">ospx.graph</a>
+</li>
+          <li><a href="ospx.importer.html#module-ospx.importer">ospx.importer</a>
+</li>
+          <li><a href="ospx.ospCaseBuilder.html#module-ospx.ospCaseBuilder">ospx.ospCaseBuilder</a>
+</li>
+          <li><a href="ospx.ospSimulationCase.html#module-ospx.ospSimulationCase">ospx.ospSimulationCase</a>
+</li>
+          <li><a href="ospx.simulation.html#module-ospx.simulation">ospx.simulation</a>
+</li>
+          <li><a href="ospx.system.html#module-ospx.system">ospx.system</a>
+</li>
+          <li><a href="ospx.watch.html#module-ospx.watch">ospx.watch</a>
+</li>
+          <li><a href="ospx.watch.watchCosim.html#module-ospx.watch.watchCosim">ospx.watch.watchCosim</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.mol">mol (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.DisplayUnit.name">name (ospx.fmi.unit.DisplayUnit attribute)</a>
+
+        <ul>
+          <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.Unit.name">(ospx.fmi.unit.Unit attribute)</a>
+</li>
+          <li><a href="ospx.simulation.html#ospx.simulation.Simulation.name">(ospx.simulation.Simulation attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus.NONE">NONE (farn.core.case.CaseStatus attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.offset">offset (ospx.fmi.unit.BaseUnit attribute)</a>
+
+        <ul>
+          <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.DisplayUnit.offset">(ospx.fmi.unit.DisplayUnit attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.order_keys">order_keys() (dictIO.cppDict.CppDict method)</a>
+
+        <ul>
+          <li><a href="dictIO.cppDict.html#dictIO.cppDict.order_keys">(in module dictIO.cppDict)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.ospCaseBuilder.html#ospx.ospCaseBuilder.OspCaseBuilder">OspCaseBuilder (class in ospx.ospCaseBuilder)</a>
+</li>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase">OspSimulationCase (class in ospx.ospSimulationCase)</a>
+</li>
+        <li><a href="ospx.importer.html#ospx.importer.OspSystemStructureImporter">OspSystemStructureImporter (class in ospx.importer)</a>
+</li>
+        <li>
+    ospx
+
+        <ul>
+          <li><a href="ospx.html#module-ospx">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.component
+
+        <ul>
+          <li><a href="ospx.component.html#module-ospx.component">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.connection
+
+        <ul>
+          <li><a href="ospx.connection.html#module-ospx.connection">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.connector
+
+        <ul>
+          <li><a href="ospx.connector.html#module-ospx.connector">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.fmi
+
+        <ul>
+          <li><a href="ospx.fmi.html#module-ospx.fmi">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.fmi.experiment
+
+        <ul>
+          <li><a href="ospx.fmi.experiment.html#module-ospx.fmi.experiment">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.fmi.fmu
+
+        <ul>
+          <li><a href="ospx.fmi.fmu.html#module-ospx.fmi.fmu">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    ospx.fmi.unit
+
+        <ul>
+          <li><a href="ospx.fmi.unit.html#module-ospx.fmi.unit">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.fmi.variable
+
+        <ul>
+          <li><a href="ospx.fmi.variable.html#module-ospx.fmi.variable">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.graph
+
+        <ul>
+          <li><a href="ospx.graph.html#module-ospx.graph">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.importer
+
+        <ul>
+          <li><a href="ospx.importer.html#module-ospx.importer">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.ospCaseBuilder
+
+        <ul>
+          <li><a href="ospx.ospCaseBuilder.html#module-ospx.ospCaseBuilder">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.ospSimulationCase
+
+        <ul>
+          <li><a href="ospx.ospSimulationCase.html#module-ospx.ospSimulationCase">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.simulation
+
+        <ul>
+          <li><a href="ospx.simulation.html#module-ospx.simulation">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.system
+
+        <ul>
+          <li><a href="ospx.system.html#module-ospx.system">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.watch
+
+        <ul>
+          <li><a href="ospx.watch.html#module-ospx.watch">module</a>
+</li>
+        </ul></li>
+        <li>
+    ospx.watch.watchCosim
+
+        <ul>
+          <li><a href="ospx.watch.watchCosim.html#module-ospx.watch.watchCosim">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="farn.core.parameter.html#farn.core.parameter.Parameter">Parameter (class in farn.core.parameter)</a>
+</li>
+        <li><a href="dictIO.dictParser.html#dictIO.dictParser.DictParser.parse">parse() (dictIO.dictParser.DictParser static method)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.parse_file">parse_file() (dictIO.parser.Parser method)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.CppParser.parse_string">parse_string() (dictIO.parser.CppParser method)</a>
+
+        <ul>
+          <li><a href="dictIO.parser.html#dictIO.parser.FoamParser.parse_string">(dictIO.parser.FoamParser method)</a>
+</li>
+          <li><a href="dictIO.parser.html#dictIO.parser.JsonParser.parse_string">(dictIO.parser.JsonParser method)</a>
+</li>
+          <li><a href="dictIO.parser.html#dictIO.parser.Parser.parse_string">(dictIO.parser.Parser method)</a>
+</li>
+          <li><a href="dictIO.parser.html#dictIO.parser.XmlParser.parse_string">(dictIO.parser.XmlParser method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.parse_type">parse_type() (dictIO.parser.Parser method)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.parse_types">parse_types() (dictIO.parser.Parser method)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser">Parser (class in dictIO.parser)</a>
+</li>
+        <li><a href="ospx.watch.watchCosim.html#ospx.watch.watchCosim.CosimWatcher.plot">plot() (ospx.watch.watchCosim.CosimWatcher method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.XmlFormatter.populate_into_element">populate_into_element() (dictIO.formatter.XmlFormatter method)</a>
+</li>
+        <li><a href="ospx.component.html#ospx.component.RemoteAccess.port">port (ospx.component.RemoteAccess attribute)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus.PREPARED">PREPARED (farn.core.case.CaseStatus attribute)</a>
+</li>
+        <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU.proxify">proxify() (ospx.fmi.fmu.FMU method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.rad">rad (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+        <li><a href="dictIO.dictReader.html#dictIO.dictReader.DictReader.read">read() (dictIO.dictReader.DictReader static method)</a>
+</li>
+        <li><a href="ospx.watch.watchCosim.html#ospx.watch.watchCosim.CosimWatcher.read_watch_dict">read_watch_dict() (ospx.watch.watchCosim.CosimWatcher method)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.reduce_scope">reduce_scope() (dictIO.cppDict.CppDict method)</a>
+</li>
+        <li><a href="dictIO.utils.path.html#dictIO.utils.path.relative_path">relative_path() (in module dictIO.utils.path)</a>
+</li>
+        <li><a href="ospx.component.html#ospx.component.RemoteAccess">RemoteAccess (class in ospx.component)</a>
+</li>
+        <li><a href="dictIO.utils.strings.html#dictIO.utils.strings.remove_quotes">remove_quotes() (in module dictIO.utils.strings)</a>
+</li>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.remove_quotes_from_string">remove_quotes_from_string() (dictIO.parser.Parser static method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.parser.html#dictIO.parser.Parser.remove_quotes_from_strings">remove_quotes_from_strings() (dictIO.parser.Parser static method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.remove_trailing_spaces">remove_trailing_spaces() (dictIO.formatter.CppFormatter method)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.BorgCounter.reset">reset() (dictIO.utils.counter.BorgCounter static method)</a>
+
+        <ul>
+          <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.DejaVue.reset">(dictIO.utils.counter.DejaVue method)</a>
+</li>
+          <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.Indenter.reset">(dictIO.utils.counter.Indenter static method)</a>
+</li>
+        </ul></li>
+        <li><a href="farn.run.batchProcess.html#farn.run.batchProcess.AsyncBatchProcessor.run">run() (farn.run.batchProcess.AsyncBatchProcessor method)</a>
+</li>
+        <li><a href="farn.farn.html#farn.farn.run_farn">run_farn() (in module farn.farn)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus.RUNNING">RUNNING (farn.core.case.CaseStatus attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.BaseUnit.s">s (ospx.fmi.unit.BaseUnit attribute)</a>
+</li>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.ScalarVariable">ScalarVariable (class in ospx.fmi.variable)</a>
+</li>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.set_global_key">set_global_key() (dictIO.cppDict.CppDict method)</a>
+
+        <ul>
+          <li><a href="dictIO.cppDict.html#dictIO.cppDict.set_global_key">(in module dictIO.cppDict)</a>
+</li>
+        </ul></li>
+        <li><a href="farn.sampling.sampling.html#farn.sampling.sampling.DiscreteSampling.set_sampling_parameters">set_sampling_parameters() (farn.sampling.sampling.DiscreteSampling method)</a>
+</li>
+        <li><a href="farn.sampling.sampling.html#farn.sampling.sampling.DiscreteSampling.set_sampling_type">set_sampling_type() (farn.sampling.sampling.DiscreteSampling method)</a>
+</li>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase.setup">setup() (ospx.ospSimulationCase.OspSimulationCase method)</a>
+</li>
+        <li><a href="ospx.simulation.html#ospx.simulation.Simulation">Simulation (class in ospx.simulation)</a>
+</li>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.ScalarVariable.start">start (ospx.fmi.variable.ScalarVariable property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.experiment.html#ospx.fmi.experiment.Experiment.start_time">start_time (ospx.fmi.experiment.Experiment attribute)</a>
+
+        <ul>
+          <li><a href="ospx.simulation.html#ospx.simulation.Simulation.start_time">(ospx.simulation.Simulation attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.fmi.experiment.html#ospx.fmi.experiment.Experiment.step_size">step_size (ospx.fmi.experiment.Experiment attribute)</a>
+</li>
+        <li><a href="ospx.fmi.experiment.html#ospx.fmi.experiment.Experiment.stop_time">stop_time (ospx.fmi.experiment.Experiment attribute)</a>
+
+        <ul>
+          <li><a href="ospx.simulation.html#ospx.simulation.Simulation.stop_time">(ospx.simulation.Simulation attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="dictIO.utils.strings.html#dictIO.utils.strings.string_diff">string_diff() (in module dictIO.utils.strings)</a>
+</li>
+        <li><a href="dictIO.utils.counter.html#dictIO.utils.counter.DejaVue.strings">strings (dictIO.utils.counter.DejaVue property)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.CaseStatus.SUCCESS">SUCCESS (farn.core.case.CaseStatus attribute)</a>
+</li>
+        <li><a href="ospx.system.html#ospx.system.System">System (class in ospx.system)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="farn.core.case.html#farn.core.case.Case.to_dict">to_dict() (farn.core.case.Case method)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.Cases.to_numpy">to_numpy() (farn.core.case.Cases method)</a>
+</li>
+        <li><a href="farn.core.case.html#farn.core.case.Cases.to_pandas">to_pandas() (farn.core.case.Cases method)</a>
+</li>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.CppFormatter.to_string">to_string() (dictIO.formatter.CppFormatter method)</a>
+
+        <ul>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.FoamFormatter.to_string">(dictIO.formatter.FoamFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.Formatter.to_string">(dictIO.formatter.Formatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.JsonFormatter.to_string">(dictIO.formatter.JsonFormatter method)</a>
+</li>
+          <li><a href="dictIO.formatter.html#dictIO.formatter.XmlFormatter.to_string">(dictIO.formatter.XmlFormatter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.experiment.html#ospx.fmi.experiment.Experiment.tolerance">tolerance (ospx.fmi.experiment.Experiment attribute)</a>
+</li>
+        <li><a href="farn.core.parameter.html#farn.core.parameter.Parameter.type">type (farn.core.parameter.Parameter property)</a>
+
+        <ul>
+          <li><a href="ospx.connector.html#ospx.connector.Connector.type">(ospx.connector.Connector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.unit.html#ospx.fmi.unit.Unit">Unit (class in ospx.fmi.unit)</a>
+</li>
+        <li><a href="ospx.component.html#ospx.component.Component.units">units (ospx.component.Component property)</a>
+
+        <ul>
+          <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU.units">(ospx.fmi.fmu.FMU property)</a>
+</li>
+          <li><a href="ospx.system.html#ospx.system.System.units">(ospx.system.System property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.update">update() (dictIO.cppDict.CppDict method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.fmi.variable.html#ospx.fmi.variable.ScalarVariable.variability">variability (ospx.fmi.variable.ScalarVariable property)</a>
+</li>
+        <li><a href="ospx.connection.html#ospx.connection.Endpoint.variable">variable (ospx.connection.Endpoint property)</a>
+
+        <ul>
+          <li><a href="ospx.connector.html#ospx.connector.Connector.variable">(ospx.connector.Connector property)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.connector.html#ospx.connector.Connector.variable_group">variable_group (ospx.connector.Connector property)</a>
+</li>
+        <li><a href="ospx.connection.html#ospx.connection.Endpoint.variable_name">variable_name (ospx.connection.Endpoint property)</a>
+
+        <ul>
+          <li><a href="ospx.connector.html#ospx.connector.Connector.variable_name">(ospx.connector.Connector property)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.cppDict.html#dictIO.cppDict.CppDict.variables">variables (dictIO.cppDict.CppDict property)</a>
+
+        <ul>
+          <li><a href="ospx.component.html#ospx.component.Component.variables">(ospx.component.Component property)</a>
+</li>
+          <li><a href="ospx.fmi.fmu.html#ospx.fmi.fmu.FMU.variables">(ospx.fmi.fmu.FMU property)</a>
+</li>
+          <li><a href="ospx.system.html#ospx.system.System.variables">(ospx.system.System property)</a>
+</li>
+        </ul></li>
+        <li><a href="ospx.component.html#ospx.component.Component.variables_with_start_values">variables_with_start_values (ospx.component.Component property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="W" class="genindex-section">
+  <h2>W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.dictWriter.html#dictIO.dictWriter.DictWriter.write">write() (dictIO.dictWriter.DictWriter static method)</a>
+</li>
+        <li><a href="ospx.component.html#ospx.component.Component.write_osp_model_description_xml">write_osp_model_description_xml() (ospx.component.Component method)</a>
+</li>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase.write_osp_system_structure_xml">write_osp_system_structure_xml() (ospx.ospSimulationCase.OspSimulationCase method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase.write_statistics_dict">write_statistics_dict() (ospx.ospSimulationCase.OspSimulationCase method)</a>
+</li>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase.write_system_structure_ssd">write_system_structure_ssd() (ospx.ospSimulationCase.OspSimulationCase method)</a>
+</li>
+        <li><a href="ospx.ospSimulationCase.html#ospx.ospSimulationCase.OspSimulationCase.write_watch_dict">write_watch_dict() (ospx.ospSimulationCase.OspSimulationCase method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="X" class="genindex-section">
+  <h2>X</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.formatter.html#dictIO.formatter.XmlFormatter">XmlFormatter (class in dictIO.formatter)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="dictIO.parser.html#dictIO.parser.XmlParser">XmlParser (class in dictIO.parser)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, DNV SE. All rights reserved.
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=29d04658"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
