@@ -22,7 +22,7 @@ packages = [
 
 [project]
 name = "farn"
-version = "0.3.8"
+version = "0.4.0b1"
 description = "Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies."
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -61,8 +61,8 @@ dependencies = [
     "pyDOE3>=1.0",
     "psutil>=5.9",
     "hilbertcurve>=2.0.5",
-    "dictIO>=0.4.0b1",
-    "ospx>=0.2.14",
+    "dictIO>=0.4.0b9",
+    "ospx>=0.3.0b3",
 ]
 
 [project.urls]
