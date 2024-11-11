@@ -16,7 +16,6 @@ jobs:
       - name: Checkout farn (active branch)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
           lfs: true
       - name: prepare farn
         run: |
@@ -37,7 +36,6 @@ jobs:
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
           path: dictIO
-          fetch-depth: 1
           lfs: true
       - name: Prepare dictIO
         run: |
@@ -53,7 +51,6 @@ jobs:
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
           path: ospx
-          fetch-depth: 1
           lfs: true
       - name: Prepare ospx
         run: |
@@ -74,14 +71,17 @@ jobs:
           cp -v -f docs/source/combined/* docs/source
           rm -v -r docs/source/combined
 
-      - name: Install Python
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
         with:
-          python-version: '3.11'
-          cache: 'pip' # cache pip dependencies
-      - name: Install dependencies
-        run: |
-          pip install -r requirements-dev.txt
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+      - name: Install the project
+        run: uv sync --upgrade
       - name: Print debugging information
         run: |
           echo "github.ref:" ${{github.ref}}
@@ -93,16 +93,15 @@ jobs:
           git branch
           git branch -a
           git remote -v
-          python -V
-          pip list --not-required
-          pip list
+          uv run python -V
+          uv pip list
 
       # Build documentation
       - uses: sphinx-doc/github-problem-matcher@master
       - name: Build documentation
         run: |
           cd docs
-          make html
+          uv run make html
 
       - name: Clone and cleanup gh-pages branch
         run: |
@@ -159,7 +158,7 @@ jobs:
 
       # Publish: Commit gh-pages branch and publish it to GitHub Pages
       - name: Publish documentation
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}

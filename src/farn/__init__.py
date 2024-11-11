@@ -1,6 +1,3 @@
-# from farn.core import Case as Case
-# from farn.core import Parameter as Parameter
-
 from .farn import (
     run_farn as run_farn,
     create_samples as create_samples,
