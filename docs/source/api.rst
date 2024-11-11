@@ -1,10 +1,8 @@
 API Reference
 =============
 
-.. autosummary::
-   :toctree: _autosummary
-   :template: custom-module.rst
-   :recursive:
+.. toctree::
+   :maxdepth: 4
 
    farn
    farn_example

@@ -40,6 +40,7 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.autosummary",
     "sphinx.ext.todo",
+    "sphinxcontrib.mermaid",
 ]
 
 # The file extensions of source files.
@@ -65,10 +66,13 @@ html_theme = "furo"
 html_static_path = ["_static"]
 html_logo = "_static/farn.svg"
 autodoc_default_options = {
-    "member-order": "bysource",
+    "member-order": "groupwise",
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
 autodoc_preserve_defaults = True
 
 myst_heading_anchors = 3
+
+# add markdown mermaid support
+myst_fence_as_directive = ["mermaid"]

@@ -36,7 +36,7 @@ class Parameter:
 
         Returns
         -------
-        np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool_] | np.dtype[np.str_] | None
+        np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool] | np.dtype[np.str] | None
             the numpy dtype, or None
         """
         _type = self.type

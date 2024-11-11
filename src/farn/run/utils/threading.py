@@ -23,7 +23,7 @@ class JobQueue(Queue[tuple[Any, Sequence[Any], Mapping[str, Any]]]):
     ) -> None:
         """Put a callable object (function) in the JobQueue.
 
-        Additional positional and keyword arguments provided with *args and *kwargs
+        Additional positional and keyword arguments provided with args and kwargs
         will be passed on to the called function.
 
         Parameters
