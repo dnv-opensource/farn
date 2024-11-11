@@ -9,7 +9,7 @@ from typing import (
     Any,
 )
 
-from dictIO import CppDict, DictReader, DictWriter, create_target_file_name
+from dictIO import DictReader, DictWriter, SDict, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
 from farn.core import Case, Cases, Parameter
@@ -148,7 +148,7 @@ def run_farn(
     return valid_leaf_cases
 
 
-def create_samples(farn_dict: CppDict) -> None:
+def create_samples(farn_dict: SDict[str, Any]) -> None:
     """Run sampling and create the samples inside all layers of the passed in farn dict.
 
     Creates the _samples element in each layer and populates it with the discrete samples
@@ -157,7 +157,7 @@ def create_samples(farn_dict: CppDict) -> None:
 
     Parameters
     ----------
-    farn_dict : CppDict
+    farn_dict : SDict[str, Any]
         farn dict the samples shall be created in
     """
     from farn.sampling.sampling import DiscreteSampling
@@ -470,7 +470,7 @@ def create_param_dict_files(cases: MutableSequence[Case]) -> int:
     for case in cases:
         logger.debug(f"creating paramDict in {case.path}")  # 1
         target_file = case.path / "paramDict"
-        param_dict = CppDict(target_file)
+        param_dict: SDict[str, Any] = SDict(target_file)
 
         for parameter in case.parameters or []:
             if parameter.name and not re.match("^_", parameter.name):

@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from dictIO import CppDict, DictReader
+from dictIO import DictReader, SDict
 from dictIO.utils.path import relative_path
 from numpy import ndarray
 from pandas import DataFrame
@@ -183,7 +183,7 @@ def _create_ndarray() -> ndarray[tuple[int,], np.dtype[np.float64]]:
 def test_filter_all() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -201,7 +201,7 @@ def test_filter_all() -> None:
 def test_filter_level_0() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -219,7 +219,7 @@ def test_filter_level_0() -> None:
 def test_filter_level_1() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -237,7 +237,7 @@ def test_filter_level_1() -> None:
 def test_filter_level_minus_1() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -255,7 +255,7 @@ def test_filter_level_minus_1() -> None:
 def test_filter_all_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -273,7 +273,7 @@ def test_filter_all_valid_only() -> None:
 def test_filter_level_0_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -291,7 +291,7 @@ def test_filter_level_0_valid_only() -> None:
 def test_filter_level_1_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -309,7 +309,7 @@ def test_filter_level_1_valid_only() -> None:
 def test_filter_level_minus_1_valid_only() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)
@@ -327,7 +327,7 @@ def test_filter_level_minus_1_valid_only() -> None:
 def test_filter_default_arguments() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     cases: Cases = create_cases(farn_dict, case_dir, valid_only=False)

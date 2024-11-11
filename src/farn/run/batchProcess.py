@@ -57,7 +57,7 @@ class AsyncBatchProcessor:
             jobs.put_callable(execute_in_sub_process, self.command, path, self.timeout)
             logger.info(f"Job {index:g} queued in {path}")  # 1
 
-        number_of_cpus = cpu_count()
+        number_of_cpus: int = cpu_count() or 1
         if self.max_number_of_cpus:
             number_of_cpus = min(number_of_cpus, int(self.max_number_of_cpus))
 
