@@ -1,25 +1,26 @@
 farn package
 ============
 
-.. automodule:: farn
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Subpackages
 -----------
 
-.. toctree::
-   :maxdepth: 4
+.. autosummary::
+   :toctree: _autosummary
+   :template: custom-module.rst
+   :recursive:
 
    farn.core
    farn.run
    farn.sampling
+   farn.utils
 
-Submodules
-----------
 
-.. toctree::
-   :maxdepth: 4
+Modules
+-------
+
+.. autosummary::
+   :toctree: _autosummary
+   :template: custom-module.rst
+   :recursive:
 
    farn.farn

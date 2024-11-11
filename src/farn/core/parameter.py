@@ -1,5 +1,5 @@
+# ruff: noqa: PYI041
 import logging
-from typing import Type, Union
 
 import numpy as np
 
@@ -14,13 +14,13 @@ class Parameter:
     def __init__(
         self,
         name: str = "",
-        value: Union[float, int, bool, str, None] = None,
-    ):
+        value: float | int | bool | str | None = None,
+    ) -> None:
         self.name: str = name
-        self.value: Union[float, int, bool, str, None] = value
+        self.value: float | int | bool | str | None = value
 
     @property
-    def type(self) -> Union[Type[float], Type[int], Type[bool], Type[str], None]:
+    def type(self) -> type[float] | type[int] | type[bool] | type[str] | None:
         """Returns the Python type of the parameter.
 
         Returns
@@ -31,13 +31,13 @@ class Parameter:
         return None if self.value is None else type(self.value)
 
     @property
-    def dtype(self) -> Union[np.dtype[float], np.dtype[int], np.dtype[bool], np.dtype[str], None]:  # type: ignore
+    def dtype(self) -> np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool_] | np.dtype[np.str_] | None:
         """Returns the numpy dtype of the parameter.
 
         Returns
         -------
-        Union[np.dtype[float], np.dtype[int], np.dtype[bool], np.dtype[str], None]
-            the numpy dtype
+        np.dtype[np.float64] | np.dtype[np.int32] | np.dtype[np.bool] | np.dtype[np.str] | None
+            the numpy dtype, or None
         """
         _type = self.type
-        return None if _type is None else np.dtype(_type)  # type: ignore
+        return None if _type is None else np.dtype(_type)  # type: ignore[return-value, reportReturnType]

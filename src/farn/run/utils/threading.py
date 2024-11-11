@@ -1,19 +1,30 @@
 import logging
+from collections.abc import Callable, Mapping, Sequence
 from queue import Queue
 from threading import Thread
-from typing import Any, Mapping, Sequence, Tuple
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class JobQueue(Queue[Tuple[Any, Sequence[Any], Mapping[str, Any]]]):
-    """JobQueue extends threading.Queue, overriding its 'put' method to accept a generic list of arguments."""
+class JobQueue(Queue[tuple[Any, Sequence[Any], Mapping[str, Any]]]):
+    """Queue for jobs to be executed by worker threads.
 
-    def put(self, func: Any, *args: Any, **kwargs: Any):  # pyright: ignore
+    JobQueue extends `threading.Queue`.
+    It provides an additional `put_callable()` method, allowing to put
+    a callable with a generic list of arguments in the queue.
+    """
+
+    def put_callable(
+        self,
+        func: Callable[..., Any],
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
+    ) -> None:
         """Put a callable object (function) in the JobQueue.
 
-        Additional positional and keyword arguments provided with *args and *kwargs
-        will be passed forward to the called function.
+        Additional positional and keyword arguments provided with args and kwargs
+        will be passed on to the called function.
 
         Parameters
         ----------
@@ -27,7 +38,7 @@ class Worker(Thread):
     """Worker thread executing jobs from a job queue."""
 
     # Override constructor of Thread class
-    def __init__(self, job_queue: JobQueue):
+    def __init__(self, job_queue: JobQueue) -> None:
         """Instantiate a Worker and bind it to the passed in JobQueue instance.
 
         Parameters
@@ -41,13 +52,13 @@ class Worker(Thread):
         self.start()
 
     # Override run() method of Thread class
-    def run(self):
+    def run(self) -> None:
         """Run the next job from the JobQueue this Worker is bound to."""
         while True:
             try:
                 func, args, kwargs = self.job_queue.get()
                 func(*args, **kwargs)
-            except Exception:
+            except Exception:  # noqa: PERF203
                 logger.exception("Worker: Exeption raised in worker thread.")
             finally:
                 self.job_queue.task_done()
