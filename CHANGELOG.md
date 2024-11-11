@@ -5,12 +5,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
-### Solved
-* Sphinx documentation: Resolved issue that documentation of class members was generated twice.
-
-### Added
-* Sphinx documentation: Added extension to support Markdown-based diagrams created with Mermaid.
-
+-/-
 
 
 ## [0.4.0] - 2024-11-11
@@ -28,7 +23,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * VS Code settings: Turned off automatic venv activation
 * Replaced black formatter with ruff formatter
 
+### Solved
+* Sphinx documentation: Resolved issue that documentation of class members was generated twice.
+
 ### Added
+* Sphinx documentation: Added extension to support Markdown-based diagrams created with Mermaid.
 * Added `mypy` as static type checker (in addition to `pyright`)
 
 ### GitHub workflows
