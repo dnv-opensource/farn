@@ -62,7 +62,7 @@ Simply clone the [farn-demo][farn_demo_repo] repository to your local machine an
 ## File Format
 A farnDict is a file in dictIO dict file format used with farn.
 
-_For a documentation of the farnDict file format, see [File Format](fileFormat.md) in [farn's documentation][farn_docs] on GitHub Pages._
+_For a documentation of the farnDict file format, see [File Format](fileFormat.rst) in [farn's documentation][farn_docs] on GitHub Pages._
 
 _For a detailed documentation of the dictIO dict file format used by farn, see [dictIO's documentation][dictIO_docs] on GitHub Pages._
 
