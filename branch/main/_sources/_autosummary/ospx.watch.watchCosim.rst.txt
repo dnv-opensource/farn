@@ -1,0 +1,17 @@
+ospx.watch.watchCosim
+=====================
+
+.. automodule:: ospx.watch.watchCosim
+   :members:
+   :exclude-members: CosimWatcher,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      CosimWatcher
+   

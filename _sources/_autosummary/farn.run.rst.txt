@@ -1,0 +1,18 @@
+﻿farn.run
+========
+
+.. automodule:: farn.run
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   batchProcess
+   cli
+   subProcess
+   utils

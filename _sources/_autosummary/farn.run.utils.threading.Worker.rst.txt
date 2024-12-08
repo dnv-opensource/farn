@@ -1,0 +1,40 @@
+Worker
+======
+
+.. currentmodule:: farn.run.utils.threading
+
+.. autoclass:: Worker
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Worker.__init__
+      ~Worker.getName
+      ~Worker.isDaemon
+      ~Worker.is_alive
+      ~Worker.join
+      ~Worker.run
+      ~Worker.setDaemon
+      ~Worker.setName
+      ~Worker.start
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Worker.daemon
+      ~Worker.ident
+      ~Worker.name
+      ~Worker.native_id
+   
+   
