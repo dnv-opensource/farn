@@ -1,0 +1,17 @@
+farn.sampling.sampling
+======================
+
+.. automodule:: farn.sampling.sampling
+   :members:
+   :exclude-members: DiscreteSampling,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      DiscreteSampling
+   

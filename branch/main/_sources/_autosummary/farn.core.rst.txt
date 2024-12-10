@@ -1,0 +1,16 @@
+﻿farn.core
+=========
+
+.. automodule:: farn.core
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   case
+   parameter
