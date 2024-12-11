@@ -1,0 +1,13 @@
+farn.utils.os
+=============
+
+.. automodule:: farn.utils.os
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      append_system_variable
+   
