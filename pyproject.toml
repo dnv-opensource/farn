@@ -93,7 +93,7 @@ dev-dependencies = [
     "jupyter-client>=8.6",
     "pandas-stubs>=2.2",
     "types-psutil>=6.0",
-    "types-lxml>=2024.4",
+    "types-lxml>=2024.11",
 ]
 native-tls = true
 
