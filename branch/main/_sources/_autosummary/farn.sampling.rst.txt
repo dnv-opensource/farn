@@ -1,0 +1,15 @@
+﻿farn.sampling
+=============
+
+.. automodule:: farn.sampling
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   sampling
