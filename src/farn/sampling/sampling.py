@@ -437,7 +437,7 @@ class DiscreteSampling:
         sobol_engine: Sobol = Sobol(
             d=self.number_of_fields,
             scramble=False,
-            seed=None,
+            rng=None,
         )
 
         if self.onset > 0:
@@ -601,9 +601,8 @@ class DiscreteSampling:
         self,
         samples: dict[str, list[Any]],
     ) -> None:
-        self.case_names = [
-            f'{self.layer_name}_{format(i, "0%i" % self.leading_zeros)}' for i in range(self.number_of_samples)
-        ]
+        _format_specifier: str = f"0{self.leading_zeros}d"
+        self.case_names = [f"{self.layer_name}_{format(i, _format_specifier)}" for i in range(self.number_of_samples)]
         samples["_case_name"] = self.case_names
 
     def _check_length_matches_number_of_names(
