@@ -601,7 +601,7 @@ class DiscreteSampling:
         self,
         samples: dict[str, list[Any]],
     ) -> None:
-        _format_specifier: str = f"0{self.leading_zeros}i"
+        _format_specifier: str = f"0{self.leading_zeros}d"
         self.case_names = [f"{self.layer_name}_{format(i, _format_specifier)}" for i in range(self.number_of_samples)]
         samples["_case_name"] = self.case_names
 
