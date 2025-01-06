@@ -300,13 +300,7 @@ def _generate_barnsley_fern() -> None:
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         root.geometry(
-            "%dx%d+%d+%d"
-            % (
-                x_size,
-                y_size,
-                screen_width / 2 - x_size / 2,
-                screen_height / 2 - y_size / 2,
-            )
+            newGeometry=f"{x_size}x{y_size}+{int(screen_width / 2 - x_size / 2)}+{int(screen_height / 2 - y_size / 2)}"
         )
         image = tk.PhotoImage(file=temp_file)
         canvas = tk.Canvas(root, height=y_size, width=x_size, bg="dark slate gray")
