@@ -264,8 +264,8 @@ class Case:
     def __str__(self) -> str:
         return str(self.to_dict())
 
-    def __eq__(self, __o: object) -> bool:
-        return str(self) == str(__o)
+    def __eq__(self, other: object) -> bool:
+        return str(self) == str(other)
 
 
 class Cases(list[Case]):
