@@ -6,6 +6,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* Updated to ospx>=0.3.1  (from ospx>=0.3.0)
+
+### Dependencies
 * Updated to ruff>=0.9.2  (from ruff>=0.8.3)
 * Updated to pyright>=1.1.392  (from pyright>=1.1.390)
 * Updated to sourcery>=1.31  (from sourcery>=1.27)
