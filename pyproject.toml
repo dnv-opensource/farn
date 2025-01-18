@@ -53,7 +53,7 @@ classifiers = [
 ]
 dependencies = [
     "lxml>=5.3",
-    "numpy>=1.26,<2.0",
+    "numpy>=1.26",
     "scipy>=1.14",
     "pandas>=2.2",
     "matplotlib>=3.9",
