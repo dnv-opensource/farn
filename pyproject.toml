@@ -62,7 +62,7 @@ dependencies = [
     "psutil>=5.9",
     "hilbertcurve>=2.0.5",
     "dictIO>=0.4.1",
-    "ospx>=0.3.0",
+    "ospx>=0.3.1",
 ]
 
 [project.urls]
