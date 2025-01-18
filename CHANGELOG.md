@@ -5,6 +5,20 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+### Dependencies
+* Updated to ruff>=0.9.2  (from ruff>=0.8.3)
+* Updated to pyright>=1.1.392  (from pyright>=1.1.390)
+* Updated to sourcery>=1.31  (from sourcery>=1.27)
+* Updated to types-lxml>=2024.12  (from types-lxml>=2024.11)
+* Updated to numpy>=1.26  (from numpy>=1.26,<2.0)
+* Updated to scipy>=1.15  (from scipy>=1.14)
+* Updated to matplotlib>=3.10  (from matplotlib>=3.9)
+* Updated to dictIO>=0.4.1  (from dictIO>=0.4.0)
+* Updated to Pillow>=11.1  (from Pillow>=11.0)
+* Updated to sphinx-autodoc-typehints>=3.0  (from sphinx-autodoc-typehints>=2.5)
+* Updated to mypy>=1.14  (from mypy>=1.13)
+* Updated to setup-uv@v5  (from setup-uv@v2)
+
 ### Changed
 * ruff.toml : removed deprecated ruff rules ANN101 and ANN102 from excluded rules
 * Use f-string, where possible, instead of '%' style string formatting
