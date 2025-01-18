@@ -1,0 +1,37 @@
+title: farn
+version: 0.4.0
+abstract: >-
+  Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies.
+type: software
+authors:
+  - name: DNV SE
+    address: 'Brooktorkai 18'
+    post-code: '20457'
+    city: Hamburg
+    country: DE
+    website: 'https://www.dnv.com/'
+  - given-names: Frank
+    family-names: Lumpitzsch
+    affiliation: DNV
+    email: frank.lumpitzsch@dnv.com
+    website: 'https://www.linkedin.com/in/frank-lumpitzsch-23013196/'
+  - given-names: Claas
+    family-names: Rostock
+    affiliation: DNV
+    email: claas.rostock@dnv.com
+    website: 'https://www.linkedin.com/in/claasrostock/?locale=en_US'
+  - given-names: Seunghyeon
+    family-names: Yoo
+    affiliation: DNV
+    email: seunghyeon.yoo@dnv.com
+    website: 'https://www.linkedin.com/in/seunghyeon-yoo-3625173b/'
+keywords:
+  - farn
+  - OSP
+  - fmi
+license: MIT
+license-url: 'https://dnv-opensource.github.io/farn/LICENSE.html'
+url: 'https://dnv-opensource.github.io/farn/README.html'
+repository-code: 'https://github.com/dnv-opensource/farn'
+message: 'Please cite this software using these metadata.'
+cff-version: 1.2.0

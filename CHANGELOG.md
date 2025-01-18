@@ -8,12 +8,17 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 -/-
 
 
+### Added
+* Added CITATION.cff
+* pyproject.toml : Added keywords
+
 ### Changed
 * ruff.toml : removed deprecated ruff rules ANN101 and ANN102 from excluded rules
 * Use f-string, where possible, instead of '%' style string formatting
 
 ### Solved
 * src/farn/core/case.py : Changed the way how local variables get added / manipulated through code. Replaced access to `locals()` with `sys._getframe().f_locals` when manipulating local variables. This change became necessary as Python 3.13 changed the way Python's builtin `locals()` method works. See [PEP 667](https://peps.python.org/pep-0667/) for details.
+* Resolved issues raised by `ruff` 0.9.2
 
 ### Dependencies
 * Updated to ruff>=0.9.2  (from ruff>=0.6.3)
