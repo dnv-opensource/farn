@@ -19,7 +19,7 @@ class CliArgs:
     verbose: bool = False
     log: str | None = None
     log_level: str = field(default_factory=lambda: "WARNING")
-    farnDict: str | None = field(default_factory=lambda: "test_farnDict")  # noqa: N815
+    farn_dict_file: str | None = field(default_factory=lambda: "test_farnDict")
     sample: bool = False
     generate: bool = False
     execute: str | None = None
@@ -78,7 +78,7 @@ def test_cli(
         with pytest.raises((exception, SystemExit)):
             args = parser.parse_args()
     else:
-        raise AssertionError
+        raise TypeError
 
 
 # *****Ensure the CLI correctly configures logging*************************************************
@@ -164,7 +164,7 @@ def test_logging_configuration(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        raise AssertionError
+        raise TypeError
 
 
 # *****Ensure the CLI correctly invokes the API****************************************************
@@ -244,4 +244,4 @@ def test_api_invokation(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        raise AssertionError
+        raise TypeError

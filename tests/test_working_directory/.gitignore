@@ -1,0 +1,10 @@
+/cases_expected/
+/cases_expected/*
+/cases/
+/cases/*
+/logs/
+/logs/*
+/caseList*
+/queueList_*
+/sampled*
+/parsed*

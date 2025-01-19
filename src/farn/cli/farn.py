@@ -23,20 +23,20 @@ logger = logging.getLogger(__name__)
 def _argparser() -> argparse.ArgumentParser:
     parser = ArgumentParser(
         prog="farn",
-        usage="%(prog)s farnDict [options [args]]",
+        usage="%(prog)s farn_dict_file [options [args]]",
         epilog="_________________farn___________________",
         prefix_chars="-",
         add_help=True,
         description=(
-            "Run the sampling for all layers as configured in farnDict,"
+            "Run the sampling for all layers as configured in farn dict file,"
             "generate the corresponding case folder structure and"
             "execute user-defined shell command sets in all case folders."
         ),
     )
 
     _ = parser.add_argument(
-        "farnDict",
-        metavar="farnDict",
+        "farn_dict_file",
+        metavar="farn_dict_file",
         type=str,
         help="name of the dict file containing the farn configuration.",
     )
@@ -47,7 +47,7 @@ def _argparser() -> argparse.ArgumentParser:
         action="store_true",
         help=(
             "read farn dict file, run the sampling defined for each layer "
-            "and save the sampled farnDict file with prefix sampled."
+            "and save the sampled farn dict file with prefix sampled."
         ),
         default=False,
         required=False,
@@ -57,7 +57,7 @@ def _argparser() -> argparse.ArgumentParser:
         "-g",
         "--generate",
         action="store_true",
-        help="generate the folder structure that spawns all layers and cases defined in farnDict",
+        help="generate the folder structure that spawns all layers and cases defined in farn dict file",
         default=False,
         required=False,
     )
@@ -70,7 +70,7 @@ def _argparser() -> argparse.ArgumentParser:
         type=str,
         help=(
             "execute the given command set in all case folders.\n"
-            "The command set must be defined in the commands section of the applicable layer in farnDict."
+            "The command set must be defined in the commands section of the applicable layer in farn dict file."
         ),
         default=None,
         required=False,
@@ -158,7 +158,7 @@ def main() -> None:
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
 
-    farn_dict_file: Path = Path(args.farnDict)
+    farn_dict_file: Path = Path(args.farn_dict_file)
     sample: bool = args.sample
     generate: bool = args.generate
     command: str | None = args.execute
@@ -300,13 +300,7 @@ def _generate_barnsley_fern() -> None:
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         root.geometry(
-            "%dx%d+%d+%d"
-            % (
-                x_size,
-                y_size,
-                screen_width / 2 - x_size / 2,
-                screen_height / 2 - y_size / 2,
-            )
+            newGeometry=f"{x_size}x{y_size}+{int(screen_width / 2 - x_size / 2)}+{int(screen_height / 2 - y_size / 2)}"
         )
         image = tk.PhotoImage(file=temp_file)
         canvas = tk.Canvas(root, height=y_size, width=x_size, bg="dark slate gray")

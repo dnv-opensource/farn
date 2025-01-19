@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
+import sys
 from collections.abc import MutableMapping, MutableSequence, Sequence
 from copy import deepcopy
 from enum import IntEnum
@@ -80,7 +81,8 @@ class Case:
     def is_valid(self) -> bool:
         """Evaluates whether the case matches the configured filter expression.
 
-        A case is considered valid if it fulfils the filter citeria configured in farnDict for the respective layer.
+        A case is considered valid if it fulfils the filter citeria
+        configured in the farn dict file for the respective layer.
 
         Returns
         -------
@@ -136,7 +138,7 @@ class Case:
                 )
                 return False
 
-        # transfer a white list of case properties to locals() for subsequent filtering
+        # transfer a white list of case properties to frame.f_locals for subsequent filtering
         available_vars: set[str] = set()
         for attribute in dir(self):
             try:
@@ -145,12 +147,12 @@ class Case:
                     "layer",
                     "level",
                     "index",
-                    "path" "is_leaf",
+                    "pathis_leaf",
                     "no_of_samples",
                     "condition",
                     "command_sets",
                 ]:
-                    locals()[attribute] = eval(f"self.{attribute}")  # noqa: S307
+                    sys._getframe().f_locals[attribute] = eval(f"self.{attribute}")  # noqa: S307, SLF001  # type: ignore[reportPrivateUsage]
                     available_vars.add(attribute)
             except Exception:  # noqa: PERF203
                 logger.exception(
@@ -164,7 +166,7 @@ class Case:
         for parameter in self.parameters:
             if parameter.name and not re.match("^_", parameter.name):
                 try:
-                    exec(f"{parameter.name} = {parameter.value}")  # noqa: S102
+                    sys._getframe().f_locals[parameter.name] = parameter.value  # noqa: SLF001  # type: ignore[reportPrivateUsage]
                     available_vars.add(parameter.name)
                 except Exception:
                     logger.exception(
@@ -174,7 +176,7 @@ class Case:
                     return False
 
         logger.debug(
-            f"Layer {self.layer}, available filter variables in current scope: {'{'+', '.join(available_vars)+'}'}"
+            f"Layer {self.layer}, available filter variables in current scope: {'{' + ', '.join(available_vars) + '}'}"
         )
 
         # Evaluate filter expression
@@ -264,8 +266,8 @@ class Case:
     def __str__(self) -> str:
         return str(self.to_dict())
 
-    def __eq__(self, __o: object) -> bool:
-        return str(self) == str(__o)
+    def __eq__(self, other: object) -> bool:
+        return str(self) == str(other)
 
 
 class Cases(list[Case]):

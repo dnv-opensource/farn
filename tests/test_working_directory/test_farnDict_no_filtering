@@ -1,0 +1,72 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases_no_filtering;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    firstParameter
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    0.5               1.0
+                )
+            );
+        }
+        _commands
+        {
+            echo0
+            (
+                "echo  param0"  'echo %cd%'   pwd
+            );
+        }
+        _comment              'level 0 firstParmeter';
+    }
+    lhsVariation
+    {
+        _sampling
+        {
+            _type             uniformLhs;
+            _names
+            (
+                param1            param2            param3
+            );
+            _ranges
+            (
+                (
+                    -10               10
+                )
+                (
+                    -5                5
+                )
+                (
+                    0                 100
+                )
+            );
+            _includeBoundingBox        False;
+            _numberOfSamples        5;
+        }
+        _commands
+        {
+            echo1
+            (
+                "echo  param1 param2 param3"  'echo %cd%'   pwd
+            );
+        }
+        _comment              'level 1 lhsVariation';
+    }
+}
