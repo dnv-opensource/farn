@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path("../../src").absolute()))
 
 project = "farn"
 copyright = "2024, DNV SE. All rights reserved."
-author = "Frank Lumpitzsch, Claas Rostock, Seung Hyeon Yoo"
+author = "Frank Lumpitzsch, Claas Rostock, Seunghyeon Yoo"
 
 # The full version, including alpha/beta/rc tags
 release = "0.4.0"
@@ -37,10 +37,15 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_argparse_cli",
     "sphinx.ext.mathjax",
-    "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.autosummary",
     "sphinx.ext.todo",
     "sphinxcontrib.mermaid",
+]
+
+# Extenstion for myst_parser
+myst_enable_extensions = [
+    "dollarmath",
+    "attrs_inline",
 ]
 
 # The file extensions of source files.
@@ -73,6 +78,8 @@ autodoc_default_options = {
 autodoc_preserve_defaults = True
 
 myst_heading_anchors = 3
+
+todo_include_todos = False
 
 # add markdown mermaid support
 myst_fence_as_directive = ["mermaid"]
