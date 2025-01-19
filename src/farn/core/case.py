@@ -81,7 +81,8 @@ class Case:
     def is_valid(self) -> bool:
         """Evaluates whether the case matches the configured filter expression.
 
-        A case is considered valid if it fulfils the filter citeria configured in farnDict for the respective layer.
+        A case is considered valid if it fulfils the filter citeria
+        configured in the farn dict file for the respective layer.
 
         Returns
         -------
@@ -146,7 +147,7 @@ class Case:
                     "layer",
                     "level",
                     "index",
-                    "path" "is_leaf",
+                    "pathis_leaf",
                     "no_of_samples",
                     "condition",
                     "command_sets",
@@ -175,7 +176,7 @@ class Case:
                     return False
 
         logger.debug(
-            f"Layer {self.layer}, available filter variables in current scope: {'{'+', '.join(available_vars)+'}'}"
+            f"Layer {self.layer}, available filter variables in current scope: {'{' + ', '.join(available_vars) + '}'}"
         )
 
         # Evaluate filter expression

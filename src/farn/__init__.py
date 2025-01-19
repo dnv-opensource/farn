@@ -1,3 +1,5 @@
+"""farn package."""
+
 from .farn import (
     run_farn as run_farn,
     create_samples as create_samples,

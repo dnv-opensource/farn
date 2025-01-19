@@ -5,31 +5,47 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+-/-
+
+
+## [0.4.1] - 2025-01-19
+
+### Added
+* Added support for Python 3.13
+* Added CITATION.cff
+* pyproject.toml : Added keywords
+
 ### Changed
 * ruff.toml : removed deprecated ruff rules ANN101 and ANN102 from excluded rules
 * Use f-string, where possible, instead of '%' style string formatting
 
 ### Solved
 * src/farn/core/case.py : Changed the way how local variables get added / manipulated through code. Replaced access to `locals()` with `sys._getframe().f_locals` when manipulating local variables. This change became necessary as Python 3.13 changed the way Python's builtin `locals()` method works. See [PEP 667](https://peps.python.org/pep-0667/) for details.
+* Resolved issues raised by `ruff` 0.9.2
 
 ### Dependencies
-* Updated to ruff>=0.8.3  (from ruff>=0.6.3)
-* Updated to pyright>=1.1.390  (from pyright>=1.1.378)
-* Updated to sourcery>=1.27  (from sourcery>=1.22)
+* Updated to ruff>=0.9.2  (from ruff>=0.6.3)
+* Updated to pyright>=1.1.392  (from pyright>=1.1.378)
+* Updated to sourcery>=1.31  (from sourcery>=1.22)
 * Updated to lxml>=5.3  (from lxml>=5.2)
-* Updated to types-lxml>=2024.11  (from types-lxml>=2024.4)
-* Updated to scipy>=1.14  (from scipy>=1.13)
-* Updated to jupyter>=1.1  (from jupyter>=1.0)
-* Updated to Pillow>=11.0  (from Pillow>=10.4)
-* Updated to pytest-cov>=6.0  (from pytest-cov>=5.0)
+* Updated to types-lxml>=2024.12  (from types-lxml>=2024.4)
+* Updated to scipy>=1.15  (from scipy>=1.13)
+* Updated to matplotlib>=3.10  (from matplotlib>=3.9)
+* Updated to dictIO>=0.4.1  (from dictIO>=0.4.0)
+* Updated to Pillow>=11.1  (from Pillow>=10.4)
 * Updated to Sphinx>=8.1  (from Sphinx>=8.0)
 * Updated to sphinx-argparse-cli>=1.19  (from sphinx-argparse-cli>=1.17)
-* Updated to sphinx-autodoc-typehints>=2.5  (from sphinx-autodoc-typehints>=2.2)
+* Updated to sphinx-autodoc-typehints>=3.0  (from sphinx-autodoc-typehints>=2.2)
+* Updated to mypy>=1.14  (from mypy>=1.11.1)
+* Updated to setup-uv@v5  (from setup-uv@v2)
+* Updated to ospx>=0.3.1  (from ospx>=0.3.0)
+* Updated to jupyter>=1.1  (from jupyter>=1.0)
+* Updated to pytest-cov>=6.0  (from pytest-cov>=5.0)
 * Updated to pre-commit>=4.0  (from pre-commit>=3.8)
-* Updated to mypy>=1.13  (from mypy>=1.11.1)
 * Updated to types-psutil>=6.1  (from types-psutil>=6.0)
-
--/-
+* numpy: As Python 3.13 requires numpy 2.x, made minimum required numpy version in pyproject.toml dependent on Python version:
+  * "numpy>=1.26; python_version < '3.13'",
+  * "numpy>=2.2; python_version >= '3.13'",
 
 
 ## [0.4.0] - 2024-11-11
@@ -409,8 +425,9 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.8...HEAD
-[0.3.8]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.3.8
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0
 [0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5

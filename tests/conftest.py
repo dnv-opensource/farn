@@ -12,7 +12,7 @@ def chdir() -> None:
     Fixture that changes the current working directory to the 'test_working_directory' folder.
     This fixture is automatically used for the entire package.
     """
-    os.chdir(Path(__file__).parent.absolute() / "test_dicts")
+    os.chdir(Path(__file__).parent.absolute() / "test_working_directory")
 
 
 @pytest.fixture(scope="package", autouse=True)
