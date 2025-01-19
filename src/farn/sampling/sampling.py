@@ -487,22 +487,22 @@ class DiscreteSampling:
 
         if "_iterationDepth" in self.sampling_parameters:
             if not isinstance(self.sampling_parameters["_iterationDepth"], int):
-                msg = f'_iterationDepth was not given as integer: {self.sampling_parameters["_iterationDepth"]}.'
+                msg = f"_iterationDepth was not given as integer: {self.sampling_parameters['_iterationDepth']}."
                 logger.error(msg)
                 raise ValueError(msg)
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
                 msg = (
-                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} '
-                    f'given in farn dict file is beyond the limit of {self.maxIterationDepth}...\n'
-                    f'\t\tsetting to {self.maxIterationDepth}'
+                    f"_iterationDepth {self.sampling_parameters['_iterationDepth']} "
+                    f"given in farn dict file is beyond the limit of {self.maxIterationDepth}...\n"
+                    f"\t\tsetting to {self.maxIterationDepth}"
                 )
                 logger.warning(msg)
                 self.iteration_depth = self.maxIterationDepth
             elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
                 msg = (
-                    f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} '
-                    f'given in farn dict file is below the limit of {self.minIterationDepth}...\n'
-                    f'\t\tsetting to {self.minIterationDepth}'
+                    f"_iterationDepth {self.sampling_parameters['_iterationDepth']} "
+                    f"given in farn dict file is below the limit of {self.minIterationDepth}...\n"
+                    f"\t\tsetting to {self.minIterationDepth}"
                 )
                 logger.warning(msg)
                 self.iteration_depth = self.minIterationDepth

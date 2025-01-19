@@ -413,7 +413,7 @@ def create_cases(
         log_msg = (
             f"Successfully listed {len(leaf_cases)} valid case{plural(len(leaf_cases))}. "
             f"{number_of_invalid_cases} invalid case{plural(number_of_invalid_cases)} "
-            f'{plural(number_of_invalid_cases, "were")} excluded.'
+            f"{plural(number_of_invalid_cases, 'were')} excluded."
         )
     else:
         log_msg = f"Successfully listed {len(leaf_cases)} case{plural(len(leaf_cases))}. "
@@ -672,7 +672,8 @@ def execute_command_set(
 def _set_up_farn_environment(farn_dict_file: Path) -> dict[str, Path]:
     """Read the '_environment' section from farn dict and sets up the farn environment accordingly.
 
-    Reads the '_environment' section from the farn dict file and sets up the farn environment directories as configured therein.
+    Reads the '_environment' section from the farn dict file and
+    sets up the farn environment directories as configured therein.
     If the '_environment' section or certain entries therein are missing in farn dict, default values will be used.
 
     Parameters

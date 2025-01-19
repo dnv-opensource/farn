@@ -147,7 +147,7 @@ class Case:
                     "layer",
                     "level",
                     "index",
-                    "path" "is_leaf",
+                    "pathis_leaf",
                     "no_of_samples",
                     "condition",
                     "command_sets",
@@ -176,7 +176,7 @@ class Case:
                     return False
 
         logger.debug(
-            f"Layer {self.layer}, available filter variables in current scope: {'{'+', '.join(available_vars)+'}'}"
+            f"Layer {self.layer}, available filter variables in current scope: {'{' + ', '.join(available_vars) + '}'}"
         )
 
         # Evaluate filter expression
