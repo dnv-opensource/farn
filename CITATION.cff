@@ -1,5 +1,5 @@
 title: farn
-version: 0.4.0
+version: 0.4.1
 abstract: >-
   Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies.
 type: software
