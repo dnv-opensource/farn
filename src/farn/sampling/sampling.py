@@ -493,7 +493,7 @@ class DiscreteSampling:
             if self.sampling_parameters["_iterationDepth"] > self.maxIterationDepth:
                 msg = (
                     f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} '
-                    f'given in farnDict is beyond the limit of {self.maxIterationDepth}...\n'
+                    f'given in farn dict file is beyond the limit of {self.maxIterationDepth}...\n'
                     f'\t\tsetting to {self.maxIterationDepth}'
                 )
                 logger.warning(msg)
@@ -501,7 +501,7 @@ class DiscreteSampling:
             elif self.sampling_parameters["_iterationDepth"] < self.minIterationDepth:
                 msg = (
                     f'_iterationDepth {self.sampling_parameters["_iterationDepth"]} '
-                    f'given in farnDict is below the limit of {self.minIterationDepth}...\n'
+                    f'given in farn dict file is below the limit of {self.minIterationDepth}...\n'
                     f'\t\tsetting to {self.minIterationDepth}'
                 )
                 logger.warning(msg)

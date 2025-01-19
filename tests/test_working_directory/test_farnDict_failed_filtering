@@ -1,0 +1,79 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases_failed_filtering;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    firstParameter
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    0.5               1.0
+                )
+            );
+        }
+        // test_farnDict_failed_filtering contains a common mistake:
+        // A filter expression references a variable that has not been defined yet (in this case param1)
+        _condition
+        {
+            _filter           'abs(param0 * param1) >= 1';
+            _action           exclude;
+        }
+        _commands
+        {
+            echo0
+            (
+                "echo  param0"  'echo %cd%'   pwd
+            );
+        }
+        _comment              'level 0 firstParmeter';
+    }
+    lhsVariation
+    {
+        _sampling
+        {
+            _type             uniformLhs;
+            _names
+            (
+                param1            param2            param3
+            );
+            _ranges
+            (
+                (
+                    -10               10
+                )
+                (
+                    -5                5
+                )
+                (
+                    0                 100
+                )
+            );
+            _includeBoundingBox        False;
+            _numberOfSamples        5;
+        }
+        _commands
+        {
+            echo1
+            (
+                "echo  param1 param2 param3"  'echo %cd%'   pwd
+            );
+        }
+        _comment              'level 1 lhsVariation';
+    }
+}

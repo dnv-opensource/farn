@@ -1,0 +1,87 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+/*
+Test farn dict, following the schema and naming convention as proposed in "farnDict (proposal v4)"
+in Excel table namingConvention_10_Oct_2021_ver_00
+(see folder on Teams ADA2021 - Documents\DNV-RP-0513 Assurance of Simulation Models)
+*/
+/*
+A 6-dimensional design space is spawned, organised in 4 layers:
+1. hypothetical grid parameter
+2. a lhs variation
+3. hypothetical compute parameter (solver setting, version whatever)
+4. hypothetical multiplier for an internal variable
+*/
+_layers {
+    gp                                          // unique identifier of a layer. This identifier will be used by farn.py as base folder name when generating the case folder structure.
+    {
+        _sampling {
+            _type fixed;                         // Fixed values. Note: Each sampling type has its own set of required arguments.
+            _names (mpGrid);                     // list with names, each representing one variable / parameter / dimension. Also referred to as a 'parameter names'.
+            _values ((0.9 1.3));                 // list containing tuples with fixed values, one tuple for each parameter name. Required only for sampling type 'fixed'.
+        }
+    }
+    lhsvar
+    {
+        _sampling {
+            _type uniformLhs;                    // Latin-Hypercube-Sampling. Future options might also include normallhs, lognormlhs etc.
+            _names (param1 param2 param3);
+            _ranges ((-10 10) (0 3.5) (0 1.1));  // list containing ranges. A range is defined through the lower and upper boundary value for the related parameter name, given as tuple (minimum, maximum). For each parameter name, one range tuple must exist.
+            _includeBoundingBox True;            // [optional] defines whether the lower and upper boundary values of each parameter name shall be added as additional samples. If missing, defaults to False.
+            _numberOfSamples 100;                // number of samples to be generated. The given number of samples will be generated within range (=between lower and upper boundary), excluding the boundaries themselves.
+        }
+    }
+    cp
+    {
+        _sampling {
+            _type linSpace;                      // Linearly spaced sampling.
+            _names (relFactor);
+            _ranges ((0.5 0.8));
+            _numberOfSamples 5;
+        }
+        _condition
+        {
+            _filter  'param2 >= param3 and param1 >= 0'; // filter expression.
+            _action  exclude;                            // [optional] defines the action triggered when the filter expression evaluates to True. choices: 'include', 'exclude'. If missing, defaults to 'exclude'.
+        }
+    }
+	hilbert
+    {
+        _sampling
+        {
+            _type hilbertCurve;                 // Hilbert-Sampling. (derived from Hilbert's space-filling curve for dimensions >= 2)
+            _names(param1 param2 param3);
+            _ranges((-5. 5.)(0. 10.)(-10 10.)); // list containing ranges. A range is defined through the lower and upper boundary value for the related parameter name, given as tuple (minimum, maximum). For each parameter name, one range tuple must exist.
+            _includeBoundingBox True;           // [optional] defines whether the lower and upper boundary values of each parameter name shall be added as additional samples. It is not recommended to use this option in hilbert sampling because at least two samples will be coincident.
+                                                // If missing, defaults to False. If it is given, start and end points of Hilbert distribution coincide with bb points for technical reasons.
+            _numberOfSamples 20;                // number of samples to be generated. The given number of samples will be generated within range (=between lower and upper boundary), excluding the boundaries themselves. Resampling, keeping the already done cases, is possible in a subsequent farn call by adding (_numberOfSamples-1) to itself.
+                                                // a new sampling iteration on the same data set should be done using _numberOfSamples_n+1 = _numberOfSamples_n + _numberOfSamples_n - 1 to retain the lowest possible correlations between samples.
+            _iterationDepth   5;                // iteration depth of Hilbert's algorithm: this example generates 2**(3*5) = 32768 Hilbert points (H. length).
+        }
+    }
+    mp
+    {
+        _sampling {
+            _type fixed;
+            _names (cpMul ppMul);                // hypothetical multiplier for solver and postprocessing, whatever
+            _values ((1.5 2.0 3.5) (1.5 2.0 3.5));
+        }
+        _commands                                // commands
+        {
+            test ('echo %cd%');                 // A command element contains one or more shell commands, saved as a list of strings.
+            testwinvar ('echo variable %CASEDIR%');
+            testlinvar ('echo variable $CASEDIR');
+            printwinenv ('echo environment & printenv | findstr CASEDIR');
+            printlinenv ('echo environment ; printenv | grep CASEDIR');
+        }
+    }
+}

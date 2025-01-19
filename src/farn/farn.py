@@ -49,15 +49,15 @@ def run_farn(
     Parameters
     ----------
     farn_dict_file : Union[str, os.PathLike[str]]
-        farnDict file. Contains the farn configuration.
+        farn dict file. Contains the farn configuration.
     sample : bool, optional
-        if True, runs the sampling defined for each layer and saves the sampled farnDict file with prefix sampled.,
+        if True, runs the sampling defined for each layer and saves the sampled farn dict file with prefix sampled.,
         by default False
     generate : bool, optional
-        if True, generates the folder structure that spawns all layers and cases defined in farnDict, by default False
+        if True, generates the folder structure that spawns all layers and cases defined in farn dict, by default False
     command : Union[str, None], optional
         executes the given command set in all case folders.
-        The command set must be defined in the commands section of the applicable layer in farnDict.,
+        The command set must be defined in the commands section of the applicable layer in farn dict.,
         by default None
     batch : bool, optional
         if True, executes the given command set in batch mode, i.e. asynchronously, by default False
@@ -573,7 +573,7 @@ def execute_command_set(
     cases : MutableSequence[Case]
         cases for which the specified command set shall be executed.
     command_set : str
-        name of the command set to be executed, as defined in farnDict
+        name of the command set to be executed, as defined in farn dict file
     batch : bool, optional
         if True, executes the given command set in batch mode, i.e. asynchronously, by default False
     test : bool, optional
@@ -672,18 +672,18 @@ def execute_command_set(
 def _set_up_farn_environment(farn_dict_file: Path) -> dict[str, Path]:
     """Read the '_environment' section from farn dict and sets up the farn environment accordingly.
 
-    Reads the '_environment' section from farnDict and sets up the farn environment directories as configured therein.
+    Reads the '_environment' section from the farn dict file and sets up the farn environment directories as configured therein.
     If the '_environment' section or certain entries therein are missing in farn dict, default values will be used.
 
     Parameters
     ----------
     farn_dict_file : Path
-        farnDict file
+        farn dict file
 
     Returns
     -------
     Dict[str, str]
-        dict containing the environment directories set up for farn (matching the _environment section in farnDict)
+        dict containing the environment directories set up for farn (matching the _environment section in farn dict)
     """
     logger.info("Set up farn environment...")
 
@@ -712,7 +712,7 @@ def _set_up_farn_environment(farn_dict_file: Path) -> dict[str, Path]:
     _configure_additional_logging_handler_exclusively_for_farn(farn_dirs["LOGDIR"])
 
     # Set up system environment variables for each farn directory
-    # This is necessary to enable shell commands defined in farnDict to point to them with i.e. %TEMPLATEDIR%
+    # This is necessary to enable shell commands defined in farn dict file to point to them with i.e. %TEMPLATEDIR%
     for key, item in farn_dirs.items():
         append_system_variable(key, str(item))
 
