@@ -8,7 +8,10 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 -/-
 
 
+## [0.4.1] - 2025-01-19
+
 ### Added
+* Added support for Python 3.13
 * Added CITATION.cff
 * pyproject.toml : Added keywords
 
@@ -26,7 +29,6 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Updated to sourcery>=1.31  (from sourcery>=1.22)
 * Updated to lxml>=5.3  (from lxml>=5.2)
 * Updated to types-lxml>=2024.12  (from types-lxml>=2024.4)
-* Updated to numpy>=1.26  (from numpy>=1.26,<2.0)
 * Updated to scipy>=1.15  (from scipy>=1.13)
 * Updated to matplotlib>=3.10  (from matplotlib>=3.9)
 * Updated to dictIO>=0.4.1  (from dictIO>=0.4.0)
@@ -41,6 +43,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Updated to pytest-cov>=6.0  (from pytest-cov>=5.0)
 * Updated to pre-commit>=4.0  (from pre-commit>=3.8)
 * Updated to types-psutil>=6.1  (from types-psutil>=6.0)
+* numpy: As Python 3.13 requires numpy 2.x, made minimum required numpy version in pyproject.toml dependent on Python version:
+  * "numpy>=1.26; python_version < '3.13'",
+  * "numpy>=2.2; python_version >= '3.13'",
 
 
 ## [0.4.0] - 2024-11-11
@@ -420,8 +425,9 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.8...HEAD
-[0.3.8]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.3.8
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0
 [0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
