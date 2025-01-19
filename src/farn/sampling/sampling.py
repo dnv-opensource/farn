@@ -4,7 +4,6 @@ from collections.abc import Generator, Iterable, Mapping, Sequence
 from typing import Any
 
 import numpy as np
-from numpy import ndarray
 
 logger = logging.getLogger(__name__)
 
@@ -276,7 +275,7 @@ class DiscreteSampling:
     def _generate_samples_using_uniform_lhs_sampling(self) -> dict[str, list[Any]]:
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: dict[str, list[Any]] = self._generate_samples_dict()
-        values: ndarray[tuple[int,], np.dtype[np.float64]] = self._generate_values_using_uniform_lhs_sampling()
+        values: np.ndarray[Any, np.dtype[np.float64]] = self._generate_values_using_uniform_lhs_sampling()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
@@ -298,7 +297,7 @@ class DiscreteSampling:
         self.mean = self.sampling_parameters["_mu"]
         self.std = self.sampling_parameters["_sigma"]
 
-        values: ndarray[tuple[int,], np.dtype[np.float64]] = self._generate_values_using_normal_lhs_sampling()
+        values: np.ndarray[Any, np.dtype[np.float64]] = self._generate_values_using_normal_lhs_sampling()
 
         # Clipping
         # (optional. Clipping will only be performed if sampling parameter "_ranges" is defined.)
@@ -311,8 +310,8 @@ class DiscreteSampling:
         #       Hence the somewhat simpler approach for now, where exceeding values
         #       simply get reset to the range bounderies.
         if self.ranges:
-            range_lower_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
-            range_upper_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
+            range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
+            range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
             values = np.clip(values, range_lower_bounds, range_upper_bounds)
 
         self._write_values_into_samples_dict(values, samples)
@@ -324,7 +323,7 @@ class DiscreteSampling:
         self.onset = int(self.sampling_parameters["_onset"])
 
         samples: dict[str, list[Any]] = self._generate_samples_dict()
-        values: ndarray[tuple[int,], np.dtype[np.float64]] = self._generate_values_using_sobol_sampling()
+        values: np.ndarray[Any, np.dtype[np.float64]] = self._generate_values_using_sobol_sampling()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
@@ -372,7 +371,7 @@ class DiscreteSampling:
         self.minIterationDepth = 3
         self.maxIterationDepth = 15
 
-        values: ndarray[tuple[int,], np.dtype[np.float64]] = self._generate_values_using_hilbert_sampling()
+        values: np.ndarray[Any, np.dtype[np.float64]] = self._generate_values_using_hilbert_sampling()
         self._write_values_into_samples_dict(values, samples)
 
         return samples
@@ -383,33 +382,33 @@ class DiscreteSampling:
         self._generate_case_names(samples_dict)
         return samples_dict
 
-    def _generate_values_using_uniform_lhs_sampling(self) -> ndarray[tuple[int,], np.dtype[np.float64]]:
+    def _generate_values_using_uniform_lhs_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         """Uniform LHS."""
         from pyDOE3 import lhs
         from scipy.stats import uniform
 
-        lhs_distribution: ndarray[tuple[int,], np.dtype[np.float64]] | None = lhs(
+        lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
             samples=self.number_of_samples - self.number_of_bb_samples,
             criterion="corr",
             random_state=self.seed,
         )
 
-        _range_lower_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
-        _range_upper_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
-        loc: ndarray[tuple[int], np.dtype[np.float64]] = _range_lower_bounds
-        scale: ndarray[tuple[int], np.dtype[np.float64]] = _range_upper_bounds - _range_lower_bounds
+        _range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
+        _range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
+        loc: np.ndarray[Any, np.dtype[np.float64]] = _range_lower_bounds
+        scale: np.ndarray[Any, np.dtype[np.float64]] = _range_upper_bounds - _range_lower_bounds
 
-        sample_set: ndarray[tuple[int,], np.dtype[np.float64]] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
 
         return sample_set
 
-    def _generate_values_using_normal_lhs_sampling(self) -> ndarray[tuple[int,], np.dtype[np.float64]]:
+    def _generate_values_using_normal_lhs_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         """Gaussnormal LHS."""
         from pyDOE3 import lhs
         from scipy.stats import norm
 
-        lhs_distribution: ndarray[tuple[int,], np.dtype[np.float64]] | None = lhs(
+        lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
             samples=self.number_of_samples - self.number_of_bb_samples,
             criterion="corr",
@@ -424,13 +423,13 @@ class DiscreteSampling:
         #   - correlation|corr: minimize the maximum correlation coefficient
 
         # std of type scalar (scale) or vector (stretch, scale), no rotation
-        _std: ndarray[tuple[int], np.dtype[np.float64]] = np.array(self.std)
+        _std: np.ndarray[Any, np.dtype[np.float64]] = np.array(self.std)
 
-        sample_set: ndarray[tuple[int,], np.dtype[np.float64]] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
 
         return sample_set
 
-    def _generate_values_using_sobol_sampling(self) -> ndarray[tuple[int,], np.dtype[np.float64]]:
+    def _generate_values_using_sobol_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         from scipy.stats import qmc
         from scipy.stats.qmc import Sobol
 
@@ -441,16 +440,16 @@ class DiscreteSampling:
         )
 
         if self.onset > 0:
-            _ = sobol_engine.fast_forward(n=self.onset)  # pyright: ignore[reportUnknownMemberType]
+            _ = sobol_engine.fast_forward(n=self.onset)
 
-        points: ndarray[tuple[int,], np.dtype[np.float64]] = sobol_engine.random(  # pyright: ignore[reportUnknownMemberType]
+        points: np.ndarray[Any, np.dtype[np.float64]] = sobol_engine.random(  # pyright: ignore[reportUnknownMemberType]
             n=self.number_of_samples - self.number_of_bb_samples,
         )
 
         # Upscale points from unit hypercube to bounds
-        range_lower_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
-        range_upper_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
-        sample_set: ndarray[tuple[int,], np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
+        range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
+        range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
             points,
             range_lower_bounds,
             range_upper_bounds,
@@ -458,7 +457,7 @@ class DiscreteSampling:
 
         return sample_set
 
-    def _generate_values_using_hilbert_sampling(self) -> ndarray[tuple[int,], np.dtype[np.float64]]:
+    def _generate_values_using_hilbert_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         """Source hilbertcurve pypi pkg or numpy
         it showed that hilbertcurve is a better choice and more precise with a higher iteration depth (<=15)
         pypi pkg Decimals is required for proper function up to (<=15)
@@ -523,7 +522,7 @@ class DiscreteSampling:
                 'a number of hilbert points of about 10-times higher than "_numberOfSamples".'
             )
 
-        distribution: ndarray[tuple[int], np.dtype[np.float64]] = np.array(
+        distribution: np.ndarray[Any, np.dtype[np.float64]] = np.array(
             [
                 Decimal(x)
                 for x in np.linspace(
@@ -533,13 +532,15 @@ class DiscreteSampling:
                 )
             ]
         )
-        int_distribution: ndarray[tuple[int], np.dtype[np.int32]] = np.trunc(distribution)
+        int_distribution: np.ndarray[Any, np.dtype[np.int32]] = np.trunc(distribution)
 
         hilbert_points: Iterable[Iterable[int]] = hc.points_from_distances(int_distribution)
 
         _points: list[Iterable[float]] = []
         interpolation_hits = 0
-        for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution, strict=False):
+        for hpt, _dst, _idst in zip(hilbert_points, distribution, int_distribution, strict=False):
+            dst = float(_dst)
+            idst = int(_idst)
             if dst == idst:
                 _points.append(hpt)
             else:
@@ -565,7 +566,7 @@ class DiscreteSampling:
                         point.append(float(i))
 
                 _points.append(point)
-        points: ndarray[tuple[int,], np.dtype[np.float64]] = np.array(_points).astype(np.float64)
+        points: np.ndarray[Any, np.dtype[np.float64]] = np.array(_points).astype(np.float64)
 
         # Downscale points from hilbert space to unit hypercube [0,1)*d
         points = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
@@ -576,9 +577,9 @@ class DiscreteSampling:
         )
 
         # Upscale points from unit hypercube to bounds
-        range_lower_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
-        range_upper_bounds: ndarray[tuple[int], np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
-        sample_set: ndarray[tuple[int,], np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
+        range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
+        range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
             points,
             range_lower_bounds,
             range_upper_bounds,
@@ -650,7 +651,7 @@ class DiscreteSampling:
 
     def _write_values_into_samples_dict(
         self,
-        values: ndarray[tuple[int,], np.dtype[np.float64]],
+        values: np.ndarray[Any, np.dtype[np.float64]],
         samples: dict[str, list[Any]],
     ) -> None:
         if self.include_bounding_box is True:
