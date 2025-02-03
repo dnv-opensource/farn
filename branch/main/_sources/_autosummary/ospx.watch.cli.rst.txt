@@ -1,0 +1,15 @@
+ospx.watch.cli
+==============
+
+.. automodule:: ospx.watch.cli
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   watchCosim
