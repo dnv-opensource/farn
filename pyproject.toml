@@ -113,7 +113,7 @@ native-tls = true
 
 
 [project.scripts]
-farn = "farn.cli.farn:main"
+farn = "farn.cli.__main__:main"
 batchProcess = "farn.run.cli.batchProcess:main"
 
 

@@ -7,15 +7,8 @@ import sys
 from argparse import ArgumentParser
 from pathlib import Path
 
-# Remove current directory from Python search path.
-# Only through this trick it is possible that the current CLI file 'farn.py'
-# carries the same name as the package 'farn' we import from in the next lines.
-# If we did NOT remove the current directory from the Python search path,
-# Python would start searching for the imported names within the current file (farn.py)
-# instead of the package 'farn' (and the import statements fail).
-sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
-from farn import run_farn  # noqa: E402
-from farn.utils.logging import configure_logging  # noqa: E402
+from farn import run_farn
+from farn.utils.logging import configure_logging
 
 logger = logging.getLogger(__name__)
 
