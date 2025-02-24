@@ -1,0 +1,13 @@
+farn.run.cli.batchProcess
+=========================
+
+.. automodule:: farn.run.cli.batchProcess
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      main
+   
