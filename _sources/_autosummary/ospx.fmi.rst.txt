@@ -1,0 +1,18 @@
+﻿ospx.fmi
+========
+
+.. automodule:: ospx.fmi
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   experiment
+   fmu
+   unit
+   variable

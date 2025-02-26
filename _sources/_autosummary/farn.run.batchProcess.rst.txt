@@ -1,0 +1,17 @@
+farn.run.batchProcess
+=====================
+
+.. automodule:: farn.run.batchProcess
+   :members:
+   :exclude-members: AsyncBatchProcessor,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      AsyncBatchProcessor
+   
