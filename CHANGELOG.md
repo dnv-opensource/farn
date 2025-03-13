@@ -9,6 +9,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Renamed the CLI module (in folder src/farn/cli) from 'farn.py' to '\_\_main\_\_.py'.
   This follows current best practice (as in python_project_template).
   It avoids import errors caused by the fact that the cli module has the same name as the package it imports from.
+* Do not run code quality checks in nightly builds
+* Included uv.lock file in version control
 
 
 ## [0.4.1] - 2025-01-19
