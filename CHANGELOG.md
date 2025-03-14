@@ -5,6 +5,17 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
+### Dependencies
+* Updated to ruff>=0.11.0  (from ruff>=0.9.2)
+* Updated to pyright>=1.1.396  (from pyright>=1.1.392)
+* Updated to sourcery>=1.35  (from sourcery>=1.31)
+* Updated to types-lxml>=2025.3  (from types-lxml>=2024.12)
+* Updated to Sphinx>=8.2  (from Sphinx>=8.1)
+* Updated to sphinx-autodoc-typehints>=3.1  (from sphinx-autodoc-typehints>=3.0)
+* Updated to pre-commit>=4.1  (from pre-commit>=4.0)
+* Updated to mypy>=1.15  (from mypy>=1.14)
+* Updated to types-psutil>=7.0  (from types-psutil>=6.1)
+
 ### Changed
 * Renamed the CLI module (in folder src/farn/cli) from 'farn.py' to '\_\_main\_\_.py'.
   This follows current best practice (as in python_project_template).
