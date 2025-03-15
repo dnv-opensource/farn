@@ -1,0 +1,13 @@
+ospx.watch.cli.watchCosim
+=========================
+
+.. automodule:: ospx.watch.cli.watchCosim
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      main
+   

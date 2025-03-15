@@ -1,0 +1,17 @@
+ospx.fmi.fmu
+============
+
+.. automodule:: ospx.fmi.fmu
+   :members:
+   :exclude-members: FMU,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      FMU
+   

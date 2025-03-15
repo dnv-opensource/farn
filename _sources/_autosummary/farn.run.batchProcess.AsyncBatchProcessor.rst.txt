@@ -1,0 +1,25 @@
+AsyncBatchProcessor
+===================
+
+.. currentmodule:: farn.run.batchProcess
+
+.. autoclass:: AsyncBatchProcessor
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~AsyncBatchProcessor.__init__
+      ~AsyncBatchProcessor.run
+   
+   
+
+
+   
+   
+   

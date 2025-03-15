@@ -1,0 +1,1241 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Changelog - farn 0.4.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">farn 0.4.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/farn.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">farn 0.4.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README_farn.html">farn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README_ospx.html">ospx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README_dictIO.html">dictIO</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="farn.html">farn package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of farn package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/farn.core.html">farn.core</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of farn.core</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.core.case.html">farn.core.case</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of farn.core.case</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.core.case.Case.html">Case</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.core.case.CaseStatus.html">CaseStatus</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.core.case.Cases.html">Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.core.parameter.html">farn.core.parameter</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of farn.core.parameter</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.core.parameter.Parameter.html">Parameter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/farn.run.html">farn.run</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of farn.run</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.run.batchProcess.html">farn.run.batchProcess</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of farn.run.batchProcess</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.run.batchProcess.AsyncBatchProcessor.html">AsyncBatchProcessor</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.run.cli.html">farn.run.cli</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of farn.run.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.run.cli.batchProcess.html">farn.run.cli.batchProcess</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/farn.run.subProcess.html">farn.run.subProcess</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.run.utils.html">farn.run.utils</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of farn.run.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/farn.run.utils.threading.html">farn.run.utils.threading</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of farn.run.utils.threading</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/farn.run.utils.threading.JobQueue.html">JobQueue</a></li>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/farn.run.utils.threading.Worker.html">Worker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/farn.sampling.html">farn.sampling</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of farn.sampling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/farn.sampling.sampling.html">farn.sampling.sampling</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of farn.sampling.sampling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/farn.sampling.sampling.DiscreteSampling.html">DiscreteSampling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/farn.utils.html">farn.utils</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of farn.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/farn.utils.logging.html">farn.utils.logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/farn.utils.os.html">farn.utils.os</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/farn.farn.html">farn.farn</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ospx.html">ospx package</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of ospx package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.fmi.html">ospx.fmi</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of ospx.fmi</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.fmi.experiment.html">ospx.fmi.experiment</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of ospx.fmi.experiment</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.experiment.Experiment.html">Experiment</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.fmi.fmu.html">ospx.fmi.fmu</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of ospx.fmi.fmu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.fmu.FMU.html">FMU</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.fmi.unit.html">ospx.fmi.unit</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of ospx.fmi.unit</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.unit.BaseUnit.html">BaseUnit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.unit.DisplayUnit.html">DisplayUnit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.unit.Unit.html">Unit</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.fmi.variable.html">ospx.fmi.variable</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of ospx.fmi.variable</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.fmi.variable.ScalarVariable.html">ScalarVariable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.watch.html">ospx.watch</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of ospx.watch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.watch.cli.html">ospx.watch.cli</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of ospx.watch.cli</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.watch.cli.watchCosim.html">ospx.watch.cli.watchCosim</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/ospx.watch.watchCosim.html">ospx.watch.watchCosim</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of ospx.watch.watchCosim</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/ospx.watch.watchCosim.CosimWatcher.html">CosimWatcher</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.utils.html">ospx.utils</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ospx.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.utils.dateTime.html">ospx.utils.dateTime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.utils.dict.html">ospx.utils.dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.utils.logging.html">ospx.utils.logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.utils.plotting.html">ospx.utils.plotting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.utils.zip.html">ospx.utils.zip</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.component.html">ospx.component</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of ospx.component</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.component.Component.html">Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.component.RemoteAccess.html">RemoteAccess</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.connection.html">ospx.connection</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of ospx.connection</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.connection.Connection.html">Connection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.connection.Endpoint.html">Endpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.connector.html">ospx.connector</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of ospx.connector</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.connector.Connector.html">Connector</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.graph.html">ospx.graph</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of ospx.graph</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.graph.Graph.html">Graph</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.importer.html">ospx.importer</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of ospx.importer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.importer.OspSystemStructureImporter.html">OspSystemStructureImporter</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.ospCaseBuilder.html">ospx.ospCaseBuilder</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of ospx.ospCaseBuilder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.ospCaseBuilder.OspCaseBuilder.html">OspCaseBuilder</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.ospSimulationCase.html">ospx.ospSimulationCase</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of ospx.ospSimulationCase</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.ospSimulationCase.OspSimulationCase.html">OspSimulationCase</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.simulation.html">ospx.simulation</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of ospx.simulation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.simulation.Simulation.html">Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/ospx.system.html">ospx.system</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of ospx.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/ospx.system.System.html">System</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="dictIO.html">dictIO package</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle navigation of dictIO package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.utils.html">dictIO.utils</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle navigation of dictIO.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/dictIO.utils.counter.html">dictIO.utils.counter</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><div class="visually-hidden">Toggle navigation of dictIO.utils.counter</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/dictIO.utils.counter.BorgCounter.html">BorgCounter</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/dictIO.utils.counter.DejaVue.html">DejaVue</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/dictIO.utils.counter.Indenter.html">Indenter</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.utils.dict.html">dictIO.utils.dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.utils.logging.html">dictIO.utils.logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.utils.path.html">dictIO.utils.path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.utils.strings.html">dictIO.utils.strings</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.dict.html">dictIO.dict</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><div class="visually-hidden">Toggle navigation of dictIO.dict</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.dict.SDict.html">SDict</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.dict_parser.html">dictIO.dict_parser</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of dictIO.dict_parser</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.dict_parser.DictParser.html">DictParser</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.dict_reader.html">dictIO.dict_reader</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of dictIO.dict_reader</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.dict_reader.DictReader.html">DictReader</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.dict_writer.html">dictIO.dict_writer</a><input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" role="switch" type="checkbox"/><label for="toctree-checkbox-39"><div class="visually-hidden">Toggle navigation of dictIO.dict_writer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.dict_writer.DictWriter.html">DictWriter</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.formatter.html">dictIO.formatter</a><input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" role="switch" type="checkbox"/><label for="toctree-checkbox-40"><div class="visually-hidden">Toggle navigation of dictIO.formatter</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.formatter.FoamFormatter.html">FoamFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.formatter.Formatter.html">Formatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.formatter.JsonFormatter.html">JsonFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.formatter.NativeFormatter.html">NativeFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.formatter.XmlFormatter.html">XmlFormatter</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.parser.html">dictIO.parser</a><input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" role="switch" type="checkbox"/><label for="toctree-checkbox-41"><div class="visually-hidden">Toggle navigation of dictIO.parser</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.parser.FoamParser.html">FoamParser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.parser.JsonParser.html">JsonParser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.parser.NativeParser.html">NativeParser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.parser.Parser.html">Parser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.parser.XmlParser.html">XmlParser</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/dictIO.types.html">dictIO.types</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/dictIO.cpp_dict.html">dictIO.cpp_dict</a><input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" role="switch" type="checkbox"/><label for="toctree-checkbox-42"><div class="visually-hidden">Toggle navigation of dictIO.cpp_dict</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/dictIO.cpp_dict.CppDict.html">CppDict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="farn_example.html">Example of farn API usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cli.html">CLI Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" role="switch" type="checkbox"/><label for="toctree-checkbox-43"><div class="visually-hidden">Toggle navigation of CLI Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.farn.html">farn</a><input class="toctree-checkbox" id="toctree-checkbox-44" name="toctree-checkbox-44" role="switch" type="checkbox"/><label for="toctree-checkbox-44"><div class="visually-hidden">Toggle navigation of farn</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.farn.html">farn - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.batchProcess.html">batchProcess - CLI interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.ospx.html">ospx</a><input class="toctree-checkbox" id="toctree-checkbox-45" name="toctree-checkbox-45" role="switch" type="checkbox"/><label for="toctree-checkbox-45"><div class="visually-hidden">Toggle navigation of ospx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.ospCaseBuilder.html">ospCaseBuilder - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.importSystemStructure.html">importSystemStructure - CLI interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.watchCosim.html">watchCosim - CLI interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cli.sub.dictIO.html">dictIO</a><input class="toctree-checkbox" id="toctree-checkbox-46" name="toctree-checkbox-46" role="switch" type="checkbox"/><label for="toctree-checkbox-46"><div class="visually-hidden">Toggle navigation of dictIO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.dict_parser.html">dictParser - CLI interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="fileFormat.html">File Formats</a><input class="toctree-checkbox" id="toctree-checkbox-47" name="toctree-checkbox-47" role="switch" type="checkbox"/><label for="toctree-checkbox-47"><div class="visually-hidden">Toggle navigation of File Formats</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.farn.html">farn</a><input class="toctree-checkbox" id="toctree-checkbox-48" name="toctree-checkbox-48" role="switch" type="checkbox"/><label for="toctree-checkbox-48"><div class="visually-hidden">Toggle navigation of farn</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.farnDict.html">farnDict</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.ospx.html">ospx</a><input class="toctree-checkbox" id="toctree-checkbox-49" name="toctree-checkbox-49" role="switch" type="checkbox"/><label for="toctree-checkbox-49"><div class="visually-hidden">Toggle navigation of ospx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.caseDict.html">caseDict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.watchDict.html">watchDict</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="fileFormat.sub.dictIO.html">dictIO</a><input class="toctree-checkbox" id="toctree-checkbox-50" name="toctree-checkbox-50" role="switch" type="checkbox"/><label for="toctree-checkbox-50"><div class="visually-hidden">Toggle navigation of dictIO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="fileFormat.sDict.html">dict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="changelogs.html">Changelogs</a><input class="toctree-checkbox" id="toctree-checkbox-51" name="toctree-checkbox-51" role="switch" type="checkbox"/><label for="toctree-checkbox-51"><div class="visually-hidden">Toggle navigation of Changelogs</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_farn.html">farn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_ospx.html">ospx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG_dictIO.html">dictIO</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="STYLEGUIDE.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/CHANGELOG.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<p>All notable changes to the <a class="reference external" href="https://github.com/dnv-opensource/farn">farn</a> project will be documented in this file.<br>
+The changelog format is based on <a class="reference external" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
+<section id="unreleased">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.4.1...HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Link to this heading">¶</a></h2>
+<p>-/-</p>
+</section>
+<section id="id1">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1">0.4.1</a> - 2025-01-19<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added support for Python 3.13</p></li>
+<li><p>Added CITATION.cff</p></li>
+<li><p>pyproject.toml : Added keywords</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>ruff.toml : removed deprecated ruff rules ANN101 and ANN102 from excluded rules</p></li>
+<li><p>Use f-string, where possible, instead of ‘%’ style string formatting</p></li>
+</ul>
+</section>
+<section id="solved">
+<h3>Solved<a class="headerlink" href="#solved" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>src/farn/core/case.py : Changed the way how local variables get added / manipulated through code. Replaced access to <code class="docutils literal notranslate"><span class="pre">locals()</span></code> with <code class="docutils literal notranslate"><span class="pre">sys._getframe().f_locals</span></code> when manipulating local variables. This change became necessary as Python 3.13 changed the way Python’s builtin <code class="docutils literal notranslate"><span class="pre">locals()</span></code> method works. See <a class="reference external" href="https://peps.python.org/pep-0667/">PEP 667</a> for details.</p></li>
+<li><p>Resolved issues raised by <code class="docutils literal notranslate"><span class="pre">ruff</span></code> 0.9.2</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Updated to ruff&gt;=0.9.2  (from ruff&gt;=0.6.3)</p></li>
+<li><p>Updated to pyright&gt;=1.1.392  (from pyright&gt;=1.1.378)</p></li>
+<li><p>Updated to sourcery&gt;=1.31  (from sourcery&gt;=1.22)</p></li>
+<li><p>Updated to lxml&gt;=5.3  (from lxml&gt;=5.2)</p></li>
+<li><p>Updated to types-lxml&gt;=2024.12  (from types-lxml&gt;=2024.4)</p></li>
+<li><p>Updated to scipy&gt;=1.15  (from scipy&gt;=1.13)</p></li>
+<li><p>Updated to matplotlib&gt;=3.10  (from matplotlib&gt;=3.9)</p></li>
+<li><p>Updated to dictIO&gt;=0.4.1  (from dictIO&gt;=0.4.0)</p></li>
+<li><p>Updated to Pillow&gt;=11.1  (from Pillow&gt;=10.4)</p></li>
+<li><p>Updated to Sphinx&gt;=8.1  (from Sphinx&gt;=8.0)</p></li>
+<li><p>Updated to sphinx-argparse-cli&gt;=1.19  (from sphinx-argparse-cli&gt;=1.17)</p></li>
+<li><p>Updated to sphinx-autodoc-typehints&gt;=3.0  (from sphinx-autodoc-typehints&gt;=2.2)</p></li>
+<li><p>Updated to mypy&gt;=1.14  (from mypy&gt;=1.11.1)</p></li>
+<li><p>Updated to setup-uv&#64;v5  (from setup-uv&#64;v2)</p></li>
+<li><p>Updated to ospx&gt;=0.3.1  (from ospx&gt;=0.3.0)</p></li>
+<li><p>Updated to jupyter&gt;=1.1  (from jupyter&gt;=1.0)</p></li>
+<li><p>Updated to pytest-cov&gt;=6.0  (from pytest-cov&gt;=5.0)</p></li>
+<li><p>Updated to pre-commit&gt;=4.0  (from pre-commit&gt;=3.8)</p></li>
+<li><p>Updated to types-psutil&gt;=6.1  (from types-psutil&gt;=6.0)</p></li>
+<li><p>numpy: As Python 3.13 requires numpy 2.x, made minimum required numpy version in pyproject.toml dependent on Python version:</p>
+<ul>
+<li><p>“numpy&gt;=1.26; python_version &lt; ‘3.13’”,</p></li>
+<li><p>“numpy&gt;=2.2; python_version &gt;= ‘3.13’”,</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0">0.4.0</a> - 2024-11-11<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<section id="breaking-changes">
+<h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The code has been adapted to <a class="reference external" href="https://dnv-opensource.github.io/dictIO/README.html">dictIO</a> 0.4.0 <br>
+<a class="reference external" href="https://dnv-opensource.github.io/dictIO/README.html">dictIO</a> 0.4.0 introduced some breaking changes. With the current release 0.4.0 of farn, the code base has been adapted to these in changes. <br>
+The most prominent change being that class <code class="docutils literal notranslate"><span class="pre">dictIO.CppDict</span></code> has been replaced by class <code class="docutils literal notranslate"><span class="pre">dictIO.SDict</span></code>.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Changed<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Changed from <code class="docutils literal notranslate"><span class="pre">pip</span></code>/<code class="docutils literal notranslate"><span class="pre">tox</span></code> to <code class="docutils literal notranslate"><span class="pre">uv</span></code> as package manager</p></li>
+<li><p>README.md : Completely rewrote section “Development Setup”, introducing <code class="docutils literal notranslate"><span class="pre">uv</span></code> as package manager.</p></li>
+<li><p>Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI</p></li>
+<li><p>Updated copyright statement</p></li>
+<li><p>VS Code settings: Turned off automatic venv activation</p></li>
+<li><p>Replaced black formatter with ruff formatter</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Solved<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Sphinx documentation: Resolved issue that documentation of class members was generated twice.</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Added<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Sphinx documentation: Added extension to support Markdown-based diagrams created with Mermaid.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">mypy</span></code> as static type checker (in addition to <code class="docutils literal notranslate"><span class="pre">pyright</span></code>)</p></li>
+</ul>
+</section>
+<section id="github-workflows">
+<h3>GitHub workflows<a class="headerlink" href="#github-workflows" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>(all workflows): Adapted to use <code class="docutils literal notranslate"><span class="pre">uv</span></code> as package manager</p></li>
+<li><p>_test_future.yml : updated Python version to 3.13.0-alpha - 3.13.0</p></li>
+<li><p>_test_future.yml : updated name of test job to ‘test313’</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Dependencies<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Updated to dictIO&gt;=0.4.0  (from dictIO&gt;=0.3.4)</p></li>
+<li><p>Updated to ospx&gt;=0.3.0  (from ospx&gt;=0.2.14)</p></li>
+<li><p>Updated to ruff&gt;=0.6.3  (from ruff==0.4.2)</p></li>
+<li><p>Updated to pyright&gt;=1.1.378  (from pyright==1.1.360)</p></li>
+<li><p>Updated to sourcery&gt;=1.22  (from sourcery==1.16)</p></li>
+<li><p>Updated to pytest&gt;=8.3  (from pytest&gt;=8.2)</p></li>
+<li><p>Updated to Sphinx&gt;=8.0  (from Sphinx&gt;=7.3)</p></li>
+<li><p>Updated to sphinx-argparse-cli&gt;=1.17  (from sphinx-argparse-cli&gt;=1.16)</p></li>
+<li><p>Updated to myst-parser&gt;=4.0  (from myst-parser&gt;=3.0)</p></li>
+<li><p>Updated to furo&gt;=2024.8  (from furo&gt;=2024.5)</p></li>
+<li><p>updated to setup-python&#64;v5  (from setup-python&#64;v4)</p></li>
+<li><p>updated to actions-gh-pages&#64;v4  (from actions-gh-pages&#64;v3)</p></li>
+<li><p>updated to upload-artifact&#64;v4  (from upload-artifact&#64;v3)</p></li>
+<li><p>Updated to download-artifact&#64;v4  (from download-artifact&#64;v3)</p></li>
+<li><p>updated to checkout&#64;v4  (from checkout&#64;v3)</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7">0.3.7</a> - 2024-05-22<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<section id="id8">
+<h3>Dependencies<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to ruff==0.4.2  (from ruff==0.2.1)</p></li>
+<li><p>updated to pyright==1.1.360  (from pyright==1.1.350)</p></li>
+<li><p>updated to sourcery==1.16  (from sourcery==1.15)</p></li>
+<li><p>updated to lxml&gt;=5.2  (from lxml&gt;=5.1)</p></li>
+<li><p>updated to types-lxml&gt;=2024.4  (from types-lxml&gt;=5.1)</p></li>
+<li><p>updated to scipy&gt;=1.13  (from scipy&gt;=1.12)</p></li>
+<li><p>updated to Pillow&gt;=10.3  (from Pillow&gt;=10.2)</p></li>
+<li><p>updated to pytest&gt;=8.2  (from pytest&gt;=7.4)</p></li>
+<li><p>updated to pytest-cov&gt;=5.0  (from pytest-cov&gt;=4.1)</p></li>
+<li><p>updated to Sphinx&gt;=7.3  (from Sphinx&gt;=7.2)</p></li>
+<li><p>updated to sphinx-argparse-cli&gt;=1.15  (from sphinx-argparse-cli&gt;=1.11)</p></li>
+<li><p>updated to myst-parser&gt;=3.0  (from myst-parser&gt;=2.0)</p></li>
+<li><p>updated to furo&gt;=2024.4  (from furo&gt;=2023.9.10)</p></li>
+<li><p>updated to dictIO&gt;=0.3.4  (from dictIO&gt;=0.3.3)</p></li>
+<li><p>updated to ospx&gt;=0.2.14  (from ospx&gt;=0.2.13)</p></li>
+<li><p>updated to numpy&gt;=1.26,&lt;2.0  (from numpy&gt;=1.26)</p></li>
+<li><p>updated to matplotlib&gt;=3.9  (from matplotlib&gt;=3.8)</p></li>
+<li><p>removed black</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Changed<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>replaced black formatter with ruff formatter</p></li>
+<li><p>Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI</p></li>
+<li><p>Updated copyright statement</p></li>
+<li><p>VS Code settings: Turned off automatic venv activation</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Added<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">farn.core.case.Case</span></code>: Added method <code class="docutils literal notranslate"><span class="pre">add_parameters()</span></code>, which allows to manually add user-defined parameters to a Case.</p></li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6">0.3.6</a> - 2024-02-21<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<section id="id12">
+<h3>Added<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>README.md : Under <code class="docutils literal notranslate"><span class="pre">Development</span> <span class="pre">Setup</span></code>, added a step to install current package in “editable” mode, using the pip install -e option.
+This removes the need to manually add /src to the PythonPath environment variable in order for debugging and tests to work.</p></li>
+</ul>
+</section>
+<section id="removed">
+<h3>Removed<a class="headerlink" href="#removed" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>VS Code settings: Removed the setting which added the /src folder to PythonPath. This is no longer necessary. Installing the project itself as a package in “editable” mode, using the pip install -e option, solves the issue and removes the need to manually add /src to the PythonPath environment variable.</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>Changed<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Moved all project configuration from setup.cfg to pyproject.toml</p></li>
+<li><p>Moved all tox configuration from setup.cfg to tox.ini.</p></li>
+<li><p>Moved pytest configuration from pyproject.toml to pytest.ini</p></li>
+<li><p>Deleted setup.cfg</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Dependencies<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to black[jupyter]==24.1  (from black[jupyter]==23.12)</p></li>
+<li><p>updated to version: ‘==24.1’  (from version: ‘==23.12’)</p></li>
+<li><p>updated to ruff==0.2.1  (from ruff==0.1.8)</p></li>
+<li><p>updated to pyright==1.1.350  (from pyright==1.1.338)</p></li>
+<li><p>updated to sourcery==1.15  (from sourcery==1.14)</p></li>
+<li><p>updated to lxml&gt;=5.1  (from lxml&gt;=4.9)</p></li>
+<li><p>updated to scipy&gt;=1.12  (from scipy&gt;=1.11)</p></li>
+<li><p>updated to pandas&gt;=2.2  (from pandas&gt;=2.1)</p></li>
+<li><p>updated to Pillow&gt;=10.2  (from Pillow&gt;=10.1)</p></li>
+<li><p>-/-</p></li>
+</ul>
+</section>
+</section>
+<section id="id15">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5">0.3.5</a> - 2024-01-09<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h2>
+<section id="id16">
+<h3>Changed<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>farn/sampling/sampling.py:</p>
+<ul>
+<li><p>_generate_values_using_uniform_lhs_sampling():
+replaced SALib latin with pyDOE2 lhs</p></li>
+<li><p>_generate_values_using_sobol_sampling():
+replaced sobol-seq with scipy.stats.qmc.sobol</p></li>
+<li><p>removed orphaned _cov argument from normalLhs sampling</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id17">
+<h3>Dependencies<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Upgraded from pyDOE2&gt;=1.3 to pyDOE3&gt;=1.0</p></li>
+<li><p>Removed SALib and sobol-seq</p></li>
+<li><p>Updated to dictIO&gt;=0.3.1 and ospx&gt;=0.2.12</p></li>
+<li><p>Updated other dependencies to latest versions</p></li>
+</ul>
+</section>
+</section>
+<section id="id18">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4">0.3.4</a> - 2023-09-25<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h2>
+<section id="id19">
+<h3>Dependencies<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Updated dependencies to latest versions</p></li>
+</ul>
+</section>
+</section>
+<section id="id20">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.2...v0.3.3">0.3.3</a> - 2023-06-22<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<section id="id21">
+<h3>Changed<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Modularized GitHub workflows</p></li>
+<li><p>Changed default Python version in GitHub workflows from 3.10 to 3.11</p></li>
+</ul>
+</section>
+<section id="id22">
+<h3>Dependencies<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to dictIO&gt;=0.2.8 and ospx&gt;=0.2.10</p></li>
+<li><p>requirements-dev.txt: Updated dependencies to latest versions</p></li>
+</ul>
+</section>
+</section>
+<section id="id23">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.1...v0.3.2">0.3.2</a> - 2023-05-04<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h2>
+<section id="id24">
+<h3>Changed<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>dependencies: updated dependencies to latest versions</p></li>
+</ul>
+</section>
+</section>
+<section id="id25">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.3.0...v0.3.1">0.3.1</a> - 2023-01-11<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h2>
+<section id="id26">
+<h3>Changed<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added missing DocStrings for public classes, methods and functions</p></li>
+<li><p>Changed links to package documentation to open README.html, not the default index page</p></li>
+<li><p>data classes: changed initialisation of mutable types to use default_factory</p></li>
+<li><p>ruff: added rule-set “B” (flake8-bugbear)</p></li>
+</ul>
+</section>
+<section id="id27">
+<h3>Dependencies<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to dictIO&gt;=0.2.6 and ospx&gt;=0.2.8</p></li>
+</ul>
+</section>
+</section>
+<section id="id28">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.7...v0.3.0">0.3.0</a> - 2023-01-09<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h2>
+<p>v0.3.0 is a major update comprising one breaking change (see below).
+Users are encouraged to update to this version.</p>
+<section id="breaking-change">
+<h3>Breaking Change<a class="headerlink" href="#breaking-change" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Moved classes ‘Case’ and ‘Parameter’ from farn.farn to farn.core <br>
+As a consequence, if you imported these classes in your code, you need to
+adapt the respective  import statements. I.e. <br>
+old</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">farn.farn</span><span class="w"> </span><span class="kn">import</span> <span class="n">Case</span><span class="p">,</span> <span class="n">Parameter</span>
+</pre></div>
+</div>
+<p>new</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">farn.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Case</span><span class="p">,</span> <span class="n">Parameter</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="id29">
+<h3>Added<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Added a ‘Cases’ class, acting as a container for Case instances.
+Cases inherits from List[Case] and can hence transparently be used as a Python list type.
+However, Cases provides additional convenience methods to export the attributes of all contained Case instances to a pandas DataFrame (Cases.to_pandas()) or to a numpy ndarray (Cases.to_numpy()) <br><br>
+Cases is located in the farn.core sub-package and can be imported from there, i.e:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">farn.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Case</span><span class="p">,</span> <span class="n">Cases</span><span class="p">,</span> <span class="n">Parameter</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="id30">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.6...v0.2.7">0.2.7</a> - 2023-01-04<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h2>
+<section id="id31">
+<h3>Changed<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Linter: Migrated from flake8 to ruff. <br>
+(Added ruff; removed flake8 and isort)</p></li>
+<li><p>Adjusted GitHub CI workflow accordingly. <br>
+(Added ruff job; removed flake8 and isort jobs)</p></li>
+<li><p>VS Code settings: Adjusted Pylance configuration</p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>Added<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added a batch file ‘qa.bat’ in root folder to ease local execution of code quality checks</p></li>
+</ul>
+</section>
+<section id="id33">
+<h3>Dependencies<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to dictIO&gt;=0.2.5 and ospx&gt;=0.2.7</p></li>
+</ul>
+</section>
+</section>
+<section id="id34">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.5...v0.2.6">0.2.6</a> - 2022-12-12<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h2>
+<section id="id35">
+<h3>Dependencies<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to ospx&gt;=0.2.6</p></li>
+</ul>
+</section>
+</section>
+<section id="id36">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.4...v0.2.5">0.2.5</a> - 2022-12-12<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h2>
+<section id="id37">
+<h3>Changed<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Moved dev-only dependencies from requirements.txt to requirements-dev.txt</p></li>
+<li><p>farn/<code class="docutils literal notranslate"><span class="pre">__init__</span></code>.py : ensured that imported symbols get also exported <br>
+(added “as” clause -&gt; “from x import y as y” instead of only “from x import y”)</p></li>
+<li><p>sampling.py: refactored for cleaner code</p></li>
+<li><p>Configured code quality tools flake8, black, isort, pyright</p></li>
+<li><p>Improved code quality, resolving all warnings and errors flagged by the configured code quality tools
+(flake8, black, isort, pyright, sourcery)</p></li>
+</ul>
+</section>
+<section id="id38">
+<h3>Added<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added GitHub workflow ‘main.yml’ for continuous integration (runs all CI tasks except Sphinx)</p>
+<ul>
+<li><p>format checks: black, isort</p></li>
+<li><p>lint check: flake8, flake8-bugbear</p></li>
+<li><p>type check: pyright</p></li>
+<li><p>test: uses tox to run pytest on {Windows, Linux, MacOS} with {py39, py310}</p></li>
+<li><p>publish: publishing to PyPI (runs only on push of new tag vx.x.x, and after all other jobs succeeded)</p></li>
+<li><p>merge_to_release_branch: merge tagged commit to release branch (runs after publish)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id39">
+<h3>Dependencies<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>updated to dictIO&gt;=0.2.4</p></li>
+</ul>
+</section>
+</section>
+<section id="id40">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.3...v0.2.4">0.2.4</a> - 2022-12-01<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h2>
+<section id="id41">
+<h3>Changed<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Code formatting: Changed from yapf to black</p></li>
+<li><p>STYLEGUIDE.md : Adjusted to match black formatting</p></li>
+<li><p>VS Code settings: Updated to use black as formatter</p></li>
+<li><p>requirements.txt: Updated dependencies to their most recent versions</p></li>
+<li><p>GitHub actions (yml files): Updated following actions to their most recent versions:</p>
+<ul>
+<li><p>checkout&#64;v1 -&gt; checkout&#64;v3</p></li>
+<li><p>setup-python&#64;v2 -&gt; setup-python&#64;v4</p></li>
+<li><p>cache&#64;v2 -&gt; cache&#64;v3</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id42">
+<h3>Added<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added sourcery configuration (.sourcery.yaml)</p></li>
+<li><p>Added py.typed file into the package root folder and included it setup.cfg as package_data</p></li>
+</ul>
+</section>
+</section>
+<section id="id43">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.2...v0.2.3">0.2.3</a> - 2022-11-08<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h2>
+<section id="id44">
+<h3>Changed<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>sampling.py: sampling adapted, removed unused (and non-preferable) options</p></li>
+<li><p>dependencies:</p>
+<ul>
+<li><p>upgraded to dictIO &gt;= 0.2.2  (now supporting references and expressions in JSON dicts)</p></li>
+<li><p>upgraded to ospx &gt;= 0.2.4</p></li>
+<li><p>changed from pyDOE&gt;=0.3.8 to pyDOE2&gt;=1.3.0</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id45">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.1...v0.2.2">0.2.2</a> - 2022-10-05<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h2>
+<section id="id46">
+<h3>Changed<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>dependencies:</p>
+<ul>
+<li><p>upgraded to ospx &gt;= 0.2.3</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id47">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.2.0...v0.2.1">0.2.1</a> - 2022-10-01<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h2>
+<section id="id48">
+<h3>Changed<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>dependencies:</p>
+<ul>
+<li><p>upgraded to dictIO &gt;= 0.2.0</p></li>
+<li><p>upgraded to ospx &gt;= 0.2.1</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id49">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.1.2...v0.2.0">0.2.0</a> - 2022-09-28<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h2>
+<section id="id50">
+<h3>Changed<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Dependencies:</p>
+<ul>
+<li><p>upgraded to ospx &gt;= 0.2.0</p></li>
+<li><p>upgraded to dictIO &gt;= 0.1.2</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id51">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.1.1...v0.1.2">0.1.2</a> - 2022-08-19<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h2>
+<section id="id52">
+<h3>Changed<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>farn.py:</p>
+<ul>
+<li><p>create_samples(): Removed undocumented return value ‘layers’. This was simply wrong. create_samples() is not meant to return anything.</p></li>
+</ul>
+</li>
+<li><p>subProcess.py:</p>
+<ul>
+<li><p>Changed level of ‘per case’ log messages from INFO to DEBUG, to reduce cluttering of log.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id53">
+<h3>Added<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>farn CLI (and farn.run_farn() API):</p>
+<ul>
+<li><p>EXPERIMENTAL FEATURE: Added –batch option. Default is False. The batch option lets farn execute commands in batch mode, i.e. asynchroneous instead of sequential.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>sampling.py:</p>
+<ul>
+<li><p>uniformLhs sampling: Corrected the BoundingBox code for the case where Lhs sampling is requested with only one single parameter varied (i.e. 1-dimensional Lhs)</p></li>
+</ul>
+</li>
+<li><p>farn.py:</p>
+<ul>
+<li><p>Additional log file handler for farn gets registered only once. Multiple calls to _configure_additional_logging_handler_exclusively_for_farn() will not create multiple handlers, if the file handler for the log file already exists.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id54">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.1.0...v0.1.1">0.1.1</a> - 2022-05-30<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h2>
+<section id="id55">
+<h3>Changed<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Sphinx documentation: Added Changelogs (for combined documentation)</p></li>
+<li><p>updated dependency ospx to version &gt;=0.1.1</p></li>
+</ul>
+</section>
+</section>
+<section id="id56">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.0.22...v0.1.0">0.1.0</a> - 2022-05-28<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
+<section id="id57">
+<h3>Changed<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Simplified imports from namespace farn. Example:</p>
+<ul>
+<li><p>Old (&lt;= v0.0.22):</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">farn.farn</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_farn</span>
+</pre></div>
+</div>
+</li>
+<li><p>New:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">farn</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_farn</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Use new simplified imports from namespace dictIO (using updated version of dictIO package)</p></li>
+<li><p>farn.py</p>
+<ul class="simple">
+<li><p>Renamed following functions:</p>
+<ul>
+<li><p>run_sampling() -&gt; create_samples()</p></li>
+<li><p>generate_samples_for_layer() -&gt; create_samples_in_layer()</p></li>
+<li><p>register_cases() -&gt; create_cases()</p></li>
+<li><p>generate_case_folder_structure() -&gt; create_case_folders()</p></li>
+<li><p>generate_case_lists() -&gt; create_case_list_files()</p></li>
+<li><p>_create_param_dict_file_in_case_folders() -&gt; create_param_dict_files()</p></li>
+<li><p>_execute_command_set_in_case_folders() -&gt; execute_command_set()</p></li>
+</ul>
+</li>
+<li><p>Introduced Dataclass ‘Parameter’</p></li>
+<li><p>Removed method add_uservars() in dataclass Case (moved the respective code into create_cases() )</p></li>
+<li><p>run_farn(): Removed the ignore_errors argument</p></li>
+<li><p>farnDict ‘_samples’ section -&gt; changed  naming of ‘_names’ element to ‘_case_name’, to improve clarity of its meaning</p></li>
+<li><p>Smaller refactorings to improve code clarity and testability</p></li>
+</ul>
+</li>
+<li><p>cli/farn.py</p>
+<ul class="simple">
+<li><p>Removed the -i / –ignore-errors argument</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id58">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/compare/v0.0.17...v0.0.22">0.0.22</a> - 2022-05-09<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>First public release</p></li>
+</ul>
+</section>
+<section id="id59">
+<h2><a class="reference external" href="https://github.com/dnv-opensource/farn/releases/tag/v0.0.17">0.0.17</a> - 2022-02-14<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h2>
+<section id="id60">
+<h3>Added<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added support for Python 3.10</p></li>
+</ul>
+<!-- Markdown link & img dfn's -->
+<!-- Markdown link & img dfn's -->
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, DNV SE. All rights reserved.
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#unreleased">Unreleased</a></li>
+<li><a class="reference internal" href="#id1">0.4.1 - 2025-01-19</a><ul>
+<li><a class="reference internal" href="#added">Added</a></li>
+<li><a class="reference internal" href="#changed">Changed</a></li>
+<li><a class="reference internal" href="#solved">Solved</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">0.4.0 - 2024-11-11</a><ul>
+<li><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
+<li><a class="reference internal" href="#id3">Changed</a></li>
+<li><a class="reference internal" href="#id4">Solved</a></li>
+<li><a class="reference internal" href="#id5">Added</a></li>
+<li><a class="reference internal" href="#github-workflows">GitHub workflows</a></li>
+<li><a class="reference internal" href="#id6">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">0.3.7 - 2024-05-22</a><ul>
+<li><a class="reference internal" href="#id8">Dependencies</a></li>
+<li><a class="reference internal" href="#id9">Changed</a></li>
+<li><a class="reference internal" href="#id10">Added</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">0.3.6 - 2024-02-21</a><ul>
+<li><a class="reference internal" href="#id12">Added</a></li>
+<li><a class="reference internal" href="#removed">Removed</a></li>
+<li><a class="reference internal" href="#id13">Changed</a></li>
+<li><a class="reference internal" href="#id14">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">0.3.5 - 2024-01-09</a><ul>
+<li><a class="reference internal" href="#id16">Changed</a></li>
+<li><a class="reference internal" href="#id17">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id18">0.3.4 - 2023-09-25</a><ul>
+<li><a class="reference internal" href="#id19">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id20">0.3.3 - 2023-06-22</a><ul>
+<li><a class="reference internal" href="#id21">Changed</a></li>
+<li><a class="reference internal" href="#id22">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">0.3.2 - 2023-05-04</a><ul>
+<li><a class="reference internal" href="#id24">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id25">0.3.1 - 2023-01-11</a><ul>
+<li><a class="reference internal" href="#id26">Changed</a></li>
+<li><a class="reference internal" href="#id27">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id28">0.3.0 - 2023-01-09</a><ul>
+<li><a class="reference internal" href="#breaking-change">Breaking Change</a></li>
+<li><a class="reference internal" href="#id29">Added</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id30">0.2.7 - 2023-01-04</a><ul>
+<li><a class="reference internal" href="#id31">Changed</a></li>
+<li><a class="reference internal" href="#id32">Added</a></li>
+<li><a class="reference internal" href="#id33">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id34">0.2.6 - 2022-12-12</a><ul>
+<li><a class="reference internal" href="#id35">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id36">0.2.5 - 2022-12-12</a><ul>
+<li><a class="reference internal" href="#id37">Changed</a></li>
+<li><a class="reference internal" href="#id38">Added</a></li>
+<li><a class="reference internal" href="#id39">Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id40">0.2.4 - 2022-12-01</a><ul>
+<li><a class="reference internal" href="#id41">Changed</a></li>
+<li><a class="reference internal" href="#id42">Added</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id43">0.2.3 - 2022-11-08</a><ul>
+<li><a class="reference internal" href="#id44">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id45">0.2.2 - 2022-10-05</a><ul>
+<li><a class="reference internal" href="#id46">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id47">0.2.1 - 2022-10-01</a><ul>
+<li><a class="reference internal" href="#id48">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id49">0.2.0 - 2022-09-28</a><ul>
+<li><a class="reference internal" href="#id50">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id51">0.1.2 - 2022-08-19</a><ul>
+<li><a class="reference internal" href="#id52">Changed</a></li>
+<li><a class="reference internal" href="#id53">Added</a></li>
+<li><a class="reference internal" href="#fixed">Fixed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id54">0.1.1 - 2022-05-30</a><ul>
+<li><a class="reference internal" href="#id55">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id56">0.1.0 - 2022-05-28</a><ul>
+<li><a class="reference internal" href="#id57">Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id58">0.0.22 - 2022-05-09</a></li>
+<li><a class="reference internal" href="#id59">0.0.17 - 2022-02-14</a><ul>
+<li><a class="reference internal" href="#id60">Added</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=c87aa342"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+ospx.utils.dict
+===============
+
+.. automodule:: ospx.utils.dict
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      find_key
+      find_keys
+      find_type_identifier_in_keys
+      shrink_dict
+   

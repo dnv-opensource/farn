@@ -1,0 +1,27 @@
+DiscreteSampling
+================
+
+.. currentmodule:: farn.sampling.sampling
+
+.. autoclass:: DiscreteSampling
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~DiscreteSampling.__init__
+      ~DiscreteSampling.generate_samples
+      ~DiscreteSampling.set_sampling_parameters
+      ~DiscreteSampling.set_sampling_type
+   
+   
+
+
+   
+   
+   

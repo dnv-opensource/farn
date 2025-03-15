@@ -1,0 +1,35 @@
+JobQueue
+========
+
+.. currentmodule:: farn.run.utils.threading
+
+.. autoclass:: JobQueue
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~JobQueue.__init__
+      ~JobQueue.empty
+      ~JobQueue.full
+      ~JobQueue.get
+      ~JobQueue.get_nowait
+      ~JobQueue.join
+      ~JobQueue.put
+      ~JobQueue.put_callable
+      ~JobQueue.put_nowait
+      ~JobQueue.qsize
+      ~JobQueue.shutdown
+      ~JobQueue.task_done
+   
+   
+
+
+   
+   
+   

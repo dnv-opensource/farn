@@ -1,0 +1,17 @@
+﻿ospx.ospSimulationCase
+======================
+
+.. automodule:: ospx.ospSimulationCase
+   :members:
+   :exclude-members: OspSimulationCase,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      OspSimulationCase
+   

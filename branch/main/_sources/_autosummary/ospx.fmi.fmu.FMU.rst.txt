@@ -1,0 +1,33 @@
+FMU
+===
+
+.. currentmodule:: ospx.fmi.fmu
+
+.. autoclass:: FMU
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~FMU.__init__
+      ~FMU.copy
+      ~FMU.proxify
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~FMU.default_experiment
+      ~FMU.units
+      ~FMU.variables
+   
+   
