@@ -363,9 +363,9 @@ class DiscreteSampling:
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: Dict[str, List[Any]] = self._generate_samples_dict()
         # Depending on implementation
-        self.minIterationDepth = 3
+        self.minIterationDepth = 5
         self.maxIterationDepth = 15
-
+        
         values: ndarray[Any, Any] = self._generate_values_using_hilbert()
         self._write_values_into_samples_dict(values, samples)
 
@@ -459,7 +459,8 @@ class DiscreteSampling:
     def _generate_values_using_sobol(self) -> ndarray[Any, Any]:
         from scipy.stats import qmc
         from scipy.stats.qmc import Sobol
-
+        #todo: check compare with sobol_seq
+        
         sobol_engine: Sobol = Sobol(
             d=self.number_of_fields,
             scramble=False,
@@ -535,7 +536,18 @@ class DiscreteSampling:
                 self.iteration_depth = self.sampling_parameters["_iterationDepth"]
         else:
             self.iteration_depth = 10
-
+            msg: str = (f'_iterationDepth not given in farnDict...\n\tsetting to {self.iteration_depth}')
+            logger.warning(msg)
+        
+        corners: int = 2**self.number_of_fields
+        multiply_of_corners: int = number_of_continuous_samples % corners
+        if multiply_of_corners in [0, 1, corners-1]:
+            nearly: str = 'exactly ' if multiply_of_corners == 0 else 'nearly '
+            msg: str = (
+                f'The number of samples ({number_of_continuous_samples}) is {nearly}a multiple of the corners for a {self.number_of_fields}-dim tessereact ({corners}) and thus the sampling set might be correlated...\n\tconsider changing the number of samples.'
+            )
+            logger.warning(msg)
+            
         hc = HilbertCurve(
             self.iteration_depth, self.number_of_fields, n_procs=0
         )  # -1: all threads
@@ -559,7 +571,7 @@ class DiscreteSampling:
         int_distribution = np.trunc(distribution)
 
         hilbert_points = hc.points_from_distances(int_distribution)
-
+        
         _points: Iterable[Iterable[float]] = []
         interpolation_hits = 0
         for hpt, dst, idst in zip(hilbert_points, distribution, int_distribution):
@@ -591,7 +603,7 @@ class DiscreteSampling:
 
         # Downscale points from hilbert space to unit hypercube [0,1)*d
         points = qmc.scale(points, points.min(axis=0), points.max(axis=0), reverse=True)  # type: ignore
-
+        
         # Upscale points from unit hypercube to bounds
         range_lower_bounds: ndarray[Any, Any] = np.array(
             [range[0] for range in self.ranges]
@@ -600,7 +612,7 @@ class DiscreteSampling:
             [range[1] for range in self.ranges]
         )
         sample_set: ndarray[Any, Any] = qmc.scale(points, range_lower_bounds, range_upper_bounds)  # type: ignore
-
+       
         return sample_set
 
     def _determine_number_of_samples(self):
