@@ -28,7 +28,7 @@ name = "farn"
 version = "0.4.1"
 description = "Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies."
 readme = "README.md"
-requires-python = ">= 3.10, < 3.14"
+requires-python = ">= 3.11, < 3.15"
 license = { file = "LICENSE" }
 authors = [
     { name = "Frank Lumpitzsch", email = "frank.lumpitzsch@dnv.com" },
