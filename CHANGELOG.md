@@ -6,6 +6,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* Updated to ruff>=0.14.3  (from ruff>=0.14.3)
+* GitHub workflow _test_future.yml : updated Python specifier in comment to 3.15
+* GitHub workflow _test_future.yml : updated Python specifier in workflow name to py315
+
+### Dependencies
 * Updated to ruff>=0.14.3  (from ruff>=0.11.0)
 * Updated to pyright>=1.1.407  (from pyright>=1.1.396)
 * Updated to sourcery>=1.40  (from sourcery>=1.35)
