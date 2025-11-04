@@ -209,12 +209,12 @@ def _generate_barnsley_fern() -> None:
     ƒ3    0.20   -0.26    0.23    0.22    0       1.60    0.07    Largest left-hand leaflet
     ƒ4   -0.15    0.28    0.26    0.24    0       0.44    0.07    Largest right-hand leaflet
     """
-    import tempfile
-    import tkinter as tk
+    import tempfile  # noqa: PLC0415
+    import tkinter as tk  # noqa: PLC0415
 
-    from numpy import random
-    from PIL import Image
-    from PIL.ImageDraw import ImageDraw
+    from numpy import random  # noqa: PLC0415
+    from PIL import Image  # noqa: PLC0415
+    from PIL.ImageDraw import ImageDraw  # noqa: PLC0415
 
     def t1(p: tuple[float, float]) -> tuple[float, float]:
         """1%."""

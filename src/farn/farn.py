@@ -160,7 +160,7 @@ def create_samples(farn_dict: SDict[str, Any]) -> None:
     farn_dict : SDict[str, Any]
         farn dict the samples shall be created in
     """
-    from farn.sampling.sampling import DiscreteSampling
+    from farn.sampling.sampling import DiscreteSampling  # noqa: PLC0415
 
     if "_layers" not in farn_dict:
         logger.error(f"no '_layers' element in farn dict {farn_dict.name}. Sampling not possible.")

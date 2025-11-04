@@ -269,6 +269,9 @@ class Case:
     def __eq__(self, other: object) -> bool:
         return str(self) == str(other)
 
+    def __hash__(self) -> int:
+        return hash(str(self))
+
 
 class Cases(list[Case]):
     """Container Class for Cases.
@@ -323,7 +326,7 @@ class Cases(list[Case]):
                     if not parameter.name:
                         parameter.name = "NA"
 
-        series: dict[str, Series] = {  # pyright: ignore[reportMissingTypeArgument]
+        series: dict[str, Series] = {
             "case": Series(data=None, dtype=np.dtype(str), name="case"),
             "path": Series(data=None, dtype=np.dtype(str), name="path"),
         }
