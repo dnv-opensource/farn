@@ -6,6 +6,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* Updated to numpy>=2.3  (removed split version specifiers)
+
+### Dependencies
 * Updated to scipy>=1.14  (from scipy>=1.16)
 
 ### Dependencies
