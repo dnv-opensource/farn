@@ -696,7 +696,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.3" },
     { name = "pillow", specifier = ">=12.0" },
     { name = "psutil", specifier = ">=5.9" },
-    { name = "pydoe3", specifier = ">=1.5" },
+    { name = "pydoe3", specifier = ">=1.6" },
     { name = "scipy", specifier = ">=1.16" },
 ]
 
@@ -2253,15 +2253,15 @@ wheels = [
 
 [[package]]
 name = "pydoe3"
-version = "1.5.1"
+version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "scipy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/6b/8b6b06c5b50d364d5c6a342e893e6b79c55af212de3d5a2f0fd0ab6fb20a/pydoe3-1.5.1.tar.gz", hash = "sha256:c919dedd1d541572dc0ac0ec532c22ab5bce3ee0e71e1a9ceb3571ae4e7446ed", size = 147809, upload-time = "2025-10-27T15:59:32.024Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/2e/37925b5e663277926ce2ffda571d69537bbb1f9c41885859e68f83bfd474/pydoe3-1.6.0.tar.gz", hash = "sha256:ec8a9f78c80fa2e615bde03b65f7d1209d03365c5807ef25b8b165a597946e69", size = 153485, upload-time = "2025-11-05T14:58:14.024Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9b/1f/6ccc4a487f5fba1bbf14d09914d9eb56f55cf48085223259f22507e203fe/pydoe3-1.5.1-py2.py3-none-any.whl", hash = "sha256:f4b270f198732e7c65f23cb0a1c7fe8e81b017f868060baabe0cffea81bbb028", size = 64246, upload-time = "2025-10-27T15:59:30.439Z" },
+    { url = "https://files.pythonhosted.org/packages/ec/96/e1d4c0c1439689c780ea0b7c3078e7e2edfd61eba5d1d1601043383e137d/pydoe3-1.6.0-py2.py3-none-any.whl", hash = "sha256:7a50004e650a64284055b86df223f1e184c4f0fe07d2b164569f63bdd440d3dc", size = 66470, upload-time = "2025-11-05T14:58:12.867Z" },
 ]
 
 [[package]]
