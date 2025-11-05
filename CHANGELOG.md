@@ -40,7 +40,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Included uv.lock file in version control
 * pyproject.toml:
   * added required-environments to uv.tools (windows, linux, macos)
+  * updated required Python version to ">= 3.11, < 3.15"
   * updated supported Python versions to 3.11, 3.12, 3.13, 3.14
+  * removed deprecated pyright setting 'reportShadowedImports'
 * GitHub workflow _test.yml:
   * updated Python versions in test matrix to 3.11, 3.12, 3.13, 3.14
 * GitHub workflow _test_future.yml:
