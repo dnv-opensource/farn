@@ -6,12 +6,6 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
-* Updated to pyDOE3>=1.6  (from pyDOE3>=1.5)
-* .sourcery.yaml: updated the lowest Python version the project supports to '3.11'
-* pyproject.toml: removed deprecated pyright setting 'reportShadowedImports'
-* GitHub workflow _test.yml: updated Python versions in test matrix to 3.11, 3.12, 3.13, 3.14
-
-### Dependencies
 * Updated to ruff>=0.14.3  (from ruff>=0.9.2)
 * Updated to pyright>=1.1.407  (from pyright>=1.1.392)
 * Updated to sourcery>=1.40  (from sourcery>=1.31)
@@ -19,7 +13,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Updated to types-lxml>=2025.8  (from types-lxml>=2024.12)
 * Updated to numpy>=2.3  (from numpy>=2.2)
 * Updated to scipy>=1.16  (from scipy>=1.14)
-* Updated to pyDOE3>=1.5  (from pyDOE3>=1.0)
+* Updated to pyDOE3>=1.6  (from pyDOE3>=1.0)
 * Updated to pandas>=2.3  (from pandas>=2.2)
 * Updated to pandas-stubs>=2.3  (from pandas-stubs>=2.2)
 * Updated to pillow>=12.0  (from Pillow>=11.1)
@@ -57,8 +51,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
   * updated rev of pre-commit-hooks to v6.0.0
   * updated rev of ruff-pre-commit to v0.14.3
   * updated id of ruff to ruff-check
+* Sphinx conf.py:
+  * removed ruff rule exception on file level
 * demos\folder_for_demos.py:
   * removed ruff rule exception
+* .sourcery.yaml:
+  * updated the lowest Python version the project supports to '3.11'
 
 ### Solved
 * Resolved issues raised by `ruff` 0.14.3
