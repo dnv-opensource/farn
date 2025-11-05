@@ -6,6 +6,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* Updated to pyDOE3>=1.6  (from pyDOE3>=1.5)
+* .sourcery.yaml: updated the lowest Python version the project supports to '3.11'
+* pyproject.toml: removed deprecated pyright setting 'reportShadowedImports'
+* GitHub workflow _test.yml: updated Python versions in test matrix to 3.11, 3.12, 3.13, 3.14
+
+### Dependencies
 * Updated to ruff>=0.14.3  (from ruff>=0.9.2)
 * Updated to pyright>=1.1.407  (from pyright>=1.1.392)
 * Updated to sourcery>=1.40  (from sourcery>=1.31)
