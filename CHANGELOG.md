@@ -6,6 +6,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* Updated to scipy>=1.16  (from scipy>=1.14)
+
+### Dependencies
 * pyproject.toml: removed deprecated mypy plugin 'numpy.typing.mypy_plugin'
 
 ### Dependencies
