@@ -6,6 +6,9 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
+* pyproject.toml: removed deprecated mypy plugin 'numpy.typing.mypy_plugin'
+
+### Dependencies
 * Updated to numpy>=2.3  (removed split version specifiers)
 
 ### Dependencies
