@@ -344,7 +344,7 @@ class DiscreteSampling:
         self.minVals = [x[0] for x in self.ranges]
         self.maxVals = [x[1] for x in self.ranges]
 
-        import scipy.stats  # noqa: F401
+        import scipy.stats  # noqa: F401, PLC0415
 
         distribution_name: Sequence[str]
         distribution_parameters: Sequence[Any]
@@ -384,8 +384,8 @@ class DiscreteSampling:
 
     def _generate_values_using_uniform_lhs_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         """Uniform LHS."""
-        from pyDOE3 import lhs
-        from scipy.stats import uniform
+        from pyDOE3 import lhs  # noqa: PLC0415
+        from scipy.stats import uniform  # noqa: PLC0415
 
         lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
@@ -405,8 +405,8 @@ class DiscreteSampling:
 
     def _generate_values_using_normal_lhs_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
         """Gaussnormal LHS."""
-        from pyDOE3 import lhs
-        from scipy.stats import norm
+        from pyDOE3 import lhs  # noqa: PLC0415
+        from scipy.stats import norm  # noqa: PLC0415
 
         lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
@@ -430,8 +430,8 @@ class DiscreteSampling:
         return sample_set
 
     def _generate_values_using_sobol_sampling(self) -> np.ndarray[Any, np.dtype[np.float64]]:
-        from scipy.stats import qmc
-        from scipy.stats.qmc import Sobol
+        from scipy.stats import qmc  # noqa: PLC0415
+        from scipy.stats.qmc import Sobol  # noqa: PLC0415
 
         sobol_engine: Sobol = Sobol(
             d=self.number_of_fields,
@@ -442,14 +442,14 @@ class DiscreteSampling:
         if self.onset > 0:
             _ = sobol_engine.fast_forward(n=self.onset)
 
-        points: np.ndarray[Any, np.dtype[np.float64]] = sobol_engine.random(  # pyright: ignore[reportUnknownMemberType]
+        points: np.ndarray[Any, np.dtype[np.float64]] = sobol_engine.random(
             n=self.number_of_samples - self.number_of_bb_samples,
         )
 
         # Upscale points from unit hypercube to bounds
         range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
         range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
-        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(
             points,
             range_lower_bounds,
             range_upper_bounds,
@@ -464,19 +464,19 @@ class DiscreteSampling:
         numpy approach instead has only (<=10).
         """
         # sourcery skip: extract-duplicate-method
-        from math import modf
+        from math import modf  # noqa: PLC0415
 
-        from scipy.stats import qmc
+        from scipy.stats import qmc  # noqa: PLC0415
 
         msg: str
         try:
-            from decimal import Decimal
+            from decimal import Decimal  # noqa: PLC0415
         except ImportError:
             msg = "no module named Decimal"
             logger.exception(msg)
             raise
         try:
-            from hilbertcurve.hilbertcurve import HilbertCurve
+            from hilbertcurve.hilbertcurve import HilbertCurve  # noqa: PLC0415
         except ImportError:
             msg = "no module named HilbertCurve"
             logger.exception(msg)
@@ -569,7 +569,7 @@ class DiscreteSampling:
         points: np.ndarray[Any, np.dtype[np.float64]] = np.array(_points).astype(np.float64)
 
         # Downscale points from hilbert space to unit hypercube [0,1)*d
-        points = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
+        points = qmc.scale(
             points,
             points.min(axis=0),
             points.max(axis=0),
@@ -579,7 +579,7 @@ class DiscreteSampling:
         # Upscale points from unit hypercube to bounds
         range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
         range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
-        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = qmc.scale(
             points,
             range_lower_bounds,
             range_upper_bounds,
@@ -625,7 +625,7 @@ class DiscreteSampling:
         return self._check_length_matches_number_of_names("_ranges")
 
     def _create_bounding_box(self) -> None:
-        import itertools
+        import itertools  # noqa: PLC0415
 
         tmp: list[float | Sequence[float] | Sequence[Any]] = []
         if len(self.sampling_parameters["_ranges"]) == 1:

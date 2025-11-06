@@ -1,4 +1,3 @@
-# ruff: noqa: PYI041
 import logging
 
 import numpy as np
@@ -14,7 +13,7 @@ class Parameter:
     def __init__(
         self,
         name: str = "",
-        value: float | int | bool | str | None = None,
+        value: float | int | bool | str | None = None,  # noqa: FBT001
     ) -> None:
         self.name: str = name
         self.value: float | int | bool | str | None = value
