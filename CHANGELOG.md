@@ -6,24 +6,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 ## [Unreleased]
 
 ### Dependencies
-* Updated to scipy>=1.16  (from scipy>=1.14)
-
-### Dependencies
-* pyproject.toml: removed deprecated mypy plugin 'numpy.typing.mypy_plugin'
-
-### Dependencies
-* Updated to numpy>=2.3  (removed split version specifiers)
-
-### Dependencies
-* Updated to scipy>=1.14  (from scipy>=1.16)
-
-### Dependencies
 * Updated to ruff>=0.14.3  (from ruff>=0.9.2)
 * Updated to pyright>=1.1.407  (from pyright>=1.1.392)
 * Updated to sourcery>=1.40  (from sourcery>=1.31)
 * Updated to lxml>=6.0  (from lxml>=5.3)
 * Updated to types-lxml>=2025.8  (from types-lxml>=2024.12)
-* Updated to numpy>=2.3  (from numpy>=2.2)
+* Updated to numpy>=2.3  (removed split version specifiers)
 * Updated to scipy>=1.16  (from scipy>=1.14)
 * Updated to pyDOE3>=1.6  (from pyDOE3>=1.0)
 * Updated to pandas>=2.3  (from pandas>=2.2)
@@ -55,6 +43,7 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
   * updated required Python version to ">= 3.11, < 3.15"
   * updated supported Python versions to 3.11, 3.12, 3.13, 3.14
   * removed deprecated pyright setting 'reportShadowedImports'
+  * removed deprecated mypy plugin 'numpy.typing.mypy_plugin'
 * GitHub workflow _test.yml:
   * updated Python versions in test matrix to 3.11, 3.12, 3.13, 3.14
 * GitHub workflow _test_future.yml:
