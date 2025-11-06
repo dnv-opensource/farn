@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from farn.cli import farn
-from farn.cli.farn import _argparser, main
+from farn.cli import __main__
+from farn.cli.__main__ import _argparser, main
 
 # *****Test commandline interface (CLI)************************************************************
 
@@ -149,8 +149,8 @@ def test_logging_configuration(
     ):
         pass
 
-    monkeypatch.setattr(farn, "configure_logging", fake_configure_logging)
-    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
+    monkeypatch.setattr(__main__, "configure_logging", fake_configure_logging)
+    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
         args_expected: ConfigureLoggingArgs = expected
@@ -230,7 +230,7 @@ def test_api_invokation(
         args.batch = batch
         args.test = test
 
-    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
+    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
         args_expected: ApiArgs = expected

@@ -7,15 +7,8 @@ import sys
 from argparse import ArgumentParser
 from pathlib import Path
 
-# Remove current directory from Python search path.
-# Only through this trick it is possible that the current CLI file 'farn.py'
-# carries the same name as the package 'farn' we import from in the next lines.
-# If we did NOT remove the current directory from the Python search path,
-# Python would start searching for the imported names within the current file (farn.py)
-# instead of the package 'farn' (and the import statements fail).
-sys.path = [path for path in sys.path if Path(path) != Path(__file__).parent]
-from farn import run_farn  # noqa: E402
-from farn.utils.logging import configure_logging  # noqa: E402
+from farn import run_farn
+from farn.utils.logging import configure_logging
 
 logger = logging.getLogger(__name__)
 
@@ -216,12 +209,12 @@ def _generate_barnsley_fern() -> None:
     ƒ3    0.20   -0.26    0.23    0.22    0       1.60    0.07    Largest left-hand leaflet
     ƒ4   -0.15    0.28    0.26    0.24    0       0.44    0.07    Largest right-hand leaflet
     """
-    import tempfile
-    import tkinter as tk
+    import tempfile  # noqa: PLC0415
+    import tkinter as tk  # noqa: PLC0415
 
-    from numpy import random
-    from PIL import Image
-    from PIL.ImageDraw import ImageDraw
+    from numpy import random  # noqa: PLC0415
+    from PIL import Image  # noqa: PLC0415
+    from PIL.ImageDraw import ImageDraw  # noqa: PLC0415
 
     def t1(p: tuple[float, float]) -> tuple[float, float]:
         """1%."""
