@@ -58,7 +58,7 @@ class Worker(Thread):
             try:
                 func, args, kwargs = self.job_queue.get()
                 func(*args, **kwargs)
-            except Exception:  # noqa: PERF203
+            except Exception:
                 logger.exception("Worker: Exeption raised in worker thread.")
             finally:
                 self.job_queue.task_done()
