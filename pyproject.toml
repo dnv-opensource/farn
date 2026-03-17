@@ -101,7 +101,7 @@ dev = [
     "jupyter-client>=8.6",
     "pandas-stubs>=2.3",
     "types-psutil>=7.0",
-    "types-lxml>=2025.8",
+    "types-lxml>=2026.1",
 ]
 
 [tool.uv]
