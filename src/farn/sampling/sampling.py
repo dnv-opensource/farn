@@ -390,7 +390,7 @@ class DiscreteSampling:
         lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
             samples=self.number_of_samples - self.number_of_bb_samples,
-            criterion="corr",
+            criterion="corr" if self.number_of_fields > 1 else None,
             random_state=self.seed,
         )
 
@@ -411,7 +411,7 @@ class DiscreteSampling:
         lhs_distribution: np.ndarray[Any, np.dtype[np.float64]] | None = lhs(
             n=self.number_of_fields,
             samples=self.number_of_samples - self.number_of_bb_samples,
-            criterion="corr",
+            criterion="corr" if self.number_of_fields > 1 else None,
             random_state=self.seed,
         )
         # criterion: a string that tells lhs how to sample the points
