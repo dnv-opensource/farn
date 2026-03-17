@@ -147,7 +147,10 @@ include = [
     "demos",
 ]
 exclude = [
-    "src/folder_to_be_excluded",
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    ".venv",
 ]
 
 typeCheckingMode = "basic"
