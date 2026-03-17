@@ -5,8 +5,10 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
--/-
+* -/-
 
+
+## [0.4.3] - 2026-03-17
 
 ### Changed
 * GitHub Workflows:
@@ -33,6 +35,8 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
     In the majority of cases, the newer Python version will anyhow be backward-compatible. And in the rare case where your package would really not work with a newer Python version,
     users can at least find a solution manually to resolve the conflict, e.g. by pinning your package to the last version compatible with the environment they install it in.
     That way, we ensure it remains _possible_ for users to find a solution, instead of rendering it impossible forever.
+  * Added default directories to the 'exclude' list for pyright, in section [tool.pyright] <br>
+    (Ref note in pyright [docs](https://github.com/microsoft/pylance-release/blob/main/docs/settings/python_analysis_exclude.md#default-behavior)).
 * Sphinx Documentation:
   * Sphinx conf.py: Updated year in copyright statement to 2026
 * VS Code Settings:
@@ -43,7 +47,8 @@ VS Code Settings: (Recommended extensions): Added 'ms-python.vscode-python-envs'
   * VS Code settings: Updated 'mypy-type-checker.reportingScope' to 'custom'.
 * README.md: Updated year in copyright statement to 2026
 * ruff.toml: Updated target Python version to "py311"
-
+* tests/conftest.py:
+  * Changed scope of top level fixtures from "package" to "session", because "session" scoped fixtures gets called before "package" scoped fixtures
 
 ### Dependencies
 * .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.1
@@ -560,7 +565,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.2...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/dnv-opensource/farn/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/dnv-opensource/farn/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0
