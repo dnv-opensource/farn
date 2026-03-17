@@ -5,7 +5,79 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
--/-
+* -/-
+
+
+## [0.4.3] - 2026-03-17
+
+### Changed
+* GitHub Workflows:
+  * Added 'name: Checkout code' to uses of 'actions/checkout', for better readability and consistency across workflow files.
+  * Added 'name: Download build artifacts' to uses of 'actions/download-artifact', for better readability and consistency across workflow files.
+  * Added 'name: Publish to PyPI' to uses of 'pypa/gh-action-pypi-publish', for better readability and consistency across workflow files.
+  * Added 'name: Upload build artifacts' to uses of 'actions/upload-artifact', for better readability and consistency across workflow files.
+  * Changed 'uv sync --upgrade' to 'uv sync -U'
+  * Ensured that actions 'upload-artifact' and 'download-artifact' uniformly specify 'dist' as (file)name for the artifact uploaded (or downloaded, respectively), for consistency across workflow files.
+  * pull_request_to_main.yml and nightly_build.yml: Added 'workflow_dispatch:' in selected workflows to allow manual trigger of the workflow.
+  * Removed redundant 'Set up Python' steps (no longer needed, as 'uv sync' will automatically install Python if not present).
+  * Replaced 'Build source distribution and wheel' with 'Build source distribution and wheels' (plural) in workflow step names.
+  * Replaced 'Run twine check' with 'Check build artifacts' in workflow step names, to better reflect the purpose of the step.
+  * Updated the syntax used for the OS and Python matrix in test workflows.
+* pyproject.toml:
+  * pyproject.toml: Removed leading carets and trailing slashes from 'exclude' paths
+  * pyproject.toml: Removed trailing slashes from 'exclude' paths
+  * Removed upper version constraint from required Python version, i.e. changed the "requires-python" field from ">= 3.11, < 3.15" to ">= 3.11". <br>
+    Detailed background and reasoning in this good yet long post by Henry Schreiner:
+    https://iscinumpy.dev/post/bound-version-constraints/#pinning-the-python-version-is-special <br>
+    TLDR: Placing an upper Python version constraint on a Python package causes more harm than it provides benefits.
+    The upper version constraint unnecessarily manifests incompatibility with future Python releases.
+    Removing the upper version constraint ensures the package remains installable as Python evolves.
+    In the majority of cases, the newer Python version will anyhow be backward-compatible. And in the rare case where your package would really not work with a newer Python version,
+    users can at least find a solution manually to resolve the conflict, e.g. by pinning your package to the last version compatible with the environment they install it in.
+    That way, we ensure it remains _possible_ for users to find a solution, instead of rendering it impossible forever.
+  * Added default directories to the 'exclude' list for pyright, in section [tool.pyright] <br>
+    (Ref note in pyright [docs](https://github.com/microsoft/pylance-release/blob/main/docs/settings/python_analysis_exclude.md#default-behavior)).
+* Sphinx Documentation:
+  * Sphinx conf.py: Updated year in copyright statement to 2026
+* VS Code Settings:
+  * VS Code Settings: (Recommended extensions): Removed 'njqdev.vscode-python-typehint' (Python Type Hint). Not maintained since 1 year, and the functionality is now covered by GitHub Copilot.
+VS Code Settings: (Recommended extensions): Added 'ms-python.debugpy' (Python Debugger).
+VS Code Settings: (Recommended extensions): Added 'ms-python.vscode-python-envs' (Python Environments).
+  * VS Code settings: (Recommended extensions): Removed deprecated IntelliCode extension and replaced it by GitHub Copilot Chat as recommended replacement.
+  * VS Code settings: Updated 'mypy-type-checker.reportingScope' to 'custom'.
+* README.md: Updated year in copyright statement to 2026
+* ruff.toml: Updated target Python version to "py311"
+* tests/conftest.py:
+  * Changed scope of top level fixtures from "package" to "session", because "session" scoped fixtures gets called before "package" scoped fixtures
+
+### Dependencies
+* .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.1
+* Updated to dictio>=0.4.3
+* Updated to furo>=2025.12
+* Updated to hilbertcurve>=2.0
+* Updated to jupyter-client>=8.8
+* Updated to jupyter>=1.1.1
+* Updated to mypy>=1.19.1
+* Updated to myst-parser>=5.0
+* Updated to nbconvert>=7.17
+* Updated to ospx>=0.3.3
+* Updated to pandas-stubs>=3.0
+* Updated to pandas>=3.0
+* Updated to pillow>=12.1
+* Updated to pre-commit>=4.5
+* Updated to psutil>=7.2
+* Updated to pydoe3>=1.6.2
+* Updated to pyright>=1.1.408
+* Updated to pytest>=9.0
+* Updated to ruff>=0.15.1
+* Updated to scipy>=1.17.0
+* Updated to sourcery>=1.43.0
+* Updated to sphinx-argparse-cli>=1.20.1
+* Updated to sphinx-autodoc-typehints>=3.6
+* Updated to sphinx>=9.0
+* Updated to sphinxcontrib-mermaid>=2.0
+* Updated to types-lxml>=2026.1
+* Updated to types-psutil>=7.2
 
 
 ## [0.4.2] - 2025-11-06
@@ -493,7 +565,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.2...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/dnv-opensource/farn/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/dnv-opensource/farn/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0
