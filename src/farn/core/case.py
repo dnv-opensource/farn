@@ -154,7 +154,7 @@ class Case:
                 ]:
                     sys._getframe().f_locals[attribute] = eval(f"self.{attribute}")  # noqa: S307, SLF001  # type: ignore[reportPrivateUsage]
                     available_vars.add(attribute)
-            except Exception:  # noqa: PERF203
+            except Exception:
                 logger.exception(
                     f"Layer {self.layer}, case {self.case} validity check: case {self.case} is invalid: "
                     f"Reading case property '{attribute}' failed."
