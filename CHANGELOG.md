@@ -8,6 +8,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.4.4] - 2026-03-17
+
+### Solved
+* src/farn/sampling/sampling.py: Resolved an issue where the call to `lhs()` caused a runtime error if the number of factor to generate samples for was only 1.
+
+
 ## [0.4.3] - 2026-03-17
 
 ### Changed
@@ -565,7 +571,8 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.3...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.4.4...HEAD
+[0.4.4]: https://github.com/dnv-opensource/farn/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/dnv-opensource/farn/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/dnv-opensource/farn/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
