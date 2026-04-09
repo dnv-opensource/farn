@@ -9,8 +9,8 @@ Subpackages
    :template: custom-module.rst
    :recursive:
 
+   farn.batch
    farn.core
-   farn.run
    farn.sampling
    farn.utils
 

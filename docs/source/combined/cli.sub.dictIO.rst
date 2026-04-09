@@ -4,4 +4,4 @@ dictIO
 .. toctree::
    :maxdepth: 3
 
-   cli.dict_parser
+   cli.__main__
