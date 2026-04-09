@@ -1,3 +1,3 @@
 .. sphinx_argparse_cli::
-   :module: farn.run.cli.batchProcess
+   :module: farn.cli.batchProcess
    :func: _argparser

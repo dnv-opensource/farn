@@ -19,7 +19,11 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true, // pipe stdout/stderr to Debug Console
+            "showReturnValue": true,
+            "logToFile": false, // set true temporarily when diagnosing debugger issues
         },
         {
             "name": "Python: Current File, cwd = file dir",
@@ -28,10 +32,14 @@
             "cwd": "${fileDirname}", // working dir = dir where current file is
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "Python: Current File, cwd = workspace root folder",
@@ -43,14 +51,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample and generate test_farnDict",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "--sample",
@@ -60,14 +72,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "-g",
@@ -76,14 +92,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test execute test_farnDict",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict",
                 "-e",
@@ -93,14 +113,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample test_farnDict_v4",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict_v4",
                 "--sample",
@@ -109,14 +133,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict_v4",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict_v4",
                 "-g",
@@ -125,14 +153,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample and generate test_farnDict_v4",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict_v4",
                 "--sample",
@@ -142,14 +174,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test execute test_farnDict_v4",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict_v4",
                 "-e",
@@ -159,14 +195,18 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict logfile in subdir",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}\\tests\\test_working_directory",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "-g",
@@ -179,7 +219,11 @@
             "autoReload": {
                 "enable": true
             },
+            "subProcess": true,
             "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
     ]
 }

@@ -12,72 +12,62 @@ jobs:
     name: Build and publish documentation in combined version (farn, dictIO, ospx)
     runs-on: ubuntu-latest
     steps:
-      # Checkout farn (active branch)
-      - name: Checkout farn (active branch)
+      - name: Checkout active branch
         uses: actions/checkout@v5
         with:
           lfs: true
-      - name: prepare farn
+      # ---- BEGIN: Extra steps to merge the documentation of the sub-packages dictIO and ospx into the farn documentation ----
+      - name: Copy farn README and CHANGELOG to docs/source
         run: |
           cp -v -f README.md docs/source/README_farn.md
           cp -v -f CHANGELOG.md docs/source/CHANGELOG_farn.md
           sed -i '1 s/Changelog/farn/' docs/source/CHANGELOG_farn.md
-
-      # Create temporary subfolders to hold the checked out sub-packages
-      - name: Create temporary subfolders
+      - name: Create temporary subfolders for dictIO and ospx
         run: |
           mkdir dictIO
           mkdir ospx
-
-      # Checkout dictIO (same branch as the one that triggered the workflow here in farn)
       - name: Checkout dictIO (same branch as in farn)
         uses: actions/checkout@v5
         with:
+          lfs: true
           repository: 'dnv-opensource/dictIO'
           ref: ${{github.ref}}
           path: dictIO
-          lfs: true
-      - name: Prepare dictIO
+      - name: Copy dictIO README and CHANGELOG to docs/source
         run: |
           rm -rf dictIO/.git/
           cp -v -f dictIO/README.md dictIO/docs/source/README_dictIO.md
           cp -v -f dictIO/CHANGELOG.md dictIO/docs/source/CHANGELOG_dictIO.md
           sed -i '1 s/Changelog/dictIO/' dictIO/docs/source/CHANGELOG_dictIO.md
-
-      # Checkout ospx (same branch as the one that triggered the workflow here in farn)
       - name: Checkout ospx (same branch as in farn)
         uses: actions/checkout@v5
         with:
+          lfs: true
           repository: 'dnv-opensource/ospx'
           ref: ${{github.ref}}
           path: ospx
-          lfs: true
-      - name: Prepare ospx
+      - name: Copy ospx README and CHANGELOG to docs/source
         run: |
           rm -rf ospx/.git/
           cp -v -f ospx/README.md ospx/docs/source/README_ospx.md
           cp -v -f ospx/CHANGELOG.md ospx/docs/source/CHANGELOG_ospx.md
           sed -i '1 s/Changelog/ospx/' ospx/docs/source/CHANGELOG_ospx.md
-
-      # merge sub-packages into root
-      - name: merge sub-packages
+      - name: Merge sub-packages dictIO and ospx into root
         run: |
           cp -v -n -r dictIO/* .
           cp -v -n -r ospx/* .
-
-      # replace TOC files by its combined versions
-      - name: replace TOC files
+      - name: replace TOC files in docs/source by its combined versions
         run: |
           cp -v -f docs/source/combined/* docs/source
           rm -v -r docs/source/combined
-
+      # ---- END: Extra steps to merge the documentation of the sub-packages dictIO and ospx into the farn documentation ----
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          cache-dependency-glob: "uv.lock"
+          cache-dependency-glob: 'uv.lock'
       - name: Install the project
-        run: uv sync -U
+        run: uv sync --frozen
       - name: Print debugging information
         run: |
           echo "github.ref:" ${{github.ref}}

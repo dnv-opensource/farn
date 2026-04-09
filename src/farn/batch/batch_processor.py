@@ -3,8 +3,8 @@ from pathlib import Path
 
 from psutil import cpu_count
 
-from farn.run.subProcess import execute_in_sub_process
-from farn.run.utils.threading import JobQueue, Worker
+from farn.utils.sub_process import execute_in_sub_process
+from farn.utils.threading import JobQueue, Worker
 
 logger = logging.getLogger(__name__)
 

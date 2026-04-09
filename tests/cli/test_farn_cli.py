@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from farn.cli import __main__
-from farn.cli.__main__ import _argparser, main
+from farn.cli.__main__ import _argparser, _get_version, main
 
 # *****Test commandline interface (CLI)************************************************************
 
@@ -79,6 +79,23 @@ def test_cli(
             args = parser.parse_args()
     else:
         raise TypeError
+
+
+@pytest.mark.parametrize("flag", ["-V", "--version"])
+def test_cli_version(
+    flag: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    # Prepare
+    monkeypatch.setattr(sys, "argv", ["farn", flag])
+    parser = _argparser()
+    # Execute & Assert
+    with pytest.raises(SystemExit) as exc_info:
+        _ = parser.parse_args()
+    assert exc_info.value.code == 0
+    captured = capsys.readouterr()
+    assert _get_version() in captured.out
 
 
 # *****Ensure the CLI correctly configures logging*************************************************
