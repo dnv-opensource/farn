@@ -69,7 +69,7 @@ dependencies = [
     "pyDOE3>=1.6.2",
     "psutil>=7.2",
     "hilbertcurve>=2.0",
-    "dictIO>=0.4.3",
+    "dictIO>=0.4.4",
     "ospx>=0.3.3",
 ]
 
