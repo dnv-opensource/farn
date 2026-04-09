@@ -18,7 +18,7 @@ from dictIO.utils.path import relative_path
 from numpy import ndarray
 from pandas import DataFrame, Series
 
-from farn.core import Parameter
+from farn.core.parameter import Parameter
 
 __all__ = [
     "Case",
