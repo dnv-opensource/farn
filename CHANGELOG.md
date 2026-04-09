@@ -12,6 +12,18 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * Python modules: Changed `__ALL__` to `__all__` (lowercase, PEP8 and PEP257 compliant).
 
 
+### Dependencies
+* .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.9
+* Updated to dictIO>=0.4.4
+* Updated to numpy>=2.4
+* Updated to ospx>=0.3.5
+* Updated to pytest-cov>=7.1
+* Updated to ruff>=0.15.9
+* Updated to scipy>=1.17.1
+* Updated to sphinx-argparse-cli>=1.21.3
+* Updated to types-lxml>=2026.2
+
+
 ## [0.4.4] - 2026-03-17
 
 ### Solved
