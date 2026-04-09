@@ -18,7 +18,7 @@ from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
 
-__ALL__ = [
+__all__ = [
     "run_farn",
     "create_samples",
     "create_cases",

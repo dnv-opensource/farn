@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 
-__ALL__ = ["Parameter"]
+__all__ = ["Parameter"]
 
 logger = logging.getLogger(__name__)
 
