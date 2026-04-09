@@ -21,8 +21,8 @@ from pandas import DataFrame, Series
 from farn.core import Parameter
 
 __all__ = [
-    "CaseStatus",
     "Case",
+    "CaseStatus",
     "Cases",
 ]
 

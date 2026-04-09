@@ -120,7 +120,7 @@ required-environments = [
 
 [project.scripts]
 farn = "farn.cli.__main__:main"
-batchProcess = "farn.run.cli.batchProcess:main"
+batchProcess = "farn.cli.batchProcess:main"
 
 
 [tool.mypy]

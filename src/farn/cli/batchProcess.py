@@ -1,18 +1,29 @@
 #!/usr/bin/env python
+"""batchProcess command line interface."""
 
 import argparse
 import logging
-from argparse import ArgumentParser
+import pprint
+from importlib import metadata
 from pathlib import Path
 
-from farn.run.batchProcess import AsyncBatchProcessor
+from farn.batch.batch_processor import AsyncBatchProcessor
 from farn.utils.logging import configure_logging
 
 logger = logging.getLogger(__name__)
 
 
+def _get_version() -> str:
+    """Return the installed package version, or a safe fallback if unavailable."""
+    try:
+        return metadata.version("farn")
+    except metadata.PackageNotFoundError:
+        # Fallback when package metadata is not available (e.g. running from source)
+        return "farn (version unknown)"
+
+
 def _argparser() -> argparse.ArgumentParser:
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         prog="batchProcess",
         usage="%(prog)s caseList [options [args]]",
         epilog="_________________batchProcess___________________",
@@ -22,8 +33,8 @@ def _argparser() -> argparse.ArgumentParser:
     )
 
     _ = parser.add_argument(
-        "caseList",
-        metavar="caseList",
+        "case_list_file",
+        metavar="case_list_file",
         type=str,
         help="name of the text file containing all paths of the cases to be processed.",
     )
@@ -31,7 +42,7 @@ def _argparser() -> argparse.ArgumentParser:
     _ = parser.add_argument(
         "-e",
         "--execute",
-        metavar="CMD",
+        metavar="command",
         action="store",
         type=str,
         help=(
@@ -99,11 +110,18 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
+    _ = parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=_get_version(),
+    )
+
     return parser
 
 
 def main() -> None:
-    """Entry point for console script as configured in setup.cfg.
+    """Entry point for console script as configured in pyproject.toml.
 
     Runs the command line interface and parses arguments and options entered on the console.
     """
@@ -121,15 +139,30 @@ def main() -> None:
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
 
-    case_list_file: Path = Path(args.caseList)
+    case_list_file: Path = Path(args.case_list_file)
     command: str = args.execute
     timeout: int = args.timeout
     max_number_of_cpus: int = args.cpu
 
-    # Check whether caselist file exists
+    # Check whether case list file exists
     if not case_list_file.is_file():
-        logger.error(f"runCases.py: File {case_list_file} not found.")
+        logger.error(f"batchProcess.py: File {case_list_file} not found.")
         return
+
+    # Print the parsed commandline arguments for documentation and debugging purposes.
+    # The arguments will be split into one argument per line, if possible.
+    # If extracting a mapping from `args` fails, fall back to its string representation.
+    _indent: str = " " * 13
+    try:
+        _arg_mapping = vars(args)
+    except TypeError:
+        _arg_mapping = {"args": str(args)}
+    _formatted_args = pprint.pformat(_arg_mapping, sort_dicts=True)
+    _indented_args = "\n".join(f"{_indent}{line}" for line in _formatted_args.splitlines())
+    logger.info(
+        "Start batchProcess.py with following arguments:\n%s\n",
+        _indented_args,
+    )
 
     # Invoke API
     batch_processor: AsyncBatchProcessor = AsyncBatchProcessor(

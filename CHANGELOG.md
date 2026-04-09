@@ -8,6 +8,12 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+### BREAKING Changes
+* Moved module `src/farn/run/utils/threading.py` to  `src/farn/utils/threading.py`
+* Renamed and moved module `src/farn/run/subProcess.py` to `src/farn/utils/sub_process.py`
+* Renamed and moved module `src/farn/run/batchProcess.py` to `src/farn/batch/batch_processor.py`
+* Renamed module `src/farn/sampling/sampling.py` to `src/farn/sampling/discrete.py` (because the only class it actually contains is `DiscreteSampling`
+
 ### Changed
 * Python modules: Changed `__ALL__` to `__all__` (lowercase, PEP8 and PEP257 compliant).
 

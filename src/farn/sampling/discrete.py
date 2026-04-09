@@ -393,13 +393,16 @@ class DiscreteSampling:
             criterion="corr" if self.number_of_fields > 1 else None,
             random_state=self.seed,
         )
-
+        if lhs_distribution is None:
+            msg: str = "lhs_distribution is None. This should not happen. Check pyDOE3.lhs function."
+            logger.error(msg)
+            raise ValueError(msg)
         _range_lower_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[0] for r in self.ranges])
         _range_upper_bounds: np.ndarray[Any, np.dtype[np.float64]] = np.array([r[1] for r in self.ranges])
         loc: np.ndarray[Any, np.dtype[np.float64]] = _range_lower_bounds
         scale: np.ndarray[Any, np.dtype[np.float64]] = _range_upper_bounds - _range_lower_bounds
 
-        sample_set: np.ndarray[Any, np.dtype[np.float64]] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = uniform(loc=loc, scale=scale).ppf(lhs_distribution)
 
         return sample_set
 
@@ -414,6 +417,10 @@ class DiscreteSampling:
             criterion="corr" if self.number_of_fields > 1 else None,
             random_state=self.seed,
         )
+        if lhs_distribution is None:
+            msg: str = "lhs_distribution is None. This should not happen. Check pyDOE3.lhs function."
+            logger.error(msg)
+            raise ValueError(msg)
         # criterion: a string that tells lhs how to sample the points
         #   (default: None, which simply randomizes the points within the intervals)
         #   - center|c: center the points within the sampling intervals
@@ -425,7 +432,7 @@ class DiscreteSampling:
         # std of type scalar (scale) or vector (stretch, scale), no rotation
         _std: np.ndarray[Any, np.dtype[np.float64]] = np.array(self.std)
 
-        sample_set: np.ndarray[Any, np.dtype[np.float64]] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)  # pyright: ignore[reportUnknownMemberType]
+        sample_set: np.ndarray[Any, np.dtype[np.float64]] = norm(loc=self.mean, scale=_std).ppf(lhs_distribution)
 
         return sample_set
 
