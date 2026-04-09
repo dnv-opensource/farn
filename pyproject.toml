@@ -27,7 +27,7 @@ allow-direct-references = true
 
 [project]
 name = "farn"
-version = "0.4.4"
+version = "0.5.0"
 description = "Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies."
 readme = "README.md"
 requires-python = ">= 3.11"
