@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# coding utf-8
+"""farn command line interface."""
 
 import argparse
 import logging
-import sys
-from argparse import ArgumentParser
+import pprint
+from importlib import metadata
 from pathlib import Path
 
 from farn import run_farn
@@ -13,8 +13,17 @@ from farn.utils.logging import configure_logging
 logger = logging.getLogger(__name__)
 
 
+def _get_version() -> str:
+    """Return the installed package version, or a safe fallback if unavailable."""
+    try:
+        return metadata.version("farn")
+    except metadata.PackageNotFoundError:
+        # Fallback when package metadata is not available (e.g. running from source)
+        return "farn (version unknown)"
+
+
 def _argparser() -> argparse.ArgumentParser:
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         prog="farn",
         usage="%(prog)s farn_dict_file [options [args]]",
         epilog="_________________farn___________________",
@@ -92,7 +101,7 @@ def _argparser() -> argparse.ArgumentParser:
         "-q",
         "--quiet",
         action="store_true",
-        help="console output will be quiet.",
+        help=("console output will be quiet."),
         default=False,
     )
 
@@ -100,7 +109,7 @@ def _argparser() -> argparse.ArgumentParser:
         "-v",
         "--verbose",
         action="store_true",
-        help="console output will be verbose.",
+        help=("console output will be verbose."),
         default=False,
     )
 
@@ -123,30 +132,32 @@ def _argparser() -> argparse.ArgumentParser:
         required=False,
     )
 
+    _ = parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=_get_version(),
+    )
+
     return parser
 
 
 def main() -> None:
-    """Entry point for console script as configured in setup.cfg.
+    """Entry point for console script as configured in pyproject.toml.
 
     Runs the command line interface and parses arguments and options entered on the console.
     """
     parser = _argparser()
-    try:
-        args = parser.parse_args()
-    except Exception:  # noqa: BLE001
-        parser.print_help()
-        sys.exit(0)
+    args = parser.parse_args()
 
     # Configure Logging
     # ..to console
-    log_level_console: str = (
-        "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
-    )
+    # NOTE: Default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    log_level_console: str = "INFO"
     if any([args.quiet, args.verbose]):
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console
-        # ..to file
+    # ..to file
     log_file: Path | None = Path(args.log) if args.log else None
     log_level_file: str = args.log_level
     configure_logging(log_level_console, log_file, log_level_file)
@@ -158,28 +169,31 @@ def main() -> None:
     batch: bool = args.batch
     test: bool = args.test
 
-    # catch missing arguments {sample, generate, command}
-    # and drop an error
-    # as one of them IS required
-    if not sample and not generate and command is None:
+    # Ensure that at least one of the arguments {sample, generate, command} is given.
+    # (minimum one of them is required)
+    # Drop an error if not.
+    if not (sample or generate or command):
         parser.print_help()
         logger.error("farn: none of the required options given: '--sample' or '--generate' or '--execute'")
 
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
         logger.error(f"farn: File {farn_dict_file} not found.")
-        # easter egg: Generate Barnsley fern
-        # _generate_barnsley_fern()  # noqa: ERA001
         return
 
+    # Print the parsed commandline arguments for documentation and debugging purposes.
+    # The arguments will be split into one argument per line, if possible.
+    # If extracting a mapping from `args` fails, fall back to its string representation.
+    _indent: str = " " * 13
+    try:
+        _arg_mapping = vars(args)
+    except TypeError:
+        _arg_mapping = {"args": str(args)}
+    _formatted_args = pprint.pformat(_arg_mapping, sort_dicts=True)
+    _indented_args = "\n".join(f"{_indent}{line}" for line in _formatted_args.splitlines())
     logger.info(
-        f"Start farn.py with following arguments:\n"
-        f"\t farn_dict_file: \t{farn_dict_file}\n"
-        f"\t sample: \t\t{sample}\n"
-        f"\t generate: \t\t{generate}\n"
-        f"\t command: \t\t{command}\n"
-        f"\t batch: \t\t\t{batch}\n"
-        f"\t test: \t\t\t{test}"
+        "Start farn.py with following arguments:\n%s\n",
+        _indented_args,
     )
 
     # Invoke API

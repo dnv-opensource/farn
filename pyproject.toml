@@ -11,7 +11,6 @@ only-include = [
     ".coveragerc",
     ".editorconfig",
     ".pre-commit-config.yaml",
-    "manage.py",
     "pyproject.toml",
     "pytest.ini",
     "ruff.toml",
@@ -22,6 +21,9 @@ only-include = [
 packages = [
     "src/farn",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [project]
 name = "farn"
@@ -61,16 +63,16 @@ classifiers = [
 ]
 dependencies = [
     "lxml>=6.0",
-    "numpy>=2.3",
-    "scipy>=1.17.0",
+    "numpy>=2.4",
+    "scipy>=1.17.1",
     "pandas>=3.0",
     "matplotlib>=3.10",
     "pillow>=12.1",
     "pyDOE3>=1.6.2",
     "psutil>=7.2",
     "hilbertcurve>=2.0",
-    "dictIO>=0.4.3",
-    "ospx>=0.3.3",
+    "dictIO>=0.4.4",
+    "ospx>=0.3.5",
 ]
 
 [project.urls]
@@ -84,24 +86,24 @@ Changelog = "https://github.com/dnv-opensource/farn/blob/main/CHANGELOG.md"
 [dependency-groups]
 dev = [
     "pytest>=9.0",
-    "pytest-cov>=7.0",
-    "ruff>=0.15.1",
+    "pytest-cov>=7.1",
+    "ruff>=0.15.9",
     "pyright>=1.1.408",
     "mypy>=1.19.1",
     "sourcery>=1.43.0",
     "pre-commit>=4.5",
     "Sphinx>=9.0",
-    "sphinx-argparse-cli>=1.20.1",
+    "sphinx-argparse-cli>=1.21.3",
     "sphinx-autodoc-typehints>=3.6",
     "sphinxcontrib-mermaid>=2.0",
     "myst-parser>=5.0",
     "furo>=2025.12",
-    "nbconvert>=7.17",
     "jupyter>=1.1.1",
-    "jupyter-client>=8.8",
+    "nbconvert>=7.17",
     "pandas-stubs>=3.0",
+    "types-lxml>=2026.2",
+    "scipy-stubs>=1.17.1",
     "types-psutil>=7.2",
-    "types-lxml>=2026.1",
 ]
 
 [tool.uv]
@@ -118,7 +120,7 @@ required-environments = [
 
 [project.scripts]
 farn = "farn.cli.__main__:main"
-batchProcess = "farn.run.cli.batchProcess:main"
+batchProcess = "farn.cli.batchProcess:main"
 
 
 [tool.mypy]
@@ -151,6 +153,7 @@ exclude = [
     "**/__pycache__",
     "**/.*",
     ".venv",
+    "src/folder_to_be_excluded",
 ]
 
 typeCheckingMode = "basic"

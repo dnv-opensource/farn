@@ -3,7 +3,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from farn.sampling.sampling import DiscreteSampling
+from farn.sampling.discrete import DiscreteSampling
 
 
 def test_fixed_sampling_one_param() -> None:

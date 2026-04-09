@@ -1,3 +1,5 @@
+"""farn API."""
+
 import logging
 import os
 import platform
@@ -12,20 +14,20 @@ from typing import (
 from dictIO import DictReader, DictWriter, SDict, create_target_file_name
 from dictIO.utils.strings import remove_quotes
 
+from farn.batch.batch_processor import AsyncBatchProcessor
 from farn.core import Case, Cases, Parameter
-from farn.run.batchProcess import AsyncBatchProcessor
-from farn.run.subProcess import execute_in_sub_process
 from farn.utils.logging import plural
 from farn.utils.os import append_system_variable
+from farn.utils.sub_process import execute_in_sub_process
 
-__ALL__ = [
-    "run_farn",
-    "create_samples",
-    "create_cases",
+__all__ = [
     "create_case_folders",
-    "create_param_dict_files",
     "create_case_list_files",
+    "create_cases",
+    "create_param_dict_files",
+    "create_samples",
     "execute_command_set",
+    "run_farn",
 ]
 
 logger = logging.getLogger(__name__)
@@ -160,7 +162,7 @@ def create_samples(farn_dict: SDict[str, Any]) -> None:
     farn_dict : SDict[str, Any]
         farn dict the samples shall be created in
     """
-    from farn.sampling.sampling import DiscreteSampling  # noqa: PLC0415
+    from farn.sampling.discrete import DiscreteSampling  # noqa: PLC0415
 
     if "_layers" not in farn_dict:
         logger.error(f"no '_layers' element in farn dict {farn_dict.name}. Sampling not possible.")
