@@ -8,15 +8,17 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+## [0.5.0] - 2026-04-09
+
 ### BREAKING Changes
-* Moved module `src/farn/run/utils/threading.py` to  `src/farn/utils/threading.py`
-* Renamed and moved module `src/farn/run/subProcess.py` to `src/farn/utils/sub_process.py`
-* Renamed and moved module `src/farn/run/batchProcess.py` to `src/farn/batch/batch_processor.py`
-* Renamed module `src/farn/sampling/sampling.py` to `src/farn/sampling/discrete.py` (because the only class it actually contains is `DiscreteSampling`
+* Moved module `farn.run.utils.threading` to  `farn.utils.threading`
+* Renamed and moved module `farn.run.subProcess` to `farn.utils.sub_process`
+* Renamed and moved module `farn.run.batchProcess` to `farn.batch.batch_processor`
+* Renamed module `farn.sampling.sampling` to `farn.sampling.discrete` (because the only class it actually contains is `DiscreteSampling`
 
 ### Changed
+* Updated code base with latest changes in python_project_template v0.2.10
 * Python modules: Changed `__ALL__` to `__all__` (lowercase, PEP8 and PEP257 compliant).
-
 
 ### Dependencies
 * .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.9
