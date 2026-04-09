@@ -1,3 +1,5 @@
+"""Test configuration and fixtures."""
+
 import logging
 import os
 from pathlib import Path
@@ -7,24 +9,29 @@ import pytest
 
 
 @pytest.fixture(scope="session", autouse=True)
-def chdir() -> None:
+def chdir():
     """
     Fixture that changes the current working directory to the 'test_working_directory' folder.
-    This fixture is automatically used for the entire package.
+    This fixture is automatically used for the entire session.
     """
+    original_cwd = Path.cwd()
     os.chdir(Path(__file__).parent.absolute() / "test_working_directory")
+    try:
+        yield
+    finally:
+        os.chdir(original_cwd)  # reset to original working directory after tests
 
 
 @pytest.fixture(scope="session", autouse=True)
 def test_dir() -> Path:
     """
     Fixture that returns the absolute path of the directory containing the current file.
-    This fixture is automatically used for the entire package.
+    This fixture is automatically used for the entire session.
     """
     return Path(__file__).parent.absolute()
 
 
-output_dirs = [
+output_dirs: list[str] = [
     "cases",
     "cases_one_layer",
     "cases_two_layers",
@@ -36,7 +43,7 @@ output_dirs = [
     "results",
     "templates",
 ]
-output_files = [
+output_files: list[str] = [
     "sampled*",
     "queueList*",
     "*.copy",
@@ -65,7 +72,8 @@ def _remove_output_dirs_and_files() -> None:
     for pattern in output_files:
         for file in Path.cwd().glob(pattern):
             _file = Path(file)
-            _file.unlink(missing_ok=True)
+            if _file.is_file():
+                _file.unlink(missing_ok=True)
 
 
 @pytest.fixture(autouse=True)
