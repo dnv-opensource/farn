@@ -170,11 +170,13 @@ def _create_dataframe(
 
 
 def _create_ndarray() -> np.ndarray[Any, np.dtype[np.float64]]:
-    array: np.ndarray[Any, np.dtype[np.float64]] = np.array([
-        [11.1, np.nan, np.nan],
-        [21.1, 22.2, np.nan],
-        [31.1, 32.2, 33.3],
-    ])
+    array: np.ndarray[Any, np.dtype[np.float64]] = np.array(
+        [
+            [11.1, np.nan, np.nan],
+            [21.1, 22.2, np.nan],
+            [31.1, 32.2, 33.3],
+        ]
+    )
     return array
 
 

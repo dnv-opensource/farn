@@ -529,14 +529,16 @@ class DiscreteSampling:
                 'a number of hilbert points of about 10-times higher than "_numberOfSamples".'
             )
 
-        distribution: np.ndarray[Any, np.dtype[np.float64]] = np.array([
-            Decimal(x)
-            for x in np.linspace(
-                int(hc.min_h),
-                int(hc.max_h),
-                number_of_continuous_samples,
-            )
-        ])
+        distribution: np.ndarray[Any, np.dtype[np.float64]] = np.array(
+            [
+                Decimal(x)
+                for x in np.linspace(
+                    int(hc.min_h),
+                    int(hc.max_h),
+                    number_of_continuous_samples,
+                )
+            ]
+        )
         int_distribution: np.ndarray[Any, np.dtype[np.int32]] = np.trunc(distribution)
 
         hilbert_points: Iterable[Iterable[int]] = hc.points_from_distances(int_distribution)
