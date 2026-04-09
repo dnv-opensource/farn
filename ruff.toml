@@ -171,3 +171,4 @@ convention = "numpy"
 
 [format]
 docstring-code-format = true
+# preview = true  # uncomment to enable preview features of Ruff formatter (https://docs.astral.sh/ruff/formatter/#preview-features)
