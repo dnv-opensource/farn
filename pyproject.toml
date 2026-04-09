@@ -11,7 +11,6 @@ only-include = [
     ".coveragerc",
     ".editorconfig",
     ".pre-commit-config.yaml",
-    "manage.py",
     "pyproject.toml",
     "pytest.ini",
     "ruff.toml",
@@ -22,6 +21,9 @@ only-include = [
 packages = [
     "src/farn",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [project]
 name = "farn"
@@ -70,7 +72,7 @@ dependencies = [
     "psutil>=7.2",
     "hilbertcurve>=2.0",
     "dictIO>=0.4.4",
-    "ospx>=0.3.5",
+    "ospx>=0.3.4",
 ]
 
 [project.urls]
@@ -96,12 +98,12 @@ dev = [
     "sphinxcontrib-mermaid>=2.0",
     "myst-parser>=5.0",
     "furo>=2025.12",
-    "nbconvert>=7.17",
     "jupyter>=1.1.1",
-    "jupyter-client>=8.8",
+    "nbconvert>=7.17",
     "pandas-stubs>=3.0",
-    "types-psutil>=7.2",
     "types-lxml>=2026.2",
+    "scipy-stubs>=1.17.1",
+    "types-psutil>=7.2",
 ]
 
 [tool.uv]
@@ -151,6 +153,7 @@ exclude = [
     "**/__pycache__",
     "**/.*",
     ".venv",
+    "src/folder_to_be_excluded",
 ]
 
 typeCheckingMode = "basic"

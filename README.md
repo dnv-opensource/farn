@@ -26,13 +26,8 @@ farn
 ```sh
 pip install farn
 ```
-farn requires the following two (sub-)packages:
-1. [dictIO][dictIO_docs]: foundation package, enabling farn to handle configuration files in dictIO dict file format.
-2. [ospx][ospx_docs]: extension package, enabling farn to generate OSP (co-)simulation files.
 
-However, both get installed automatically with farn (just pip install farn and you're done).
-
-## Usage Example
+## Usage
 
 farn provides both an API for use inside Python as well as a CLI for shell execution of core functions.
 
@@ -48,7 +43,7 @@ The above task can also be invoked from the command line, using the 'farn' comma
 farn farnDict --sample --generate
 ```
 
-_For more examples and usage, please refer to [farn's documentation][farn_docs]._
+_For more examples and usage, please refer to farn's [documentation][farn_docs]._
 
 Further, the [farn-demo][farn_demo_repo] repository on GitHub is an excellent place for a jumpstart into farn.
 Simply clone the [farn-demo][farn_demo_repo] repository to your local machine and click through the demos and related READMEs, by recommendation in the following sequence:
@@ -87,7 +82,7 @@ uv self update
 ```
 
 ### 2. Install Python
-This project requires Python 3.10 or later. <br>
+This project requires Python 3.11 or later. <br>
 If you don't already have a compatible version installed on your machine, the probably most comfortable way to install Python is through `uv`:
 ```sh
 uv python install
@@ -111,15 +106,18 @@ cd farn
 ```
 
 ### 4. Install dependencies
-Run `uv sync` to create a virtual environment and install all project dependencies into it:
+Run `uv sync -U` to create a virtual environment and install all project dependencies into it:
 ```sh
-uv sync
+uv sync -U
 ```
 > **Note**: Using `--no-dev` will omit installing development dependencies.
 
+> **Explanation**: The `-U` option stands for `--update`. It forces `uv` to fetch and install the latest versions of all dependencies,
+> ensuring that your environment is up-to-date.
+
 > **Note**: `uv` will create a new virtual environment called `.venv` in the project root directory when running
-> `uv sync` the first time. Optionally, you can create your own virtual environment using e.g. `uv venv`, before running
-> `uv sync`.
+> `uv sync -U` the first time. Optionally, you can create your own virtual environment using e.g. `uv venv`, before running
+> `uv sync -U`.
 
 ### 5. (Optional) Activate the virtual environment
 When using `uv`, there is in almost all cases no longer a need to manually activate the virtual environment. <br>
@@ -197,7 +195,7 @@ Distributed under the MIT license. See [LICENSE](LICENSE.md) for more informatio
 For your contribution, please make sure you follow the [STYLEGUIDE](STYLEGUIDE.md) before creating the Pull Request.
 
 <!-- Markdown link & img dfn's -->
-[dictIO_docs]: https://dnv-opensource.github.io/dictIO/README.html
-[ospx_docs]: https://dnv-opensource.github.io/ospx/README.html
 [farn_docs]: https://dnv-opensource.github.io/farn/README.html
 [farn_demo_repo]: https://github.com/dnv-opensource/farn-demo
+[dictIO_docs]: https://dnv-opensource.github.io/dictIO/README.html
+[ospx_docs]: https://dnv-opensource.github.io/ospx/README.html

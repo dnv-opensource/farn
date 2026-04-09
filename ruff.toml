@@ -27,6 +27,7 @@ ignore = [
     "PLR0911", # Too many return statements   <- @TODO: reactivate and resolve  @CLAROS, 2024-10-21
     "PLR0912", # Too many branches   <- @TODO: reactivate and resolve  @CLAROS, 2024-10-21
     "PLR0915", # Too many statements   <- @TODO: reactivate and resolve  @CLAROS, 2024-10-21
+
     # Ruff lint rules considered as too strict and hence ignored
     "FIX002",  # Line contains TODO, consider resolving the issue
     "TD003",   # Missing issue link on the line following a TODO
@@ -150,17 +151,20 @@ raises-require-match-for = [
     "T201",    # `print` found
     "E402",    # Module level import not at top of cell
 ]
+# utils/logging specific ignores
+"**/utils/logging.py" = [
+    "A005", # Module `logging` shadows a Python standard-library module
+]
 # docs/source/conf.py specific ignores
 "docs/source/conf.py" = [
     "INP001", # File is part of an implicit namespace package. Add an `__init__.py`. (NOTE: conf.py is not intended to be a module, __init__.py hence not required.)
     "A001",   # Variable {name} is shadowing a Python builtin
     "D100",   # Missing docstring in public module
 ]
-# utils/*.py specific ignores
-"**/utils/*.py" = [
-    "A005", # Module {name} shadows a Python standard-library module (applies to logging.py, threading.py, os.py)
+# types.py specific ignores
+"**/types.py" = [
+    "A005", # Module `types` shadows a Python standard-library module
 ]
-
 
 [lint.pydocstyle]
 convention = "numpy"
