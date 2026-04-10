@@ -1,1 +1,1 @@
-from farn.batch.batch_processor import AsyncBatchProcessor
+from farn.batch.batch_processor import AsyncBatchProcessor as AsyncBatchProcessor
