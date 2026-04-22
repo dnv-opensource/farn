@@ -8,6 +8,11 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 * -/-
 
 
+### Dependencies
+* Updated to lxml>=6.1
+* Updated to nbconvert>=7.17.1
+
+
 ## [0.5.1] - 2026-04-10
 
 ### Solved
