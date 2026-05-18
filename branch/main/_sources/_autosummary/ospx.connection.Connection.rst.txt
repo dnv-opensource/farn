@@ -1,0 +1,31 @@
+Connection
+==========
+
+.. currentmodule:: ospx.connection
+
+.. autoclass:: Connection
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Connection.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Connection.is_valid
+      ~Connection.is_variable_connection
+      ~Connection.is_variable_group_connection
+   
+   

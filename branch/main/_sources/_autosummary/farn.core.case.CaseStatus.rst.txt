@@ -1,0 +1,44 @@
+CaseStatus
+==========
+
+.. currentmodule:: farn.core.case
+
+.. autoclass:: CaseStatus
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~CaseStatus.conjugate
+      ~CaseStatus.bit_length
+      ~CaseStatus.bit_count
+      ~CaseStatus.to_bytes
+      ~CaseStatus.from_bytes
+      ~CaseStatus.as_integer_ratio
+      ~CaseStatus.is_integer
+      ~CaseStatus.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~CaseStatus.real
+      ~CaseStatus.imag
+      ~CaseStatus.numerator
+      ~CaseStatus.denominator
+      ~CaseStatus.NONE
+      ~CaseStatus.FAILURE
+      ~CaseStatus.PREPARED
+      ~CaseStatus.RUNNING
+      ~CaseStatus.SUCCESS
+   
+   

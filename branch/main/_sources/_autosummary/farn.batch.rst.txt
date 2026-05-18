@@ -1,0 +1,15 @@
+﻿farn.batch
+==========
+
+.. automodule:: farn.batch
+   :members:
+
+
+   
+.. rubric:: Modules
+.. autosummary::
+   :toctree:
+   :template: custom-module.rst
+   :recursive:
+
+   batch_processor

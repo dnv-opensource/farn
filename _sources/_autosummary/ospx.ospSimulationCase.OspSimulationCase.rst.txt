@@ -1,0 +1,29 @@
+OspSimulationCase
+=================
+
+.. currentmodule:: ospx.ospSimulationCase
+
+.. autoclass:: OspSimulationCase
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~OspSimulationCase.__init__
+      ~OspSimulationCase.setup
+      ~OspSimulationCase.write_osp_system_structure_xml
+      ~OspSimulationCase.write_statistics_dict
+      ~OspSimulationCase.write_system_structure_ssd
+      ~OspSimulationCase.write_watch_dict
+   
+   
+
+
+   
+   
+   
