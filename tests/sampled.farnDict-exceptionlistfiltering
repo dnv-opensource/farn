@@ -1,0 +1,112 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases-exceptionlistfiltering;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    firstParameter
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    0.5               0.75              1.0
+                )
+            );
+        }
+        _condition
+        {
+            _filter           'index != 1';
+            _action           exclude;
+        }
+        _commands
+        {
+            echo0
+            (
+                'echo  param0'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 0 firstParmeter';
+        _samples
+        {
+            _names
+            (
+                firstParameter_0    firstParameter_1    firstParameter_2
+            );
+            param0
+            (
+                0.5               0.75              1.0
+            );
+        }
+    }
+    lhsVariation
+    {
+        _sampling
+        {
+            _type             uniformLhs;
+            _names
+            (
+                param1            param2            param3
+            );
+            _ranges
+            (
+                (
+                    -10               10
+                )
+                (
+                    -5                5
+                )
+                (
+                    0                 100
+                )
+            );
+            _includeBoundingBox        false;
+            _numberOfSamples        5;
+        }
+        _condition
+        {
+            _filter           'abs(param0 * param1) >= 3.5';
+            _action           exclude;
+        }
+        _commands
+        {
+            echo1
+            (
+                'echo  param1 param2 param3'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 1 lhsVariation,                                 start -g with no filtering,                                 continue -e with given exception list';
+        _samples
+        {
+            _names
+            (
+                lhsVariation_0    lhsVariation_1    lhsVariation_2    lhsVariation_3    lhsVariation_4
+            );
+            param1
+            (
+                8.660631464752942    -8.763635497359642    1.6119062285186807    2.607277455447246    -2.0268941395832467
+            );
+            param2
+            (
+                -0.09672668187936395    -2.3286949592789643    1.6761712157975852    3.0611142909477316    -4.414154033060077
+            );
+            param3
+            (
+                73.28674957139499    93.7189967654611    33.33352273366535    5.469904312265501    49.03259513367585
+            );
+        }
+    }
+}

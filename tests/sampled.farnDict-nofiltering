@@ -1,0 +1,102 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases-nofiltering;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    firstParameter
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    0.5               1.0
+                )
+            );
+        }
+        _commands
+        {
+            echo0
+            (
+                'echo  param0'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 0 firstParmeter';
+        _samples
+        {
+            _names
+            (
+                firstParameter_0    firstParameter_1
+            );
+            param0
+            (
+                0.5               1.0
+            );
+        }
+    }
+    lhsVariation
+    {
+        _sampling
+        {
+            _type             uniformLhs;
+            _names
+            (
+                param1            param2            param3
+            );
+            _ranges
+            (
+                (
+                    -10               10
+                )
+                (
+                    -5                5
+                )
+                (
+                    0                 100
+                )
+            );
+            _includeBoundingBox        false;
+            _numberOfSamples        5;
+        }
+        _commands
+        {
+            echo1
+            (
+                'echo  param1 param2 param3'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 1 lhsVariation';
+        _samples
+        {
+            _names
+            (
+                lhsVariation_0    lhsVariation_1    lhsVariation_2    lhsVariation_3    lhsVariation_4
+            );
+            param1
+            (
+                -6.2164810327097815    6.595698302847342    0.6461314908912623    -4.758791428007402    2.392309345297292
+            );
+            param2
+            (
+                0.07786167768863539    4.367779924973641    -2.741230601424664    -3.0591201944884996    2.2934498709493294
+            );
+            param3
+            (
+                28.8614246131807    54.28379898596809    15.115992344765672    71.1473117951479    88.70769315856471
+            );
+        }
+    }
+}

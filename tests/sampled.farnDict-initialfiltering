@@ -1,0 +1,107 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases-initialfiltering;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    firstParameter
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    0.5               1.0
+                )
+            );
+        }
+        _condition
+        {
+            _filter           'abs(param0 * param1) >= 1';
+            _action           exclude;
+        }
+        _commands
+        {
+            echo0
+            (
+                'echo  param0'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 0 firstParmeter';
+        _samples
+        {
+            _names
+            (
+                firstParameter_0    firstParameter_1
+            );
+            param0
+            (
+                0.5               1.0
+            );
+        }
+    }
+    lhsVariation
+    {
+        _sampling
+        {
+            _type             uniformLhs;
+            _names
+            (
+                param1            param2            param3
+            );
+            _ranges
+            (
+                (
+                    -10               10
+                )
+                (
+                    -5                5
+                )
+                (
+                    0                 100
+                )
+            );
+            _includeBoundingBox        false;
+            _numberOfSamples        5;
+        }
+        _commands
+        {
+            echo1
+            (
+                'echo  param1 param2 param3'    'echo %cd%'       pwd
+            );
+        }
+        _comment              'level 1 lhsVariation';
+        _samples
+        {
+            _names
+            (
+                lhsVariation_0    lhsVariation_1    lhsVariation_2    lhsVariation_3    lhsVariation_4
+            );
+            param1
+            (
+                -4.483089985885793    6.633942522390214    -8.082607754935667    0.5871269015797882    3.9197648401023972
+            );
+            param2
+            (
+                3.9316308857384605    -4.838660157051919    -1.095067786106358    1.241979896163027    -0.5323609531789382
+            );
+            param3
+            (
+                63.7174530981745    52.56203633727421    20.547098447720487    15.664527924018614    96.0543856901311
+            );
+        }
+    }
+}
