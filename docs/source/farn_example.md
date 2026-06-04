@@ -61,7 +61,7 @@ cases.append(case)
 ## Create case folder(s)
 
 ~~~py
-from farn.farn import create_case_folders
+from farn import create_case_folders
 
 _ = create_case_folders(cases)
 ~~~
@@ -73,7 +73,7 @@ which contains the case-specific values of all varied parameters.<br>
 create_param_dict_files() will create this paramDict file in the case folder(s):
 
 ~~~py
-from farn.farn import create_param_dict_files
+from farn import create_param_dict_files
 
 _ = create_param_dict_files(cases)
 ~~~
@@ -84,7 +84,7 @@ _ = create_param_dict_files(cases)
 Execute the command_set that performs preparatory tasks in your case folder(s).
 
 ~~~py
-from farn.farn import execute_command_set
+from farn import execute_command_set
 
 _ = execute_command_set(
     cases=cases,
@@ -151,7 +151,6 @@ series: Dict[str, Series] = {
 }
 
 for index, case in cases:
-
     case_folder: Path = case.path
     result_folder: Path = case_folder / "results"
     result_dict_file: Path = result_folder / "watchDict-test_project-resultDict"  # adapt to output of watchCosim.

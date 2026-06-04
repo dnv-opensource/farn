@@ -3,13 +3,11 @@ import sys
 from argparse import ArgumentError
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Union
 
 import pytest
-from pytest import MonkeyPatch
 
-from farn.cli import farn
-from farn.cli.farn import _argparser, main
+from farn.cli import __main__
+from farn.cli.__main__ import _argparser, _get_version, main
 
 # *****Test commandline interface (CLI)************************************************************
 
@@ -19,14 +17,14 @@ class CliArgs:
     # Expected default values for the CLI arguments when farn gets called via the commandline
     quiet: bool = False
     verbose: bool = False
-    log: Union[str, None] = None
+    log: str | None = None
     log_level: str = field(default_factory=lambda: "WARNING")
-    farnDict: Union[str, None] = field(
+    farn_dict_file: str | None = field(default_factory=lambda: "test_farnDict")
         default_factory=lambda: "test_farnDict"
     )  # noqa: N815
     sample: bool = False
     generate: bool = False
-    execute: Union[str, None] = None
+    execute: str | None = None
     test: bool = False
 
 
@@ -60,14 +58,14 @@ class CliArgs:
     ],
 )
 def test_cli(
-    inputs: List[str],
-    expected: Union[CliArgs, type],
-    monkeypatch: MonkeyPatch,
+    inputs: list[str],
+    expected: CliArgs | type,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     # sourcery skip: no-conditionals-in-tests
     # sourcery skip: no-loop-in-tests
     # Prepare
-    monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
+    monkeypatch.setattr(sys, "argv", ["farn", *inputs])
     parser = _argparser()
     # Execute
     if isinstance(expected, CliArgs):
@@ -82,7 +80,24 @@ def test_cli(
         with pytest.raises((exception, SystemExit)):
             args = parser.parse_args()
     else:
-        raise AssertionError()
+        raise TypeError
+
+
+@pytest.mark.parametrize("flag", ["-V", "--version"])
+def test_cli_version(
+    flag: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    # Prepare
+    monkeypatch.setattr(sys, "argv", ["farn", flag])
+    parser = _argparser()
+    # Execute & Assert
+    with pytest.raises(SystemExit) as exc_info:
+        _ = parser.parse_args()
+    assert exc_info.value.code == 0
+    captured = capsys.readouterr()
+    assert _get_version() in captured.out
 
 
 # *****Ensure the CLI correctly configures logging*************************************************
@@ -93,7 +108,7 @@ class ConfigureLoggingArgs:
     # Values that main() is expected to pass to ConfigureLogging() by default when configuring the logging
     # Note: 'INFO' deviates from standard 'WARNING', but was decided intentionally for farn
     log_level_console: str = field(default_factory=lambda: "INFO")
-    log_file: Union[Path, None] = None
+    log_file: Path | None = None
     log_level_file: str = field(default_factory=lambda: "WARNING")
 
 
@@ -123,19 +138,19 @@ class ConfigureLoggingArgs:
     ],
 )
 def test_logging_configuration(
-    inputs: List[str],
-    expected: Union[ConfigureLoggingArgs, type],
-    monkeypatch: MonkeyPatch,
+    inputs: list[str],
+    expected: ConfigureLoggingArgs | type,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     # sourcery skip: no-conditionals-in-tests
     # sourcery skip: no-loop-in-tests
     # Prepare
-    monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
+    monkeypatch.setattr(sys, "argv", ["farn", *inputs])
     args: ConfigureLoggingArgs = ConfigureLoggingArgs()
 
     def fake_configure_logging(
         log_level_console: str,
-        log_file: Union[Path, None],
+        log_file: Path | None,
         log_level_file: str,
     ):
         args.log_level_console = log_level_console
@@ -144,16 +159,17 @@ def test_logging_configuration(
 
     def fake_run_farn(
         farn_dict_file: Path,
+        *,
         sample: bool,
         generate: bool,
-        command: Union[str, None],
+        command: str | None,
         batch: bool,
         test: bool,
     ):
         pass
 
-    monkeypatch.setattr(farn, "configure_logging", fake_configure_logging)
-    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
+    monkeypatch.setattr(__main__, "configure_logging", fake_configure_logging)
+    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
         args_expected: ConfigureLoggingArgs = expected
@@ -167,7 +183,7 @@ def test_logging_configuration(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        raise AssertionError()
+        raise TypeError
 
 
 # *****Ensure the CLI correctly invokes the API****************************************************
@@ -179,7 +195,7 @@ class ApiArgs:
     farn_dict_file: Path = field(default_factory=lambda: Path("test_farnDict"))
     sample: bool = False
     generate: bool = False
-    command: Union[str, None] = None
+    command: str | None = None
     batch: bool = False
     test: bool = False
 
@@ -207,21 +223,22 @@ class ApiArgs:
     ],
 )
 def test_api_invokation(
-    inputs: List[str],
-    expected: Union[ApiArgs, type],
-    monkeypatch: MonkeyPatch,
+    inputs: list[str],
+    expected: ApiArgs | type,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     # sourcery skip: no-conditionals-in-tests
     # sourcery skip: no-loop-in-tests
     # Prepare
-    monkeypatch.setattr(sys, "argv", ["farn"] + inputs)
+    monkeypatch.setattr(sys, "argv", ["farn", *inputs])
     args: ApiArgs = ApiArgs()
 
     def fake_run_farn(
         farn_dict_file: Path,
+        *,
         sample: bool = False,
         generate: bool = False,
-        command: Union[str, None] = None,
+        command: str | None = None,
         batch: bool = False,
         test: bool = False,
     ):
@@ -232,7 +249,7 @@ def test_api_invokation(
         args.batch = batch
         args.test = test
 
-    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
+    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
         args_expected: ApiArgs = expected
@@ -246,4 +263,4 @@ def test_api_invokation(
         with pytest.raises((exception, SystemExit)):
             main()
     else:
-        raise AssertionError()
+        raise TypeError

@@ -1,0 +1,35 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    layer1
+    {
+        _sampling
+        {
+            _type fixed;
+            _names (param1);
+            _values ((0 1 2));
+        }
+        _commands
+        {
+            testwinvar ('echo variable %CASEDIR%');
+            testlinvar ('echo variable $CASEDIR');
+            printwinenv ('echo environment & printenv | findstr CASEDIR');
+            printlinenv ('echo environment ; printenv | grep CASEDIR');
+            parse
+            (
+                'dictParser paramDict --verbose --log logs\dictParser.log --log-level INFO'
+            );
+        }
+        _comment                  'test some numbers';
+    }
+}

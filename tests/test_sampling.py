@@ -1,12 +1,12 @@
-from typing import Any, Dict, List
+from typing import Any
 
 import numpy as np
 import pytest
 
-from farn.sampling.sampling import DiscreteSampling
+from farn.sampling.discrete import DiscreteSampling
 
 
-def test_fixed_sampling_one_param():
+def test_fixed_sampling_one_param() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="fixed")
@@ -18,7 +18,7 @@ def test_fixed_sampling_one_param():
         layer_name="layer0",
     )
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 2
     assert samples.keys() == {
@@ -31,7 +31,7 @@ def test_fixed_sampling_one_param():
     assert samples["param1"] == [0.9, 1.3]
 
 
-def test_fixed_sampling_two_params():
+def test_fixed_sampling_two_params() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="fixed")
@@ -43,7 +43,7 @@ def test_fixed_sampling_two_params():
         layer_name="layer0",
     )
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 3
     assert samples.keys() == {
@@ -59,7 +59,7 @@ def test_fixed_sampling_two_params():
     assert samples["param2"] == [-0.5, 2.7]
 
 
-def test_fixed_sampling_raise_value_error_if_parameter_values_have_different_length():
+def test_fixed_sampling_raise_value_error_if_parameter_values_have_different_length() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="fixed")
@@ -75,7 +75,7 @@ def test_fixed_sampling_raise_value_error_if_parameter_values_have_different_len
         _ = sampling.generate_samples()
 
 
-def test_linSpace_sampling_one_parameter():
+def test_linSpace_sampling_one_parameter() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="linSpace")
@@ -88,7 +88,7 @@ def test_linSpace_sampling_one_parameter():
         layer_name="layer0",
     )
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 2
     assert samples.keys() == {
@@ -107,7 +107,7 @@ def test_linSpace_sampling_one_parameter():
     assert np.allclose(samples["param1"], [0.5, 0.6, 0.7, 0.8, 0.9])
 
 
-def test_linSpace_sampling_two_parameters():
+def test_linSpace_sampling_two_parameters() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="linSpace")
@@ -120,7 +120,7 @@ def test_linSpace_sampling_two_parameters():
         layer_name="layer0",
     )
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 3
     assert samples.keys() == {
@@ -142,7 +142,7 @@ def test_linSpace_sampling_two_parameters():
     assert np.allclose(samples["param2"], [-0.3, -0.2, -0.1, 0.0, 0.1])
 
 
-def test_uniformLhs_sampling_three_parameters():
+def test_uniformLhs_sampling_three_parameters() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="uniformLhs")
@@ -154,7 +154,7 @@ def test_uniformLhs_sampling_three_parameters():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -176,7 +176,7 @@ def test_uniformLhs_sampling_three_parameters():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -8.401341515802963,
         -4.8165954901465655,
         -7.9419163878318,
@@ -198,7 +198,7 @@ def test_uniformLhs_sampling_three_parameters():
         2.304613769173372,
         5.662522284353983,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         2.679549438315647,
         2.1170926199511175,
         0.9282423925179192,
@@ -220,7 +220,7 @@ def test_uniformLhs_sampling_three_parameters():
         2.8323495297169674,
         3.3113279911290454,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.3636519092097309,
         0.2183450418689097,
         0.9333271545270508,
@@ -244,7 +244,7 @@ def test_uniformLhs_sampling_three_parameters():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -263,7 +263,7 @@ def test_uniformLhs_sampling_three_parameters():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_uniformLhs_sampling_three_parameters_including_bounding_box():
+def test_uniformLhs_sampling_three_parameters_including_bounding_box() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="uniformLhs")
@@ -276,7 +276,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -306,7 +306,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
         "layer0_26",
         "layer0_27",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         -10.0,
         -10.0,
@@ -336,7 +336,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
         2.304613769173372,
         5.662522284353983,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         0.0,
         3.5,
@@ -366,7 +366,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
         2.8323495297169674,
         3.3113279911290454,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         1.1,
         0.0,
@@ -398,7 +398,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -417,7 +417,7 @@ def test_uniformLhs_sampling_three_parameters_including_bounding_box():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_normalLhs_sampling_three_parameters():
+def test_normalLhs_sampling_three_parameters() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="normalLhs")
@@ -431,7 +431,7 @@ def test_normalLhs_sampling_three_parameters():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -453,7 +453,7 @@ def test_normalLhs_sampling_three_parameters():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -8.433137323079436,
         -3.8754339865832215,
         -7.591054033694368,
@@ -475,7 +475,7 @@ def test_normalLhs_sampling_three_parameters():
         1.7578707049336253,
         4.696767268691877,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         3.126333090428874,
         2.2554158395249084,
         0.5580187332707216,
@@ -497,7 +497,7 @@ def test_normalLhs_sampling_three_parameters():
         3.4127072609805866,
         4.805396097326813,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.2870336284886436,
         0.04179554753128967,
         1.1679596991386783,
@@ -521,7 +521,7 @@ def test_normalLhs_sampling_three_parameters():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -540,7 +540,7 @@ def test_normalLhs_sampling_three_parameters():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_normalLhs_sampling_three_parameters_with_clipping():
+def test_normalLhs_sampling_three_parameters_with_clipping() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="normalLhs")
@@ -554,7 +554,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -576,7 +576,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -8.433137323079436,
         -3.8754339865832215,
         -7.591054033694368,
@@ -598,7 +598,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
         1.7578707049336253,
         4.696767268691877,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         3.126333090428874,
         2.2554158395249084,
         0.5580187332707216,
@@ -620,7 +620,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
         3.4127072609805866,
         3.5,  # 4.805396097326813
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.2870336284886436,
         0.04179554753128967,
         1.1,  # 1.1679596991386783
@@ -644,7 +644,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -663,7 +663,7 @@ def test_normalLhs_sampling_three_parameters_with_clipping():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_sobol_sampling_three_parameters():
+def test_sobol_sampling_three_parameters() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="sobol")
@@ -676,7 +676,7 @@ def test_sobol_sampling_three_parameters():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -698,7 +698,7 @@ def test_sobol_sampling_three_parameters():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         0.0,
         5.0,
@@ -720,7 +720,7 @@ def test_sobol_sampling_three_parameters():
         6.875,
         -3.125,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         1.75,
         0.875,
@@ -742,7 +742,7 @@ def test_sobol_sampling_three_parameters():
         0.765625,
         2.515625,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         0.55,
         0.275,
@@ -766,7 +766,7 @@ def test_sobol_sampling_three_parameters():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -785,7 +785,7 @@ def test_sobol_sampling_three_parameters():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_sobol_sampling_three_parameters_with_onset():
+def test_sobol_sampling_three_parameters_with_onset() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="sobol")
@@ -798,7 +798,7 @@ def test_sobol_sampling_three_parameters_with_onset():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -820,7 +820,7 @@ def test_sobol_sampling_three_parameters_with_onset():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         8.75,
         -1.25,
         -3.75,
@@ -843,7 +843,7 @@ def test_sobol_sampling_three_parameters_with_onset():
         5.625,
     ]
 
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.21875,
         1.96875,
         0.65625,
@@ -866,7 +866,7 @@ def test_sobol_sampling_three_parameters_with_onset():
         2.734375,
     ]
 
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.7562500000000001,
         0.20625000000000002,
         0.34375,
@@ -890,7 +890,7 @@ def test_sobol_sampling_three_parameters_with_onset():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -912,7 +912,7 @@ def test_sobol_sampling_three_parameters_with_onset():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_sobol_sampling_three_parameters_including_bounding_box():
+def test_sobol_sampling_three_parameters_including_bounding_box() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling(seed=42)
     sampling.set_sampling_type(sampling_type="sobol")
@@ -926,7 +926,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -956,7 +956,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
         "layer0_26",
         "layer0_27",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         -10.0,
         -10.0,
@@ -986,7 +986,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
         6.875,
         -3.125,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         0.0,
         3.5,
@@ -1016,7 +1016,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
         0.765625,
         2.515625,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         1.1,
         0.0,
@@ -1048,7 +1048,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -1067,7 +1067,7 @@ def test_sobol_sampling_three_parameters_including_bounding_box():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_hilbertCurve_sampling_three_parameters():
+def test_hilbertCurve_sampling_three_parameters() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="hilbertCurve")
@@ -1080,7 +1080,7 @@ def test_hilbertCurve_sampling_three_parameters():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -1102,7 +1102,7 @@ def test_hilbertCurve_sampling_three_parameters():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         -2.0625610948191593,
         -10.0,
@@ -1124,7 +1124,7 @@ def test_hilbertCurve_sampling_three_parameters():
         2.0625610948191593,
         10.0,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         0.7426904253928639,
         1.773277701078467,
@@ -1146,7 +1146,7 @@ def test_hilbertCurve_sampling_three_parameters():
         0.7426904253928639,
         0.0,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         0.14691640866416344,
         0.4258328173283269,
@@ -1170,7 +1170,7 @@ def test_hilbertCurve_sampling_three_parameters():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -1189,7 +1189,7 @@ def test_hilbertCurve_sampling_three_parameters():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
+def test_hilbertCurve_sampling_three_parameters_with_iteration_depth() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="hilbertCurve")
@@ -1202,7 +1202,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -1224,7 +1224,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
         "layer0_18",
         "layer0_19",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         -1.8845500848896517,
         -9.898132427843818,
@@ -1246,7 +1246,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
         1.8845500848903836,
         10.0,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         0.6597222222222319,
         1.7152777777778028,
@@ -1268,7 +1268,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
         0.6597222222222319,
         0.0,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         0.12342519685039283,
         0.4114173228346427,
@@ -1292,7 +1292,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {
@@ -1311,7 +1311,7 @@ def test_hilbertCurve_sampling_three_parameters_with_iteration_depth():
     assert np.allclose(samples["param3"], param3_values_expected)
 
 
-def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
+def test_hilbertCurve_sampling_three_parameters_including_bounding_box() -> None:
     # Prepare
     sampling: DiscreteSampling = DiscreteSampling()
     sampling.set_sampling_type(sampling_type="hilbertCurve")
@@ -1324,7 +1324,7 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
         },
         layer_name="layer0",
     )
-    case_names_expected: List[str] = [
+    case_names_expected: list[str] = [
         "layer0_00",
         "layer0_01",
         "layer0_02",
@@ -1354,7 +1354,7 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
         "layer0_26",
         "layer0_27",
     ]
-    param1_values_expected: List[float] = [
+    param1_values_expected: list[float] = [
         -10.0,
         -10.0,
         -10.0,
@@ -1384,7 +1384,7 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
         2.0625610948191593,
         10.0,
     ]
-    param2_values_expected: List[float] = [
+    param2_values_expected: list[float] = [
         0.0,
         0.0,
         3.5,
@@ -1414,7 +1414,7 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
         0.7426904253928639,
         0.0,
     ]
-    param3_values_expected: List[float] = [
+    param3_values_expected: list[float] = [
         0.0,
         1.1,
         0.0,
@@ -1446,7 +1446,7 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box():
     ]
 
     # Execute
-    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    samples: dict[str, list[Any]] = sampling.generate_samples()
     # Assert
     assert len(samples) == 4
     assert samples.keys() == {

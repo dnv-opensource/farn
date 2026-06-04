@@ -10,12 +10,12 @@ farn Documentation
    README_farn
    README_ospx
    README_dictIO
-   changelogs
-   LICENSE
    api
    cli
    fileFormat
-
+   changelogs
+   STYLEGUIDE
+   LICENSE
 
 
 Indices and tables

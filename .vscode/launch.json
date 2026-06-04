@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: Debug Tests",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "purpose": [
@@ -19,11 +19,15 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true, // pipe stdout/stderr to Debug Console
+            "showReturnValue": true,
+            "logToFile": false, // set true temporarily when diagnosing debugger issues
         },
         {
-            "name": "Python: Current File, cwd = file dir, envFile",
-            "type": "python",
+            "name": "Python: Current File, cwd = file dir",
+            "type": "debugpy",
             "request": "launch",
             "cwd": "${fileDirname}", // working dir = dir where current file is
             "program": "${file}",
@@ -31,28 +35,34 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
-            "name": "Python: Current File, cwd = workspace root folder, envFile",
-            "type": "python",
+            "name": "Python: Current File, cwd = workspace root folder",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}", // working dir = workspace (mvx) dir
+            "cwd": "${workspaceFolder}", // working dir = workspace root folder
             "program": "${file}",
             "console": "integratedTerminal",
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample and generate test_farnDict",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "--sample",
@@ -62,15 +72,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests\\test_dicts",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "-g",
@@ -79,15 +92,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test execute test_farnDict",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict",
                 "-e",
@@ -97,15 +113,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample test_farnDict_v4",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict_v4",
                 "--sample",
@@ -114,15 +133,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict_v4",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict_v4",
                 "-g",
@@ -131,15 +153,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test sample and generate test_farnDict_v4",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict_v4",
                 "--sample",
@@ -149,15 +174,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test execute test_farnDict_v4",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "sampled.test_farnDict_v4",
                 "-e",
@@ -167,15 +195,18 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
         {
             "name": "farn test generate test_farnDict logfile in subdir",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\tests",
-            "program": "${workspaceFolder}\\src\\farn\\cli\\farn.py",
+            "cwd": "${workspaceFolder}\\tests\\test_working_directory",
+            "program": "${workspaceFolder}\\src\\farn\\cli\\__main__.py",
             "args": [
                 "test_farnDict",
                 "-g",
@@ -188,8 +219,11 @@
             "autoReload": {
                 "enable": true
             },
-            "justMyCode": false,
-            "envFile": "${workspaceFolder}/.env" // specify where .env file is
+            "subProcess": true,
+            "justMyCode": true,
+            "redirectOutput": true,
+            "showReturnValue": true,
+            "logToFile": false,
         },
     ]
 }

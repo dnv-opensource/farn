@@ -4,5 +4,5 @@ farn
 .. toctree::
    :maxdepth: 3
 
-   cli.farn
+   cli.__main__
    cli.batchProcess

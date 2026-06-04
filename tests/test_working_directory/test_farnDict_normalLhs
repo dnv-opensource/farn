@@ -1,0 +1,31 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+/*
+test normalLhs
+for sample set dimensioning
+purpose:
+generate a spacial, normal distributed sample set
+_ranges: do not dimension the spatial extent of lhs, only limiting. For dimensioning, _sigma is used.
+*/
+_layers {
+    lhsvar
+    {
+        _sampling {
+            _type normalLhs;
+            _names (param0 param1 param2);
+            _mu (0 0 0);                         // expectation value = center point
+            _ranges ((-20 20) (-100 100) (-50 50));  // optional -- limit beyond this (hyper)cube, future potential _constraintType limit, clip, mirror, exp
+            _sigma (1 10 100);                       // variation vector, if scalar is given, it is used for each
+            _numberOfSamples 50;
+        }
+    }
+}

@@ -5,19 +5,305 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 ## [Unreleased]
 
-### Changed
-* replaced black formatter with ruff formatter
+* -/-
+
 
 ### Dependencies
-* updated to ruff==0.3.0  (from ruff==0.2.1)
-* updated to pyright==1.1.352  (from pyright==1.1.350)
-* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
-* removed black
+* Updated to lxml>=6.1
+* Updated to nbconvert>=7.17.1
+
+
+## [0.5.1] - 2026-04-10
+
+### Solved
+* Fixed a regression introduced with [0.5.0] where imports from `farn.core` did not work as before (i.e. in [0.4.4]). That has not been an intended change but a regression. Hence corrected with release [0.5.1]
+
+
+## [0.5.0] - 2026-04-09
+
+### BREAKING Changes
+* Moved module `farn.run.utils.threading` to  `farn.utils.threading`
+* Renamed and moved module `farn.run.subProcess` to `farn.utils.sub_process`
+* Renamed and moved module `farn.run.batchProcess` to `farn.batch.batch_processor`
+* Renamed module `farn.sampling.sampling` to `farn.sampling.discrete` (because the only class it actually contains is `DiscreteSampling`
 
 ### Changed
+* Updated code base with latest changes in python_project_template v0.2.10
+* Python modules: Changed `__ALL__` to `__all__` (lowercase, PEP8 and PEP257 compliant).
+
+### Dependencies
+* .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.9
+* Updated to dictIO>=0.4.4
+* Updated to numpy>=2.4
+* Updated to ospx>=0.3.5
+* Updated to pytest-cov>=7.1
+* Updated to ruff>=0.15.9
+* Updated to scipy>=1.17.1
+* Updated to sphinx-argparse-cli>=1.21.3
+* Updated to types-lxml>=2026.2
+
+
+## [0.4.4] - 2026-03-17
+
+### Solved
+* src/farn/sampling/sampling.py: Resolved an issue where the call to `lhs()` caused a runtime error if the number of factor to generate samples for was only 1.
+
+
+## [0.4.3] - 2026-03-17
+
+### Changed
+* GitHub Workflows:
+  * Added 'name: Checkout code' to uses of 'actions/checkout', for better readability and consistency across workflow files.
+  * Added 'name: Download build artifacts' to uses of 'actions/download-artifact', for better readability and consistency across workflow files.
+  * Added 'name: Publish to PyPI' to uses of 'pypa/gh-action-pypi-publish', for better readability and consistency across workflow files.
+  * Added 'name: Upload build artifacts' to uses of 'actions/upload-artifact', for better readability and consistency across workflow files.
+  * Changed 'uv sync --upgrade' to 'uv sync -U'
+  * Ensured that actions 'upload-artifact' and 'download-artifact' uniformly specify 'dist' as (file)name for the artifact uploaded (or downloaded, respectively), for consistency across workflow files.
+  * pull_request_to_main.yml and nightly_build.yml: Added 'workflow_dispatch:' in selected workflows to allow manual trigger of the workflow.
+  * Removed redundant 'Set up Python' steps (no longer needed, as 'uv sync' will automatically install Python if not present).
+  * Replaced 'Build source distribution and wheel' with 'Build source distribution and wheels' (plural) in workflow step names.
+  * Replaced 'Run twine check' with 'Check build artifacts' in workflow step names, to better reflect the purpose of the step.
+  * Updated the syntax used for the OS and Python matrix in test workflows.
+* pyproject.toml:
+  * pyproject.toml: Removed leading carets and trailing slashes from 'exclude' paths
+  * pyproject.toml: Removed trailing slashes from 'exclude' paths
+  * Removed upper version constraint from required Python version, i.e. changed the "requires-python" field from ">= 3.11, < 3.15" to ">= 3.11". <br>
+    Detailed background and reasoning in this good yet long post by Henry Schreiner:
+    https://iscinumpy.dev/post/bound-version-constraints/#pinning-the-python-version-is-special <br>
+    TLDR: Placing an upper Python version constraint on a Python package causes more harm than it provides benefits.
+    The upper version constraint unnecessarily manifests incompatibility with future Python releases.
+    Removing the upper version constraint ensures the package remains installable as Python evolves.
+    In the majority of cases, the newer Python version will anyhow be backward-compatible. And in the rare case where your package would really not work with a newer Python version,
+    users can at least find a solution manually to resolve the conflict, e.g. by pinning your package to the last version compatible with the environment they install it in.
+    That way, we ensure it remains _possible_ for users to find a solution, instead of rendering it impossible forever.
+  * Added default directories to the 'exclude' list for pyright, in section [tool.pyright] <br>
+    (Ref note in pyright [docs](https://github.com/microsoft/pylance-release/blob/main/docs/settings/python_analysis_exclude.md#default-behavior)).
+* Sphinx Documentation:
+  * Sphinx conf.py: Updated year in copyright statement to 2026
+* VS Code Settings:
+  * VS Code Settings: (Recommended extensions): Removed 'njqdev.vscode-python-typehint' (Python Type Hint). Not maintained since 1 year, and the functionality is now covered by GitHub Copilot.
+VS Code Settings: (Recommended extensions): Added 'ms-python.debugpy' (Python Debugger).
+VS Code Settings: (Recommended extensions): Added 'ms-python.vscode-python-envs' (Python Environments).
+  * VS Code settings: (Recommended extensions): Removed deprecated IntelliCode extension and replaced it by GitHub Copilot Chat as recommended replacement.
+  * VS Code settings: Updated 'mypy-type-checker.reportingScope' to 'custom'.
+* README.md: Updated year in copyright statement to 2026
+* ruff.toml: Updated target Python version to "py311"
+* tests/conftest.py:
+  * Changed scope of top level fixtures from "package" to "session", because "session" scoped fixtures gets called before "package" scoped fixtures
+
+### Dependencies
+* .pre-commit-config.yaml: Updated rev of ruff-pre-commit to v0.15.1
+* Updated to dictio>=0.4.3
+* Updated to furo>=2025.12
+* Updated to hilbertcurve>=2.0
+* Updated to jupyter-client>=8.8
+* Updated to jupyter>=1.1.1
+* Updated to mypy>=1.19.1
+* Updated to myst-parser>=5.0
+* Updated to nbconvert>=7.17
+* Updated to ospx>=0.3.3
+* Updated to pandas-stubs>=3.0
+* Updated to pandas>=3.0
+* Updated to pillow>=12.1
+* Updated to pre-commit>=4.5
+* Updated to psutil>=7.2
+* Updated to pydoe3>=1.6.2
+* Updated to pyright>=1.1.408
+* Updated to pytest>=9.0
+* Updated to ruff>=0.15.1
+* Updated to scipy>=1.17.0
+* Updated to sourcery>=1.43.0
+* Updated to sphinx-argparse-cli>=1.20.1
+* Updated to sphinx-autodoc-typehints>=3.6
+* Updated to sphinx>=9.0
+* Updated to sphinxcontrib-mermaid>=2.0
+* Updated to types-lxml>=2026.1
+* Updated to types-psutil>=7.2
+
+
+## [0.4.2] - 2025-11-06
+
+### Added
+* Added support for Python 3.14
+
+### Removed
+* Removed support for Python 3.10
+
+### Dependencies
+* Updated to dictIO>=0.4.2  (from dictIO>=0.4.1)
+* Updated to ospx>=0.3.2  (from ospx>=0.3.1)
+* Updated to ruff>=0.14.3  (from ruff>=0.9.2)
+* Updated to pyright>=1.1.407  (from pyright>=1.1.392)
+* Updated to sourcery>=1.40  (from sourcery>=1.31)
+* Updated to lxml>=6.0  (from lxml>=5.3)
+* Updated to types-lxml>=2025.8  (from types-lxml>=2024.12)
+* Updated to numpy>=2.3  (removed split version specifiers)
+* Updated to scipy>=1.16  (from scipy>=1.14)
+* Updated to pyDOE3>=1.6  (from pyDOE3>=1.0)
+* Updated to pandas>=2.3  (from pandas>=2.2)
+* Updated to pandas-stubs>=2.3  (from pandas-stubs>=2.2)
+* Updated to pillow>=12.0  (from Pillow>=11.1)
+* Updated to pytest>=8.4  (from pytest>=8.3)
+* Updated to pytest-cov>=7.0  (from pytest-cov>=6.0)
+* Updated to Sphinx>=8.2  (from Sphinx>=8.1)
+* Updated to sphinx-argparse-cli>=1.20  (from sphinx-argparse-cli>=1.19)
+* Updated to sphinx-autodoc-typehints>=3.5  (from sphinx-autodoc-typehints>=3.0)
+* Updated to furo>=2025.9  (from furo>=2024.8)
+* Updated to pre-commit>=4.3  (from pre-commit>=4.0)
+* Updated to mypy>=1.18  (from mypy>=1.14)
+* Updated to types-psutil>=7.0  (from types-psutil>=6.1)
+* Updated to checkout@v5  (from checkout@v4)
+* Updated to setup-python@v6  (from setup-python@v5)
+* Updated to setup-uv@v7  (from setup-uv@v5)
+* Updated to upload-artifact@v5  (from upload-artifact@v4)
+* Updated to download-artifact@v5  (from download-artifact@v4)
+
+### Changed
+* Renamed the CLI module (in folder src/farn/cli) from 'farn.py' to '\_\_main\_\_.py'.
+  This follows current best practice (as in python_project_template).
+  It avoids import errors caused by the fact that the cli module has the same name as the package it imports from.
+* Do not run code quality checks in nightly builds
+* Included uv.lock file in version control
+* pyproject.toml:
+  * added required-environments to uv.tools (windows, linux, macos)
+  * updated required Python version to ">= 3.11, < 3.15"
+  * updated supported Python versions to 3.11, 3.12, 3.13, 3.14
+  * removed deprecated pyright setting 'reportShadowedImports'
+  * removed deprecated mypy plugin 'numpy.typing.mypy_plugin'
+* GitHub workflow _test.yml:
+  * updated Python versions in test matrix to 3.11, 3.12, 3.13, 3.14
+* GitHub workflow _test_future.yml:
+  * updated Python version in test_future to 3.15.0-alpha - 3.15.0
+* .pre-commit-config.yaml:
+  * updated rev of pre-commit-hooks to v6.0.0
+  * updated rev of ruff-pre-commit to v0.14.3
+  * updated id of ruff to ruff-check
+* Sphinx conf.py:
+  * removed ruff rule exception on file level
+* demos\folder_for_demos.py:
+  * removed ruff rule exception
+* .sourcery.yaml:
+  * updated the lowest Python version the project supports to '3.11'
+
+### Solved
+* Resolved issues raised by `ruff` 0.14.3
+
+
+## [0.4.1] - 2025-01-19
+
+### Added
+* Added support for Python 3.13
+* Added CITATION.cff
+* pyproject.toml : Added keywords
+
+### Changed
+* ruff.toml : removed deprecated ruff rules ANN101 and ANN102 from excluded rules
+* Use f-string, where possible, instead of '%' style string formatting
+
+### Solved
+* src/farn/core/case.py : Changed the way how local variables get added / manipulated through code. Replaced access to `locals()` with `sys._getframe().f_locals` when manipulating local variables. This change became necessary as Python 3.13 changed the way Python's builtin `locals()` method works. See [PEP 667](https://peps.python.org/pep-0667/) for details.
+* Resolved issues raised by `ruff` 0.9.2
+
+### Dependencies
+* Updated to ruff>=0.9.2  (from ruff>=0.6.3)
+* Updated to pyright>=1.1.392  (from pyright>=1.1.378)
+* Updated to sourcery>=1.31  (from sourcery>=1.22)
+* Updated to lxml>=5.3  (from lxml>=5.2)
+* Updated to types-lxml>=2024.12  (from types-lxml>=2024.4)
+* Updated to scipy>=1.15  (from scipy>=1.13)
+* Updated to matplotlib>=3.10  (from matplotlib>=3.9)
+* Updated to dictIO>=0.4.1  (from dictIO>=0.4.0)
+* Updated to Pillow>=11.1  (from Pillow>=10.4)
+* Updated to Sphinx>=8.1  (from Sphinx>=8.0)
+* Updated to sphinx-argparse-cli>=1.19  (from sphinx-argparse-cli>=1.17)
+* Updated to sphinx-autodoc-typehints>=3.0  (from sphinx-autodoc-typehints>=2.2)
+* Updated to mypy>=1.14  (from mypy>=1.11.1)
+* Updated to setup-uv@v5  (from setup-uv@v2)
+* Updated to ospx>=0.3.1  (from ospx>=0.3.0)
+* Updated to jupyter>=1.1  (from jupyter>=1.0)
+* Updated to pytest-cov>=6.0  (from pytest-cov>=5.0)
+* Updated to pre-commit>=4.0  (from pre-commit>=3.8)
+* Updated to types-psutil>=6.1  (from types-psutil>=6.0)
+* numpy: As Python 3.13 requires numpy 2.x, made minimum required numpy version in pyproject.toml dependent on Python version:
+  * "numpy>=1.26; python_version < '3.13'",
+  * "numpy>=2.2; python_version >= '3.13'",
+
+
+## [0.4.0] - 2024-11-11
+
+### Breaking changes
+* The code has been adapted to [dictIO][dictIO_docs] 0.4.0 <br>
+  [dictIO][dictIO_docs] 0.4.0 introduced some breaking changes. With the current release 0.4.0 of farn, the code base has been adapted to these in changes. <br>
+  The most prominent change being that class `dictIO.CppDict` has been replaced by class `dictIO.SDict`.
+
+### Changed
+* Changed from `pip`/`tox` to `uv` as package manager
+* README.md : Completely rewrote section "Development Setup", introducing `uv` as package manager.
 * Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI
 * Updated copyright statement
 * VS Code settings: Turned off automatic venv activation
+* Replaced black formatter with ruff formatter
+
+### Solved
+* Sphinx documentation: Resolved issue that documentation of class members was generated twice.
+
+### Added
+* Sphinx documentation: Added extension to support Markdown-based diagrams created with Mermaid.
+* Added `mypy` as static type checker (in addition to `pyright`)
+
+### GitHub workflows
+* (all workflows): Adapted to use `uv` as package manager
+* _test_future.yml : updated Python version to 3.13.0-alpha - 3.13.0
+* _test_future.yml : updated name of test job to 'test313'
+
+### Dependencies
+* Updated to dictIO>=0.4.0  (from dictIO>=0.3.4)
+* Updated to ospx>=0.3.0  (from ospx>=0.2.14)
+* Updated to ruff>=0.6.3  (from ruff==0.4.2)
+* Updated to pyright>=1.1.378  (from pyright==1.1.360)
+* Updated to sourcery>=1.22  (from sourcery==1.16)
+* Updated to pytest>=8.3  (from pytest>=8.2)
+* Updated to Sphinx>=8.0  (from Sphinx>=7.3)
+* Updated to sphinx-argparse-cli>=1.17  (from sphinx-argparse-cli>=1.16)
+* Updated to myst-parser>=4.0  (from myst-parser>=3.0)
+* Updated to furo>=2024.8  (from furo>=2024.5)
+* updated to setup-python@v5  (from setup-python@v4)
+* updated to actions-gh-pages@v4  (from actions-gh-pages@v3)
+* updated to upload-artifact@v4  (from upload-artifact@v3)
+* Updated to download-artifact@v4  (from download-artifact@v3)
+* updated to checkout@v4  (from checkout@v3)
+
+
+## [0.3.7] - 2024-05-22
+
+### Dependencies
+* updated to ruff==0.4.2  (from ruff==0.2.1)
+* updated to pyright==1.1.360  (from pyright==1.1.350)
+* updated to sourcery==1.16  (from sourcery==1.15)
+* updated to lxml>=5.2  (from lxml>=5.1)
+* updated to types-lxml>=2024.4  (from types-lxml>=5.1)
+* updated to scipy>=1.13  (from scipy>=1.12)
+* updated to Pillow>=10.3  (from Pillow>=10.2)
+* updated to pytest>=8.2  (from pytest>=7.4)
+* updated to pytest-cov>=5.0  (from pytest-cov>=4.1)
+* updated to Sphinx>=7.3  (from Sphinx>=7.2)
+* updated to sphinx-argparse-cli>=1.15  (from sphinx-argparse-cli>=1.11)
+* updated to myst-parser>=3.0  (from myst-parser>=2.0)
+* updated to furo>=2024.4  (from furo>=2023.9.10)
+* updated to dictIO>=0.3.4  (from dictIO>=0.3.3)
+* updated to ospx>=0.2.14  (from ospx>=0.2.13)
+* updated to numpy>=1.26,<2.0  (from numpy>=1.26)
+* updated to matplotlib>=3.9  (from matplotlib>=3.8)
+* removed black
+
+### Changed
+* replaced black formatter with ruff formatter
+* Changed publishing workflow to use OpenID Connect (Trusted Publisher Management) when publishing to PyPI
+* Updated copyright statement
+* VS Code settings: Turned off automatic venv activation
+
+### Added
+* `farn.core.case.Case`: Added method `add_parameters()`, which allows to manually add user-defined parameters to a Case.
 
 
 ## [0.3.6] - 2024-02-21
@@ -320,7 +606,15 @@ Users are encouraged to update to this version.
 * Added support for Python 3.10
 
 <!-- Markdown link & img dfn's -->
-[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.3.6...HEAD
+[unreleased]: https://github.com/dnv-opensource/farn/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/dnv-opensource/farn/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/dnv-opensource/farn/compare/v0.4.4...v0.5.0
+[0.4.4]: https://github.com/dnv-opensource/farn/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/dnv-opensource/farn/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/dnv-opensource/farn/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/dnv-opensource/farn/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/dnv-opensource/farn/compare/v0.3.7...v0.4.0
+[0.3.7]: https://github.com/dnv-opensource/farn/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/dnv-opensource/farn/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/dnv-opensource/farn/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/dnv-opensource/farn/compare/v0.3.3...v0.3.4
@@ -342,3 +636,6 @@ Users are encouraged to update to this version.
 [0.0.22]: https://github.com/dnv-opensource/farn/compare/v0.0.17...v0.0.22
 [0.0.17]: https://github.com/dnv-opensource/farn/releases/tag/v0.0.17
 [farn]: https://github.com/dnv-opensource/farn
+
+<!-- Markdown link & img dfn's -->
+[dictIO_docs]: https://dnv-opensource.github.io/dictIO/README.html

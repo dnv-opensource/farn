@@ -1,29 +1,57 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "src/farn",
+    "tests",
+    ".coveragerc",
+    ".editorconfig",
+    ".pre-commit-config.yaml",
+    "pyproject.toml",
+    "pytest.ini",
+    "ruff.toml",
+    "uv.lock",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/farn",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [project]
 name = "farn"
-version = "0.3.6"
+version = "0.5.1"
 description = "Python package to generate an n-dimensional case folder structure applying linear and spatial sampling strategies."
 readme = "README.md"
-requires-python = ">= 3.9"
-license = {file = "LICENSE"}
+requires-python = ">= 3.11"
+license = { file = "LICENSE" }
 authors = [
-    {name = "Frank Lumpitzsch", email = "frank.lumpitzsch@dnv.com"},
-    {name = "Claas Rostock", email = "claas.rostock@dnv.com"},
+    { name = "Frank Lumpitzsch", email = "frank.lumpitzsch@dnv.com" },
+    { name = "Claas Rostock", email = "claas.rostock@dnv.com" },
+    { name = "Seunghyeon Yoo", email = "seunghyeon.yoo@dnv.com" },
 ]
 maintainers = [
-    {name = "Claas Rostock", email = "claas.rostock@dnv.com"},
+    { name = "Claas Rostock", email = "claas.rostock@dnv.com" },
 ]
-keywords = []
+keywords = [
+    "farn",
+    "OSP",
+    "fmi",
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS",
@@ -34,17 +62,17 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "lxml>=5.1",
-    "numpy>=1.26,<2.0",
-    "scipy>=1.12",
-    "pandas>=2.2",
-    "matplotlib>=3.8",
-    "Pillow>=10.2",
-    "pyDOE3>=1.0",
-    "psutil>=5.9",
-    "hilbertcurve>=2.0.5",
-    "dictIO>=0.3.3",
-    "ospx>=0.2.13",
+    "lxml>=6.1",
+    "numpy>=2.4",
+    "scipy>=1.17.1",
+    "pandas>=3.0",
+    "matplotlib>=3.10",
+    "pillow>=12.1",
+    "pyDOE3>=1.6.2",
+    "psutil>=7.2",
+    "hilbertcurve>=2.0",
+    "dictIO>=0.4.4",
+    "ospx>=0.3.5",
 ]
 
 [project.urls]
@@ -54,92 +82,85 @@ Repository = "https://github.com/dnv-opensource/farn.git"
 Issues = "https://github.com/dnv-opensource/farn/issues"
 Changelog = "https://github.com/dnv-opensource/farn/blob/main/CHANGELOG.md"
 
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0",
+    "pytest-cov>=7.1",
+    "ruff>=0.15.9",
+    "pyright>=1.1.408",
+    "mypy>=1.19.1",
+    "sourcery>=1.43.0",
+    "pre-commit>=4.5",
+    "Sphinx>=9.0",
+    "sphinx-argparse-cli>=1.21.3",
+    "sphinx-autodoc-typehints>=3.6",
+    "sphinxcontrib-mermaid>=2.0",
+    "myst-parser>=5.0",
+    "furo>=2025.12",
+    "jupyter>=1.1.1",
+    "nbconvert>=7.17.1",
+    "pandas-stubs>=3.0",
+    "types-lxml>=2026.2",
+    "scipy-stubs>=1.17.1",
+    "types-psutil>=7.2",
+]
+
+[tool.uv]
+default-groups = [
+    "dev",
+]
+native-tls = true
+required-environments = [
+    "sys_platform == 'win32'",
+    "sys_platform == 'linux'",
+    "sys_platform == 'darwin'",
+]
+
+
 [project.scripts]
-farn = "farn.cli.farn:main"
-batchProcess = "farn.run.cli.batchProcess:main"
+farn = "farn.cli.__main__:main"
+batchProcess = "farn.cli.batchProcess:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["test*"]
 
-[tool.ruff]
+[tool.mypy]
+plugins = []
+mypy_path = "stubs"
+files = [
+    "src",
+    "tests",
+    "demos",
+]
 exclude = [
-    ".git",
-    ".venv",
-    ".tox",
-    "build",
-    "dist",
-    "__pycache__",
-    "./docs/source/conf.py",
+    "src/folder_to_be_excluded",
 ]
-src = ["src"]
-line-length = 120
-target-version = "py39"
-
-[tool.ruff.lint]
-ignore = [
-    "E501",  # Line length too long
-    "D100",  # Missing docstring in public module
-    "D104",  # Missing docstring in public package
-    "D105",  # Missing docstring in magic method
-    "D107",  # Missing docstring in __init__
-    "D202",  # No blank lines allowed after function docstring
-    "D203",  # 1 blank line required before class docstring
-    "D205",  # 1 blank line required between summary line and description
-    "D212",  # Multi-line docstring summary should start at the first line
-    "D213",  # Multi-line docstring summary should start at the second line
-    # "N802",  # Function name should be lowercase  (uncomment if you want to allow Uppercase function names)
-    # "N803",  # Argument name should be lowercase  (uncomment if you want to allow Uppercase argument names)
-    "N806",  # Variable in function should be lowercase  (uncomment if you want to allow Uppercase variable names in functions)
-    # "N815",  # Variable in class scope should not be mixedCase  (uncomment if you want to allow mixedCase variable names in class scope)
-    # "N816",  # Variable in global scope should not be mixedCase  (uncomment if you want to allow mixedCase variable names in global scope)
-    "N999",  # Invalid module name
-    ]
-select = [
-    "E",
-    "D",
-    "F",
-    "N",
-    "W",
-    "I",
-    "B",
+check_untyped_defs = true
+disable_error_code = [
+    "misc",
+    "import-untyped",
 ]
 
-
-[tool.ruff.lint.pep8-naming]
-ignore-names = [
-    "test_*",
-    "setUp",
-    "tearDown",
-]
-
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["I001"]
-"./tests/*" = ["D"]
-
-[tool.ruff.format]
-docstring-code-format = true
 
 [tool.pyright]
-exclude = [
-    ".git",
-    ".venv",
-    ".tox",
-    "build",
-    "dist",
-    "**/__pycache__",
-    "./docs/source/conf.py",
-    "./venv",
+stubPath = "stubs"
+include = [
+    "src",
+    "tests",
+    "demos",
 ]
-extraPaths = ["./src"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    ".venv",
+    "src/folder_to_be_excluded",
+]
+
 typeCheckingMode = "basic"
 useLibraryCodeForTypes = true
 reportMissingParameterType = "error"
 reportUnknownParameterType = "warning"
-reportUnknownMemberType = "warning"
+reportUnknownMemberType = "warning"                # consider to set to `false` if you work a lot with matplotlib and pandas, which are both not properly typed and known to trigger this warning
 reportMissingTypeArgument = "error"
 reportPropertyTypeMismatch = "error"
 reportFunctionMemberAccess = "warning"
@@ -158,13 +179,14 @@ reportUnnecessaryContains = "warning"
 reportUnusedCallResult = "warning"
 reportUnusedExpression = "warning"
 reportMatchNotExhaustive = "warning"
-reportShadowedImports = "warning"
 reportUntypedFunctionDecorator = "warning"
+reportUntypedClassDecorator = "warning"
 reportUntypedBaseClass = "error"
 reportUntypedNamedTuple = "warning"
+reportUnnecessaryTypeIgnoreComment = "information"
 # Activate the following rules only locally and temporary, i.e. for a QA session.
 # (For server side CI they are considered too strict.)
+# reportMissingTypeStubs = true
 # reportConstantRedefinition = "warning"
-# reportUnnecessaryTypeIgnoreComment = "information"
 # reportImportCycles = "warning"
 # reportImplicitStringConcatenation = "warning"

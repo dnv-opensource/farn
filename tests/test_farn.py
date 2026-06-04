@@ -1,15 +1,15 @@
 import os
-import platform
 from pathlib import Path
+from typing import Any
 
-from dictIO import CppDict, DictReader
-from pytest import LogCaptureFixture
+import pytest
+from dictIO import DictReader, SDict
 
 from farn import create_cases, create_samples, run_farn
 from farn.core import Cases
 
 
-def test_sample():
+def test_sample() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_v4")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -20,13 +20,13 @@ def test_sample():
     assert sampled_file.exists()
 
 
-def test_create_samples():
+def test_create_samples() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_v4")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
     _ = run_farn(farn_dict_file, sample=True)
-    sampled_farn_dict_assert: CppDict = DictReader.read(sampled_file)
+    sampled_farn_dict_assert: SDict[str, Any] = DictReader.read(sampled_file)
     # Execute
     create_samples(farn_dict)
     # Assert
@@ -52,10 +52,10 @@ def test_create_samples():
     )
 
 
-def test_create_cases():
+def test_create_cases() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_no_filtering")
-    farn_dict: CppDict = DictReader.read(farn_dict_file, comments=False)
+    farn_dict: SDict[str, Any] = DictReader.read(farn_dict_file, comments=False)
     create_samples(farn_dict)
     case_dir: Path = Path.cwd()
     # Execute
@@ -65,7 +65,7 @@ def test_create_cases():
     assert len(cases) == 12
 
 
-def test_generate(caplog: LogCaptureFixture):
+def test_generate(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -80,7 +80,7 @@ def test_generate(caplog: LogCaptureFixture):
     assert Path("cases/layer1_2").exists()
 
 
-def test_regenerate(caplog: LogCaptureFixture):
+def test_regenerate(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -96,7 +96,7 @@ def test_regenerate(caplog: LogCaptureFixture):
     assert Path("cases/layer1_2").exists()
 
 
-def test_always_distribute_parameters():
+def test_always_distribute_parameters() -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_always_distribute")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -109,7 +109,7 @@ def test_always_distribute_parameters():
     assert Path("cases/linspaceLayer_0").exists()
     # test one output
     param_dict_file = Path("cases/linspaceLayer_0/paramDict")
-    param_dict: CppDict = DictReader.read(param_dict_file, comments=False)
+    param_dict: SDict[str, Any] = DictReader.read(param_dict_file, comments=False)
 
     assert param_dict["param0"] == 0.0
     assert param_dict["param1"] == 1.0
@@ -118,7 +118,7 @@ def test_always_distribute_parameters():
 
 # @TODO: There is nothing  actually asserted in this test. -> Frank to check.
 # CLAROS, 2022-05-13
-def test_execute(caplog: LogCaptureFixture):
+def test_execute(caplog: pytest.LogCaptureFixture) -> None:
     # sourcery skip: no-conditionals-in-tests
     # Prepare
     farn_dict_file = Path("test_farnDict")
@@ -127,12 +127,8 @@ def test_execute(caplog: LogCaptureFixture):
     _ = run_farn(sampled_file, generate=True)
     caplog.clear()
     # Execute
-    if platform.system() == "Linux":
-        _ = os.system("farn.py sampled.test_farnDict -e testlinvar")
-        _ = os.system("farn.py sampled.test_farnDict -e printlinenv")
-    else:
-        _ = os.system(
-            f"python -m farn.cli.farn {sampled_file.name} --execute testwinvar"
+    _ = os.system(f"farn {sampled_file.name} --execute testwinvar")  # noqa: S605
+    _ = os.system(f"farn {sampled_file.name} --execute printwinenv")  # noqa: S605
         )
         _ = os.system(
             f"python -m farn.cli.farn {sampled_file.name} --execute printwinenv"
@@ -140,7 +136,7 @@ def test_execute(caplog: LogCaptureFixture):
     # Assert
 
 
-def test_sample_logging_verbosity_default(caplog: LogCaptureFixture):
+def test_sample_logging_verbosity_default(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_no_filtering")
     # Execute
@@ -150,7 +146,7 @@ def test_sample_logging_verbosity_default(caplog: LogCaptureFixture):
     assert "Successfully listed 10 valid cases. 0 invalid case was excluded." in out
 
 
-def test_generate_logging_verbosity_default(caplog: LogCaptureFixture):
+def test_generate_logging_verbosity_default(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_no_filtering")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -164,7 +160,7 @@ def test_generate_logging_verbosity_default(caplog: LogCaptureFixture):
     assert "creating case folder" not in out
 
 
-def test_sample_failed_filtering(caplog: LogCaptureFixture):
+def test_sample_failed_filtering(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_failed_filtering")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -177,7 +173,7 @@ def test_sample_failed_filtering(caplog: LogCaptureFixture):
     assert "evaluation of the filter expression failed" in out
 
 
-def test_sample_exclude_filtering(caplog: LogCaptureFixture):
+def test_sample_exclude_filtering(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_exclude_filtering")
     caplog.set_level("DEBUG")
@@ -192,7 +188,7 @@ def test_sample_exclude_filtering(caplog: LogCaptureFixture):
     assert "Action 'exclude' performed. Case lhsVariation_" in out
 
 
-def test_sample_filtering_one_layer_filter_layer(caplog: LogCaptureFixture):
+def test_sample_filtering_one_layer_filter_layer(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_one_layer_filter_layer")
     # Execute
@@ -202,7 +198,7 @@ def test_sample_filtering_one_layer_filter_layer(caplog: LogCaptureFixture):
     assert "Successfully listed 2 valid cases. 1 invalid case was excluded." in out
 
 
-def test_generate_filtering_one_layer_filter_layer(caplog: LogCaptureFixture):
+def test_generate_filtering_one_layer_filter_layer(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_one_layer_filter_layer")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -219,7 +215,7 @@ def test_generate_filtering_one_layer_filter_layer(caplog: LogCaptureFixture):
     assert "Successfully created 2 paramDict files in 2 case folders." in out
 
 
-def test_sample_filtering_one_layer_filter_param(caplog: LogCaptureFixture):
+def test_sample_filtering_one_layer_filter_param(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_one_layer_filter_param")
     # Execute
@@ -229,7 +225,7 @@ def test_sample_filtering_one_layer_filter_param(caplog: LogCaptureFixture):
     assert "Successfully listed 2 valid cases. 1 invalid case was excluded." in out
 
 
-def test_generate_filtering_one_layer_filter_param(caplog: LogCaptureFixture):
+def test_generate_filtering_one_layer_filter_param(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_one_layer_filter_param")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -243,7 +239,7 @@ def test_generate_filtering_one_layer_filter_param(caplog: LogCaptureFixture):
     assert "Successfully created 2 paramDict files in 2 case folders." in out
 
 
-def test_sample_filtering_two_layers_filter_layer(caplog: LogCaptureFixture):
+def test_sample_filtering_two_layers_filter_layer(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_two_layers_filter_layer")
     # Execute
@@ -253,7 +249,7 @@ def test_sample_filtering_two_layers_filter_layer(caplog: LogCaptureFixture):
     assert "Successfully listed 3 valid cases. 6 invalid cases were excluded." in out
 
 
-def test_generate_filtering_two_layers_filter_layer(caplog: LogCaptureFixture):
+def test_generate_filtering_two_layers_filter_layer(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_two_layers_filter_layer")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
@@ -270,7 +266,7 @@ def test_generate_filtering_two_layers_filter_layer(caplog: LogCaptureFixture):
     assert "Successfully created 3 paramDict files in 3 case folders." in out
 
 
-def test_sample_filtering_two_layers_filter_param(caplog: LogCaptureFixture):
+def test_sample_filtering_two_layers_filter_param(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_two_layers_filter_param")
     # Execute
@@ -280,7 +276,7 @@ def test_sample_filtering_two_layers_filter_param(caplog: LogCaptureFixture):
     assert "Successfully listed 3 valid cases. 6 invalid cases were excluded." in out
 
 
-def test_generate_filtering_two_layers_filter_param(caplog: LogCaptureFixture):
+def test_generate_filtering_two_layers_filter_param(caplog: pytest.LogCaptureFixture) -> None:
     # Prepare
     farn_dict_file = Path("test_farnDict_two_layers_filter_param")
     sampled_file = Path(f"sampled.{farn_dict_file.name}")
