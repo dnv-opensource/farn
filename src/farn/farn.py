@@ -76,7 +76,6 @@ def run_farn(
     FileNotFoundError
         if farn_dict_file does not exist
     """
-    # sourcery skip: extract-method
 
     # Make sure farn_dict_file argument is of type Path. If not, cast it to Path type.
     farn_dict_file = farn_dict_file if isinstance(farn_dict_file, Path) else Path(farn_dict_file)

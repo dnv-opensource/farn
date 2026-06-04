@@ -354,7 +354,6 @@ class DiscreteSampling:
         return samples
 
     def _generate_samples_using_hilbert(self) -> Dict[str, List[Any]]:
-            dist = eval(_eval_command)  # noqa: S307
         _ = self._check_length_matches_number_of_names("_ranges")
         samples: dict[str, list[Any]] = self._generate_samples_dict()
         # Depending on implementation

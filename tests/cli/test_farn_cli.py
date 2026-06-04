@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from farn.cli import __main__
-from farn.cli.__main__ import _argparser, _get_version, main
+from farn.cli import farn
+from farn.cli.farn import _argparser, _get_version, main
 
 # *****Test commandline interface (CLI)************************************************************
 
@@ -20,8 +20,6 @@ class CliArgs:
     log: str | None = None
     log_level: str = field(default_factory=lambda: "WARNING")
     farn_dict_file: str | None = field(default_factory=lambda: "test_farnDict")
-        default_factory=lambda: "test_farnDict"
-    )  # noqa: N815
     sample: bool = False
     generate: bool = False
     execute: str | None = None
@@ -168,8 +166,8 @@ def test_logging_configuration(
     ):
         pass
 
-    monkeypatch.setattr(__main__, "configure_logging", fake_configure_logging)
-    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
+    monkeypatch.setattr(farn, "configure_logging", fake_configure_logging)
+    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ConfigureLoggingArgs):
         args_expected: ConfigureLoggingArgs = expected
@@ -249,7 +247,7 @@ def test_api_invokation(
         args.batch = batch
         args.test = test
 
-    monkeypatch.setattr(__main__, "run_farn", fake_run_farn)
+    monkeypatch.setattr(farn, "run_farn", fake_run_farn)
     # Execute
     if isinstance(expected, ApiArgs):
         args_expected: ApiArgs = expected

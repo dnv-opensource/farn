@@ -58,8 +58,6 @@ def _assert_type_and_equality(cases: Cases, case_list_assert: list[Case]) -> Non
 
 
 def _assert_sequence(cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case) -> None:
-    cases: Cases, case_assert_1: Case, case_assert_2: Case, case_assert_3: Case
-):
     assert cases[0] is case_assert_1
     assert cases[1] is case_assert_2
     assert cases[2] is case_assert_3

@@ -70,6 +70,7 @@ dependencies = [
     "pillow>=12.1",
     "pyDOE3>=1.6.2",
     "psutil>=7.2",
+    "scikit-learn>=1.6",
     "hilbertcurve>=2.0",
     "dictIO>=0.4.4",
     "ospx>=0.3.5",
@@ -119,7 +120,7 @@ required-environments = [
 
 
 [project.scripts]
-farn = "farn.cli.__main__:main"
+farn = "farn.cli.farn:main"
 batchProcess = "farn.cli.batchProcess:main"
 
 

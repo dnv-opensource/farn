@@ -129,10 +129,6 @@ def test_execute(caplog: pytest.LogCaptureFixture) -> None:
     # Execute
     _ = os.system(f"farn {sampled_file.name} --execute testwinvar")  # noqa: S605
     _ = os.system(f"farn {sampled_file.name} --execute printwinenv")  # noqa: S605
-        )
-        _ = os.system(
-            f"python -m farn.cli.farn {sampled_file.name} --execute printwinenv"
-        )
     # Assert
 
 
