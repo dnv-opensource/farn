@@ -127,8 +127,21 @@ def test_execute(caplog: pytest.LogCaptureFixture) -> None:
     _ = run_farn(sampled_file, generate=True)
     caplog.clear()
     # Execute
+<<<<<<< HEAD
+    if platform.system() == "Linux":
+        _ = os.system("farn.py sampled.test_farnDict -e testlinvar")
+        _ = os.system("farn.py sampled.test_farnDict -e printlinenv")
+    else:
+        _ = os.system(
+            f"python -m farn.cli.farn {sampled_file.name} --execute testwinvar"
+        )
+        _ = os.system(
+            f"python -m farn.cli.farn {sampled_file.name} --execute printwinenv"
+        )
+=======
     _ = os.system(f"farn {sampled_file.name} --execute testwinvar")  # noqa: S605
     _ = os.system(f"farn {sampled_file.name} --execute printwinenv")  # noqa: S605
+>>>>>>> origin/main
     # Assert
 
 

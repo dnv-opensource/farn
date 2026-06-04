@@ -1,0 +1,96 @@
+/*---------------------------------*- C++ -*----------------------------------*\
+filetype dictionary; coding utf-8; version 0.1; local --; purpose --;
+\*----------------------------------------------------------------------------*/
+_environment
+{
+    CASEDIR                   cases-2layer;
+    DUMPDIR                   dump;
+    LOGDIR                    logs;
+    RESULTDIR                 results;
+    TEMPLATEDIR               template;
+}
+_layers
+{
+    layer1
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param0
+            );
+            _values
+            (
+                (
+                    1                 2                 3
+                )
+            );
+        }
+        _samples
+        {
+            _names
+            (
+                layer1_0          layer1_1          layer1_2
+            );
+            param0
+            (
+                1                 2                 3
+            );
+        }
+        _comment              'level 0 for basename layer1';
+    }
+    layer2
+    {
+        _sampling
+        {
+            _type             fixed;
+            _names
+            (
+                param1
+            );
+            _values
+            (
+                (
+                    2                 4                 8
+                )
+            );
+        }
+        _condition
+        {
+            _action           exclude;
+            _filter           'case in ["layer2_0", "layer2_1"]';
+        }
+        _commands
+        {
+            testwinvar
+            (
+                'echo variable %CASEDIR%'
+            );
+            testlinvar
+            (
+                "echo variable $CASEDIR"
+            );
+            printwinenv
+            (
+                'echo environment & printenv | findstr CASEDIR'
+            );
+            printlinenv
+            (
+                'echo environment ; printenv | grep CASEDIR'
+            );
+        }
+        _samples
+        {
+            _names
+            (
+                layer2_0          layer2_1          layer2_2
+            );
+            param1
+            (
+                2                 4                 8
+            );
+        }
+        _comment              'level 1 for basename layer2';
+    }
+}

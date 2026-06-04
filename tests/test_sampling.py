@@ -96,7 +96,13 @@ def test_linSpace_sampling_one_parameter() -> None:
         "param1",
     }
     assert len(samples["_case_name"]) == 5
-    assert samples["_case_name"] == ["layer0_0", "layer0_1", "layer0_2", "layer0_3", "layer0_4"]
+    assert samples["_case_name"] == [
+        "layer0_0",
+        "layer0_1",
+        "layer0_2",
+        "layer0_3",
+        "layer0_4",
+    ]
     assert len(samples["param1"]) == 5
     assert np.allclose(samples["param1"], [0.5, 0.6, 0.7, 0.8, 0.9])
 
@@ -123,7 +129,13 @@ def test_linSpace_sampling_two_parameters() -> None:
         "param2",
     }
     assert len(samples["_case_name"]) == 5
-    assert samples["_case_name"] == ["layer0_0", "layer0_1", "layer0_2", "layer0_3", "layer0_4"]
+    assert samples["_case_name"] == [
+        "layer0_0",
+        "layer0_1",
+        "layer0_2",
+        "layer0_3",
+        "layer0_4",
+    ]
     assert len(samples["param1"]) == 5
     assert np.allclose(samples["param1"], [0.5, 0.6, 0.7, 0.8, 0.9])
     assert len(samples["param2"]) == 5
@@ -1453,4 +1465,93 @@ def test_hilbertCurve_sampling_three_parameters_including_bounding_box() -> None
     assert len(samples["param2"]) == 28
     assert np.allclose(samples["param2"], param2_values_expected)
     assert len(samples["param3"]) == 28
+    assert np.allclose(samples["param3"], param3_values_expected)
+
+
+def test_factorial_sampling_three_parameters():
+    # Prepare
+    sampling: DiscreteSampling = DiscreteSampling()
+    sampling.set_sampling_type(sampling_type="factorial")
+    sampling.set_sampling_parameters(
+        sampling_parameters={
+            "_names": ["param1", "param2", "param3"],
+            "_ranges": [(-10.0, 10.0), (0.0, 3.5), (0.0, 1.1)],
+            "_listOfSamples": [3, 2, 2],
+        },
+        layer_name="layer0",
+    )
+    case_names_expected: List[str] = [
+        "layer0_00",
+        "layer0_01",
+        "layer0_02",
+        "layer0_03",
+        "layer0_04",
+        "layer0_05",
+        "layer0_06",
+        "layer0_07",
+        "layer0_08",
+        "layer0_09",
+        "layer0_10",
+        "layer0_11",
+    ]
+    param1_values_expected: List[float] = [
+        -10.0,
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
+        10.0,
+        -10.0,
+        0.0,
+        10.0,
+    ]
+    param2_values_expected: List[float] = [
+        0.0,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        3.5,
+        0.0,
+        0.0,
+        0.0,
+        3.5,
+        3.5,
+        3.5,
+    ]
+    param3_values_expected: List[float] = [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+    ]
+
+    # Execute
+    samples: Dict[str, List[Any]] = sampling.generate_samples()
+    # Assert
+    assert len(samples) == 4
+    assert samples.keys() == {
+        "_case_name",
+        "param1",
+        "param2",
+        "param3",
+    }
+    assert len(samples["_case_name"]) == 12
+    assert samples["_case_name"] == case_names_expected
+    assert len(samples["param1"]) == 12
+    assert np.allclose(samples["param1"], param1_values_expected)
+    assert len(samples["param2"]) == 12
+    assert np.allclose(samples["param2"], param2_values_expected)
+    assert len(samples["param3"]) == 12
     assert np.allclose(samples["param3"], param3_values_expected)

@@ -152,9 +152,14 @@ def main() -> None:
 
     # Configure Logging
     # ..to console
+<<<<<<< HEAD:src/farn/cli/farn.py
+    log_level_console: str = (
+        "INFO"  # default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
+    )
+=======
     # NOTE: Default would usually be 'WARNING', but for farn it makes sense to set default level to 'INFO'
     log_level_console: str = "INFO"
-    )
+>>>>>>> origin/main:src/farn/cli/__main__.py
     if any([args.quiet, args.verbose]):
         log_level_console = "ERROR" if args.quiet else log_level_console
         log_level_console = "DEBUG" if args.verbose else log_level_console
@@ -180,8 +185,6 @@ def main() -> None:
     # Check whether farn dict file exists
     if not farn_dict_file.is_file():
         logger.error(f"farn: File {farn_dict_file} not found.")
-        # easter egg: Generate Barnsley fern
-        # _generate_barnsley_fern()
         return
 
     # Print the parsed commandline arguments for documentation and debugging purposes.
@@ -228,15 +231,10 @@ def _generate_barnsley_fern() -> None:
     """
     import tempfile  # noqa: PLC0415
     import tkinter as tk  # noqa: PLC0415
-    import tempfile
-    import tkinter as tk
 
     from numpy import random  # noqa: PLC0415
     from PIL import Image  # noqa: PLC0415
     from PIL.ImageDraw import ImageDraw  # noqa: PLC0415
-    from numpy import random
-    from PIL import Image
-    from PIL.ImageDraw import ImageDraw
 
     def t1(p: tuple[float, float]) -> tuple[float, float]:
         """1%."""
