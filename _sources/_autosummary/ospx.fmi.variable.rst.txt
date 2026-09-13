@@ -1,0 +1,22 @@
+ospx.fmi.variable
+=================
+
+.. automodule:: ospx.fmi.variable
+   :members:
+   :exclude-members: ScalarVariable,
+   
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      get_fmi_data_type
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      ScalarVariable
+   

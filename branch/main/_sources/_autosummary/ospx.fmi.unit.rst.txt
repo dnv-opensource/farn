@@ -1,0 +1,19 @@
+ospx.fmi.unit
+=============
+
+.. automodule:: ospx.fmi.unit
+   :members:
+   :exclude-members: BaseUnit,DisplayUnit,Unit,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      BaseUnit
+      DisplayUnit
+      Unit
+   

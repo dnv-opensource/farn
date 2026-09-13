@@ -1,0 +1,13 @@
+farn.utils.sub\_process
+=======================
+
+.. automodule:: farn.utils.sub_process
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      execute_in_sub_process
+   

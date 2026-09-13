@@ -1,0 +1,17 @@
+farn.core.parameter
+===================
+
+.. automodule:: farn.core.parameter
+   :members:
+   :exclude-members: Parameter,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      Parameter
+   

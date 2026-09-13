@@ -1,0 +1,31 @@
+Case
+====
+
+.. currentmodule:: farn.core.case
+
+.. autoclass:: Case
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Case.__init__
+      ~Case.add_parameters
+      ~Case.to_dict
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Case.is_valid
+   
+   

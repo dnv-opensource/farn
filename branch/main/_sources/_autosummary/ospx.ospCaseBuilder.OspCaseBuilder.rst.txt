@@ -1,0 +1,25 @@
+OspCaseBuilder
+==============
+
+.. currentmodule:: ospx.ospCaseBuilder
+
+.. autoclass:: OspCaseBuilder
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~OspCaseBuilder.__init__
+      ~OspCaseBuilder.build
+   
+   
+
+
+   
+   
+   
