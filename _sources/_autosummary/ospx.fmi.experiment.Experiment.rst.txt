@@ -1,0 +1,32 @@
+Experiment
+==========
+
+.. currentmodule:: ospx.fmi.experiment
+
+.. autoclass:: Experiment
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Experiment.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Experiment.start_time
+      ~Experiment.step_size
+      ~Experiment.stop_time
+      ~Experiment.tolerance
+   
+   

@@ -1,0 +1,17 @@
+﻿ospx.system
+===========
+
+.. automodule:: ospx.system
+   :members:
+   :exclude-members: System,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      System
+   
