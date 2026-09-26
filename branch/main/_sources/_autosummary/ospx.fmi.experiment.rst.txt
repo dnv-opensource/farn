@@ -1,0 +1,17 @@
+ospx.fmi.experiment
+===================
+
+.. automodule:: ospx.fmi.experiment
+   :members:
+   :exclude-members: Experiment,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      Experiment
+   

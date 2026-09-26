@@ -1,0 +1,18 @@
+﻿ospx.component
+==============
+
+.. automodule:: ospx.component
+   :members:
+   :exclude-members: Component,RemoteAccess,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      Component
+      RemoteAccess
+   
