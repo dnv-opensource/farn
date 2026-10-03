@@ -1,0 +1,34 @@
+Connector
+=========
+
+.. currentmodule:: ospx.connector
+
+.. autoclass:: Connector
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Connector.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Connector.is_group_connector
+      ~Connector.is_single_connector
+      ~Connector.type
+      ~Connector.variable
+      ~Connector.variable_group
+      ~Connector.variable_name
+   
+   

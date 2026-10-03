@@ -1,0 +1,14 @@
+farn.utils.logging
+==================
+
+.. automodule:: farn.utils.logging
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      configure_logging
+      plural
+   

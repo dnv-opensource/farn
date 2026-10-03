@@ -1,0 +1,17 @@
+﻿ospx.ospCaseBuilder
+===================
+
+.. automodule:: ospx.ospCaseBuilder
+   :members:
+   :exclude-members: OspCaseBuilder,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      OspCaseBuilder
+   

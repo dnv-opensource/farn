@@ -1,0 +1,27 @@
+CosimWatcher
+============
+
+.. currentmodule:: ospx.watch.watchCosim
+
+.. autoclass:: CosimWatcher
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~CosimWatcher.__init__
+      ~CosimWatcher.dump
+      ~CosimWatcher.plot
+      ~CosimWatcher.read_watch_dict
+   
+   
+
+
+   
+   
+   

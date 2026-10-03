@@ -1,0 +1,38 @@
+BaseUnit
+========
+
+.. currentmodule:: ospx.fmi.unit
+
+.. autoclass:: BaseUnit
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~BaseUnit.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~BaseUnit.A
+      ~BaseUnit.K
+      ~BaseUnit.cd
+      ~BaseUnit.factor
+      ~BaseUnit.kg
+      ~BaseUnit.m
+      ~BaseUnit.mol
+      ~BaseUnit.offset
+      ~BaseUnit.rad
+      ~BaseUnit.s
+   
+   
