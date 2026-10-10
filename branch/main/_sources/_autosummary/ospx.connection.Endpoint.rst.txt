@@ -1,0 +1,32 @@
+Endpoint
+========
+
+.. currentmodule:: ospx.connection
+
+.. autoclass:: Endpoint
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Endpoint.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Endpoint.connector
+      ~Endpoint.is_valid
+      ~Endpoint.variable
+      ~Endpoint.variable_name
+   
+   

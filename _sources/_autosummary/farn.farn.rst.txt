@@ -1,0 +1,19 @@
+﻿farn.farn
+=========
+
+.. automodule:: farn.farn
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      create_case_folders
+      create_case_list_files
+      create_cases
+      create_param_dict_files
+      create_samples
+      execute_command_set
+      run_farn
+   
