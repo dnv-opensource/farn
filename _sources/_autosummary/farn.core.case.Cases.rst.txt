@@ -1,0 +1,39 @@
+Cases
+=====
+
+.. currentmodule:: farn.core.case
+
+.. autoclass:: Cases
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Cases.__init__
+      ~Cases.add_parameters
+      ~Cases.append
+      ~Cases.clear
+      ~Cases.copy
+      ~Cases.count
+      ~Cases.extend
+      ~Cases.filter
+      ~Cases.index
+      ~Cases.insert
+      ~Cases.pop
+      ~Cases.remove
+      ~Cases.reverse
+      ~Cases.sort
+      ~Cases.to_numpy
+      ~Cases.to_pandas
+   
+   
+
+
+   
+   
+   
