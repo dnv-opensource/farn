@@ -1,0 +1,30 @@
+RemoteAccess
+============
+
+.. currentmodule:: ospx.component
+
+.. autoclass:: RemoteAccess
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~RemoteAccess.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~RemoteAccess.port
+      ~RemoteAccess.host
+   
+   
