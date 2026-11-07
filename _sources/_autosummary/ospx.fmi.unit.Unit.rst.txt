@@ -1,0 +1,31 @@
+Unit
+====
+
+.. currentmodule:: ospx.fmi.unit
+
+.. autoclass:: Unit
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~Unit.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~Unit.base_unit
+      ~Unit.name
+      ~Unit.display_unit
+   
+   
