@@ -1,0 +1,18 @@
+ospx.utils.zip
+==============
+
+.. automodule:: ospx.utils.zip
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      add_file_content_to_zip
+      read_file_content_from_zip
+      remove_files_from_zip
+      rename_file_in_zip
+      substitute_text_in_zip
+      update_file_content_in_zip
+   

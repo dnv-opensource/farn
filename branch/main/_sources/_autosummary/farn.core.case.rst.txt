@@ -1,0 +1,19 @@
+farn.core.case
+==============
+
+.. automodule:: farn.core.case
+   :members:
+   :exclude-members: Case,CaseStatus,Cases,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      Case
+      CaseStatus
+      Cases
+   
