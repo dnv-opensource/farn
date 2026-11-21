@@ -1,0 +1,31 @@
+DisplayUnit
+===========
+
+.. currentmodule:: ospx.fmi.unit
+
+.. autoclass:: DisplayUnit
+   :members:
+   :show-inheritance:
+
+
+   
+   .. automethod:: __init__
+   
+   .. rubric:: Methods
+   .. autosummary::
+   
+      ~DisplayUnit.__init__
+   
+   
+
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+   
+      ~DisplayUnit.factor
+      ~DisplayUnit.offset
+      ~DisplayUnit.name
+   
+   
