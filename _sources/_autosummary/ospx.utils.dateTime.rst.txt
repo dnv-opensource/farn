@@ -1,0 +1,13 @@
+ospx.utils.dateTime
+===================
+
+.. automodule:: ospx.utils.dateTime
+   :members:
+
+
+   
+   .. rubric:: Functions
+   .. autosummary::
+   
+      calc_time
+   

@@ -1,0 +1,17 @@
+﻿ospx.connector
+==============
+
+.. automodule:: ospx.connector
+   :members:
+   :exclude-members: Connector,
+   
+
+
+   
+   .. rubric:: Classes
+   .. autosummary::
+      :toctree:
+      :template: custom-class.rst
+   
+      Connector
+   
